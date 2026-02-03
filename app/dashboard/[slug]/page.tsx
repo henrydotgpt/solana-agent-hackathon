@@ -17,6 +17,16 @@ import type { Storefront, PaymentRecord } from "@/lib/types";
 import type { Notification } from "@/lib/store";
 import { truncateAddress, formatCurrency } from "@/lib/utils";
 import {
+  AreaChart,
+  Area,
+  XAxis,
+  YAxis,
+  Tooltip as RechartsTooltip,
+  ResponsiveContainer,
+  BarChart as RechartsBarChart,
+  Bar,
+} from "recharts";
+import {
   Zap,
   ArrowLeft,
   DollarSign,
@@ -31,6 +41,9 @@ import {
   AlertCircle,
   ArrowRightLeft,
   Users,
+  Code2,
+  ChevronDown,
+  Share2,
 } from "lucide-react";
 
 interface DashboardData {
@@ -357,11 +370,96 @@ export default function DashboardPage() {
           />
         </motion.div>
 
+        {/* Revenue Chart + Embed Code */}
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 mb-8">
+          {/* Revenue Chart */}
+          <motion.div
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.15 }}
+            className="lg:col-span-2"
+          >
+            <Card>
+              <CardHeader>
+                <CardTitle className="text-lg">Revenue Over Time</CardTitle>
+                <CardDescription>Payment volume (last 7 days)</CardDescription>
+              </CardHeader>
+              <CardContent>
+                <RevenueChart payments={stats.recentPayments} solPrice={solPrice} />
+              </CardContent>
+            </Card>
+          </motion.div>
+
+          {/* Quick Actions + Embed */}
+          <motion.div
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.2 }}
+            className="space-y-4"
+          >
+            {/* Share */}
+            <Card>
+              <CardContent className="p-5">
+                <div className="flex items-center gap-2 mb-3">
+                  <Share2 className="h-4 w-4 text-muted-foreground" />
+                  <span className="text-sm font-semibold">Share</span>
+                </div>
+                <div className="p-2 rounded-lg bg-muted/50 border border-border/50 mb-3">
+                  <p className="font-mono text-xs text-solana-purple-light break-all">
+                    {typeof window !== "undefined"
+                      ? `${window.location.origin}/pay/${storefront.slug}`
+                      : `/pay/${storefront.slug}`}
+                  </p>
+                </div>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  className="w-full gap-2"
+                  onClick={handleCopyLink}
+                >
+                  {copied ? <Check className="h-3.5 w-3.5 text-solana-green" /> : <Copy className="h-3.5 w-3.5" />}
+                  {copied ? "Copied!" : "Copy Link"}
+                </Button>
+              </CardContent>
+            </Card>
+
+            {/* Embed Widget */}
+            <Card>
+              <CardContent className="p-5">
+                <div className="flex items-center gap-2 mb-3">
+                  <Code2 className="h-4 w-4 text-muted-foreground" />
+                  <span className="text-sm font-semibold">Embed Widget</span>
+                  <Badge variant="outline" className="text-[10px] ml-auto">1 line</Badge>
+                </div>
+                <pre className="p-2 rounded-lg bg-muted/50 border border-border/50 text-[10px] overflow-x-auto mb-3">
+                  <code className="text-muted-foreground">
+                    {`<script src="${typeof window !== "undefined" ? window.location.origin : ""}/api/widget/${storefront.slug}"></script>`}
+                  </code>
+                </pre>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  className="w-full gap-2"
+                  onClick={() => {
+                    const code = `<script src="${window.location.origin}/api/widget/${storefront.slug}"></script>`;
+                    navigator.clipboard.writeText(code);
+                    setCopied(true);
+                    setTimeout(() => setCopied(false), 2000);
+                  }}
+                >
+                  <Copy className="h-3.5 w-3.5" />
+                  Copy Embed Code
+                </Button>
+              </CardContent>
+            </Card>
+          </motion.div>
+        </div>
+
         {/* Recent payments table */}
         <motion.div
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.2 }}
+          transition={{ delay: 0.25 }}
         >
           <Card>
             <CardHeader>
@@ -559,4 +657,98 @@ function formatTimeAgo(timestamp: number): string {
   if (seconds < 3600) return `${Math.floor(seconds / 60)}m ago`;
   if (seconds < 86400) return `${Math.floor(seconds / 3600)}h ago`;
   return `${Math.floor(seconds / 86400)}d ago`;
+}
+
+// Revenue chart — generates mock 7-day data from payment history
+function RevenueChart({
+  payments,
+  solPrice,
+}: {
+  payments: PaymentRecord[];
+  solPrice: number | null;
+}) {
+  // Generate 7-day data points
+  const days = Array.from({ length: 7 }, (_, i) => {
+    const date = new Date();
+    date.setDate(date.getDate() - (6 - i));
+    const dayLabel = date.toLocaleDateString("en-US", { weekday: "short" });
+    const dayStart = new Date(date.getFullYear(), date.getMonth(), date.getDate()).getTime();
+    const dayEnd = dayStart + 86400000;
+
+    // Sum payments for this day
+    const dayPayments = payments.filter(
+      (p) => p.createdAt >= dayStart && p.createdAt < dayEnd && p.status === "confirmed"
+    );
+
+    let revenue = 0;
+    for (const p of dayPayments) {
+      if (p.currency === "USDC") revenue += p.amount;
+      else revenue += p.amount * (solPrice || 0);
+    }
+
+    return {
+      day: dayLabel,
+      revenue: Math.round(revenue * 100) / 100,
+      payments: dayPayments.length,
+    };
+  });
+
+  // If no real data, generate sample data for visual appeal
+  const hasData = days.some((d) => d.revenue > 0);
+  const chartData = hasData
+    ? days
+    : days.map((d, i) => ({
+        ...d,
+        revenue: [12, 28, 19, 45, 38, 52, 41][i],
+        payments: [2, 4, 3, 6, 5, 7, 5][i],
+      }));
+
+  return (
+    <div>
+      {!hasData && (
+        <p className="text-xs text-muted-foreground/60 mb-2 italic">
+          Sample data shown — real payments will appear here
+        </p>
+      )}
+      <ResponsiveContainer width="100%" height={200}>
+        <AreaChart data={chartData}>
+          <defs>
+            <linearGradient id="revenueGrad" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="5%" stopColor="#14F195" stopOpacity={0.3} />
+              <stop offset="95%" stopColor="#14F195" stopOpacity={0} />
+            </linearGradient>
+          </defs>
+          <XAxis
+            dataKey="day"
+            axisLine={false}
+            tickLine={false}
+            tick={{ fill: "#666", fontSize: 11 }}
+          />
+          <YAxis
+            axisLine={false}
+            tickLine={false}
+            tick={{ fill: "#666", fontSize: 11 }}
+            tickFormatter={(v) => `$${v}`}
+          />
+          <RechartsTooltip
+            contentStyle={{
+              background: "#111118",
+              border: "1px solid rgba(255,255,255,0.1)",
+              borderRadius: "8px",
+              fontSize: "12px",
+            }}
+            labelStyle={{ color: "#999" }}
+            formatter={(value: any) => [`$${Number(value || 0).toFixed(2)}`, "Revenue"]}
+          />
+          <Area
+            type="monotone"
+            dataKey="revenue"
+            stroke="#14F195"
+            strokeWidth={2}
+            fill="url(#revenueGrad)"
+          />
+        </AreaChart>
+      </ResponsiveContainer>
+    </div>
+  );
 }

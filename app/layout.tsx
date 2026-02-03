@@ -48,9 +48,10 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className="dark">
+    <html lang="en" className="dark" style={{ colorScheme: "dark" }}>
       <body
-        className={`${sora.variable} ${dmSans.variable} font-body min-h-screen bg-[#08080C] text-[#E8E8ED] antialiased`}
+        className={`${sora.variable} ${dmSans.variable} font-body min-h-screen antialiased`}
+        style={{ backgroundColor: "#08080C", color: "#E8E8ED" }}
       >
         <Providers>{children}</Providers>
       </body>

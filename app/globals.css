@@ -33,7 +33,6 @@
   }
 
   body {
-    @apply bg-background text-foreground antialiased;
     font-feature-settings: "rlig" 1, "calt" 1;
   }
 
@@ -85,6 +84,12 @@
     border: 1px solid rgba(255, 255, 255, 0.06);
     backdrop-filter: blur(12px);
   }
+}
+
+/* Force dark background — outside @layer so it can't be overridden */
+html, body {
+  background-color: #08080C !important;
+  color: #E8E8ED !important;
 }
 
 @layer utilities {

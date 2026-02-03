@@ -10,6 +10,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { WalletButton } from "@/components/payment/WalletButton";
 import { isValidSolanaAddress } from "@/lib/utils";
+import { ImageUpload } from "@/components/ui/image-upload";
 import type { Storefront } from "@/lib/types";
 import {
   ArrowLeft,
@@ -361,6 +362,31 @@ export default function CreatePage() {
                     <div ref={chatEndRef} />
                   </div>
 
+                  {/* Upload area — appears during extras step */}
+                  {agentState === "awaiting_extras" && (
+                    <div className="border-t border-border/50 p-4 bg-muted/30">
+                      <div className="flex items-center gap-3">
+                        <ImageUpload
+                          compact
+                          label="Upload logo"
+                          onUpload={(url) => {
+                            setLogo(url);
+                            // Add a message showing the upload
+                            setChatMessages((prev) => [
+                              ...prev,
+                              { role: "user", content: "📎 Logo uploaded" },
+                            ]);
+                          }}
+                        />
+                        {logo && (
+                          <span className="text-xs text-emerald-400 flex items-center gap-1">
+                            <Check className="h-3 w-3" /> Logo ready
+                          </span>
+                        )}
+                      </div>
+                    </div>
+                  )}
+
                   {/* Input */}
                   <div className="border-t border-border/50 p-4">
                     <form
@@ -377,7 +403,7 @@ export default function CreatePage() {
                           agentState === "awaiting_products"
                             ? "List your products with prices..."
                             : agentState === "awaiting_extras"
-                            ? "Paste logo URL, website, or social links..."
+                            ? "Paste links or type 'skip' to continue..."
                             : agentState === "awaiting_wallet"
                             ? "Paste your Solana wallet address..."
                             : "Describe your business..."

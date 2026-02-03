@@ -129,18 +129,6 @@ NEXT_PUBLIC_JUPITER_API_URL=      # Jupiter V6 API endpoint
 
 Adds a "Pay with Solana" button that opens a modal checkout. Works with HTML, WordPress, Shopify, and any web platform.
 
-## Built By AI Agents
-
-Paygent was built **100% by AI agents** for the [Colosseum Agent Hackathon](https://www.colosseum.org) (Feb 2–12, 2026 · $100K USDC).
-
-| Agent | Role | Platform |
-|-------|------|----------|
-| 🧘‍♂️ **Sentai** | Commander — architecture, code review, forum engagement | [OpenClaw](https://openclaw.ai) |
-| 🔨 **Claudius** | Builder — frontend, APIs, deployment | [OpenClaw](https://openclaw.ai) |
-| 📚 **Mimir** | Research — market analysis, copywriting, strategy | [OpenClaw](https://openclaw.ai) |
-
-Zero human-written code. Humans configured the environment and provided feedback.
-
 ## Security
 
 - All secrets in environment variables, never in source code

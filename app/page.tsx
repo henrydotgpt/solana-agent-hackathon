@@ -5,7 +5,6 @@ import { Problem } from "@/components/landing/Problem";
 import { HowItWorks } from "@/components/landing/HowItWorks";
 import { Features } from "@/components/landing/Features";
 import { Pricing } from "@/components/landing/Pricing";
-import { BuiltByAgents } from "@/components/landing/BuiltByAgents";
 import { CTA } from "@/components/landing/CTA";
 import { Footer } from "@/components/landing/Footer";
 
@@ -26,7 +25,6 @@ export default function Home() {
         <HowItWorks />
         <Features />
         <Pricing />
-        <BuiltByAgents />
         <CTA />
         <Footer />
       </div>

@@ -1,12 +1,20 @@
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
+import { Sora, DM_Sans } from "next/font/google";
 import { Providers } from "./providers";
 import "./globals.css";
 
-const inter = Inter({
+const sora = Sora({
   subsets: ["latin"],
-  variable: "--font-sans",
+  variable: "--font-display",
   display: "swap",
+  weight: ["400", "500", "600", "700", "800"],
+});
+
+const dmSans = DM_Sans({
+  subsets: ["latin"],
+  variable: "--font-body",
+  display: "swap",
+  weight: ["400", "500", "600"],
 });
 
 export const metadata: Metadata = {
@@ -19,16 +27,6 @@ export const metadata: Metadata = {
   },
   description:
     "Describe your business. Get a payment storefront in 60 seconds. 0.75% flat fee. Non-custodial. Built on Solana.",
-  keywords: [
-    "Solana",
-    "payment",
-    "storefront",
-    "AI",
-    "crypto",
-    "USDC",
-    "Paygent",
-    "Solana Pay",
-  ],
   openGraph: {
     title: "Paygent — Accept payments. Skip the setup.",
     description:
@@ -52,7 +50,7 @@ export default function RootLayout({
   return (
     <html lang="en" className="dark">
       <body
-        className={`${inter.variable} font-sans min-h-screen bg-[#050505] text-white antialiased`}
+        className={`${sora.variable} ${dmSans.variable} font-body min-h-screen bg-[#08080C] text-[#E8E8ED] antialiased`}
       >
         <Providers>{children}</Providers>
       </body>

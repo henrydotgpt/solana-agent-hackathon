@@ -3,9 +3,10 @@
 import React from "react";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
+import { Reveal } from "@/components/ui/reveal";
 import { ArrowRight, Check } from "lucide-react";
 
-const features = [
+const included = [
   "AI-generated storefronts",
   "Unlimited products",
   "Payment links & QR codes",
@@ -18,72 +19,90 @@ const features = [
 
 export function Pricing() {
   return (
-    <section id="pricing" className="py-20 sm:py-28">
-      <div className="mx-auto max-w-6xl px-5 sm:px-8">
-        <div className="grid lg:grid-cols-2 gap-12 lg:gap-20 items-start">
-          {/* Left — copy */}
-          <div className="lg:sticky lg:top-32">
-            <h2 className="text-3xl sm:text-4xl font-bold tracking-tight leading-tight mb-5">
-              Simple pricing.
-              <br />
-              <span className="text-white/40">No surprises.</span>
-            </h2>
-            <p className="text-white/40 leading-relaxed mb-8 max-w-md">
-              No monthly fees. No setup costs. No minimums. Pay only when you
-              get paid.
-            </p>
+    <section id="pricing" className="py-24 sm:py-32 relative">
+      <div className="absolute top-0 inset-x-0 h-px bg-gradient-to-r from-transparent via-white/[0.06] to-transparent" />
 
-            {/* The price */}
-            <div className="mb-8">
-              <div className="flex items-baseline gap-1">
-                <span className="text-5xl sm:text-6xl font-bold text-white">
-                  0.75
-                </span>
-                <span className="text-2xl font-bold text-white/50">%</span>
-              </div>
-              <div className="text-sm text-white/30 mt-1">per transaction</div>
-            </div>
-
-            <Link href="/create">
-              <Button
-                variant="gradient"
-                size="lg"
-                className="gap-2 group"
-              >
-                Start for free
-                <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
-              </Button>
-            </Link>
-          </div>
-
-          {/* Right — what's included */}
+      <div className="mx-auto max-w-7xl px-6 sm:px-8">
+        <div className="grid lg:grid-cols-2 gap-16 lg:gap-24 items-start">
+          {/* Left — the price */}
           <div>
-            <div className="text-xs text-white/20 uppercase tracking-wider mb-6">
-              Everything included
-            </div>
-            <div className="space-y-0">
-              {features.map((feature) => (
-                <div
-                  key={feature}
-                  className="flex items-center gap-3 py-3.5 border-b border-white/[0.04] last:border-0"
-                >
-                  <Check className="h-4 w-4 text-solana-green shrink-0" />
-                  <span className="text-[15px] text-white/60">{feature}</span>
-                </div>
-              ))}
-            </div>
+            <Reveal>
+              <p className="text-xs font-display font-600 uppercase tracking-[0.2em] text-emerald-400/60 mb-5">
+                Pricing
+              </p>
+              <h2 className="font-display text-4xl sm:text-5xl font-800 tracking-tight leading-tight mb-5">
+                Simple pricing.
+                <br />
+                <span className="text-[#3A3A44]">No surprises.</span>
+              </h2>
+              <p className="text-lg text-[#6B6B78] leading-relaxed mb-10 max-w-md">
+                No monthly fees. No setup costs. No minimums. You only pay when
+                your customers pay you.
+              </p>
+            </Reveal>
 
-            {/* Comparison note */}
-            <div className="mt-8 px-5 py-4 rounded-xl bg-white/[0.02] border border-white/[0.06]">
-              <div className="text-sm text-white/50">
-                <span className="text-white/70 font-medium">
-                  4x cheaper than Stripe.
-                </span>{" "}
-                On $10K/month, you save $2,616/year. Instant settlement, not
-                2-7 days. No developer required.
+            <Reveal delay={0.15}>
+              {/* Price display */}
+              <div className="mb-10">
+                <div className="flex items-baseline">
+                  <span className="font-display text-7xl sm:text-8xl font-800 text-white">
+                    0.75
+                  </span>
+                  <span className="font-display text-3xl font-700 text-[#3A3A44] ml-1">
+                    %
+                  </span>
+                </div>
+                <div className="text-sm text-[#5A5A66] mt-1 font-display">
+                  per transaction · that&apos;s it
+                </div>
+              </div>
+
+              <Link href="/create">
+                <Button
+                  variant="gradient"
+                  size="lg"
+                  className="gap-2.5 group font-display font-600"
+                >
+                  Start for free
+                  <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
+                </Button>
+              </Link>
+            </Reveal>
+          </div>
+
+          {/* Right — included features */}
+          <Reveal delay={0.1}>
+            <div className="rounded-2xl glass p-7 sm:p-8">
+              <div className="text-xs font-display font-600 uppercase tracking-[0.15em] text-[#5A5A66] mb-6">
+                Everything included
+              </div>
+
+              <div className="space-y-0">
+                {included.map((item) => (
+                  <div
+                    key={item}
+                    className="flex items-center gap-3.5 py-3.5 border-b border-white/[0.04] last:border-0"
+                  >
+                    <div className="flex items-center justify-center w-5 h-5 rounded-md bg-emerald-500/10">
+                      <Check className="h-3 w-3 text-emerald-400" />
+                    </div>
+                    <span className="text-[15px] text-[#B0B0BC]">{item}</span>
+                  </div>
+                ))}
+              </div>
+
+              {/* Comparison callout */}
+              <div className="mt-6 pt-5 border-t border-white/[0.06]">
+                <p className="text-sm text-[#6B6B78]">
+                  <span className="text-white font-display font-600">
+                    4× cheaper than Stripe.
+                  </span>{" "}
+                  On $10K/month volume, you save $2,616/year. Instant
+                  settlement. No developer required.
+                </p>
               </div>
             </div>
-          </div>
+          </Reveal>
         </div>
       </div>
     </section>

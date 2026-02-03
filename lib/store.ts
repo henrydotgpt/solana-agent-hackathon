@@ -314,7 +314,7 @@ const demoStorefront: Storefront = {
     "Premium specialty coffee roasted in small batches. Pay with crypto, skip the middleman. Direct from roaster to your cup.",
   tagline: "Wake up to web3 ☕",
   logo: "https://api.dicebear.com/7.x/shapes/svg?seed=solbrew&backgroundColor=9945FF",
-  walletAddress: "11111111111111111111111111111111",
+  walletAddress: "45CMf8CmMAiq4euciwE4xiTy232ryCtsHyXWUYSqVsvz",
   links: {
     website: "https://example.com",
     twitter: "https://x.com/paygent",
@@ -361,7 +361,7 @@ const agencyStore: Storefront = {
     "Full-stack Solana development. Smart contracts, dApps, and DeFi integrations. Ship faster with battle-tested builders.",
   tagline: "Build different.",
   logo: "https://api.dicebear.com/7.x/shapes/svg?seed=nexusweb3&backgroundColor=3B82F6",
-  walletAddress: "11111111111111111111111111111111",
+  walletAddress: "45CMf8CmMAiq4euciwE4xiTy232ryCtsHyXWUYSqVsvz",
   links: {
     website: "https://example.com",
     twitter: "https://x.com/paygent",
@@ -406,7 +406,7 @@ const creatorStore: Storefront = {
     "Learn Solana development from zero to deployed. Self-paced courses, live workshops, and 1-on-1 mentoring for aspiring web3 builders.",
   tagline: "From zero to Solana dev 🚀",
   logo: "https://api.dicebear.com/7.x/shapes/svg?seed=solanacademy&backgroundColor=14F195",
-  walletAddress: "11111111111111111111111111111111",
+  walletAddress: "45CMf8CmMAiq4euciwE4xiTy232ryCtsHyXWUYSqVsvz",
   links: {
     website: "https://example.com",
     twitter: "https://x.com/paygent",

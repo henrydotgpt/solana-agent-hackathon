@@ -6,53 +6,53 @@ import { Card, CardContent } from "@/components/ui/card";
 import {
   Bot,
   QrCode,
-  ArrowRightLeft,
-  Palette,
-  BarChart3,
   Shield,
+  ArrowRightLeft,
+  Bell,
+  FileCheck,
 } from "lucide-react";
 
 const features = [
   {
     icon: Bot,
-    title: "AI-Powered Setup",
+    title: "Instant storefronts",
     description:
-      "Describe your business in plain English. Our agent analyzes your needs and builds the perfect payment page.",
+      "AI generates your entire checkout experience from a text description. Products, pricing, branding — handled.",
     gradient: "from-solana-purple to-blue-500",
   },
   {
     icon: QrCode,
-    title: "Solana Pay QR Codes",
+    title: "Payment links & QR codes",
     description:
-      "Every product or service gets a unique QR code. Customers scan and pay instantly from any Solana wallet.",
+      "Share a link or scan a code. Works everywhere — WhatsApp, email, in person, social media.",
     gradient: "from-blue-500 to-cyan-500",
   },
   {
-    icon: ArrowRightLeft,
-    title: "Auto-Convert to USDC",
+    icon: Shield,
+    title: "Non-custodial",
     description:
-      "Accept any Solana token. Jupiter automatically swaps incoming payments to USDC, so you always get stable value.",
+      "We never touch your money. Payments flow directly from customer to your wallet. Your keys, your funds.",
     gradient: "from-cyan-500 to-solana-green",
   },
   {
-    icon: Palette,
-    title: "Beautiful Storefronts",
+    icon: ArrowRightLeft,
+    title: "Auto-convert",
     description:
-      "AI picks the perfect design for your business type — colors, layout, copy, everything. Professional and ready to share.",
+      "Receive SOL or any token → auto-swap to USDC via Jupiter. Stable revenue, zero volatility risk.",
     gradient: "from-solana-green to-emerald-500",
   },
   {
-    icon: BarChart3,
-    title: "Payment Dashboard",
+    icon: Bell,
+    title: "Real-time notifications",
     description:
-      "Track every payment in real-time. See who paid, when, and how much. Export for your accounting.",
+      "Know the moment you get paid. Webhooks, email, or Telegram — your choice.",
     gradient: "from-emerald-500 to-solana-purple",
   },
   {
-    icon: Shield,
-    title: "Non-Custodial",
+    icon: FileCheck,
+    title: "On-chain receipts",
     description:
-      "Your keys, your money. Payments go directly to your wallet. We never hold or touch your funds.",
+      "Every payment generates a verifiable on-chain record. Tax-ready. Dispute-proof. Permanent.",
     gradient: "from-solana-purple to-pink-500",
   },
 ];
@@ -83,14 +83,10 @@ export function Features() {
           className="text-center mb-16"
         >
           <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight mb-4">
-            Everything you need to
+            Everything you need.
             <br />
-            <span className="gradient-text">accept crypto payments</span>
+            <span className="gradient-text">Nothing you don&apos;t.</span>
           </h2>
-          <p className="mx-auto max-w-2xl text-lg text-muted-foreground">
-            From QR code generation to auto-conversion — the AI handles it all.
-            You focus on your business.
-          </p>
         </motion.div>
 
         {/* Feature grid */}
@@ -99,7 +95,7 @@ export function Features() {
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true }}
-          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
+          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-5xl mx-auto"
         >
           {features.map((feature, i) => (
             <motion.div key={i} variants={itemVariants}>

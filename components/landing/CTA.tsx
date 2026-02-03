@@ -23,21 +23,20 @@ export function CTA() {
 
           <div className="relative z-10">
             <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight mb-4">
-              Ready to accept{" "}
-              <span className="gradient-text">Solana payments</span>?
+              Your storefront is{" "}
+              <span className="gradient-text">one sentence away.</span>
             </h2>
             <p className="mx-auto max-w-xl text-lg text-muted-foreground mb-8">
-              Join the future of payments. Create your storefront in minutes —
-              completely free during the beta.
+              Describe your business. We&apos;ll build the rest.
             </p>
             <Link href="/create">
               <Button variant="gradient" size="xl" className="gap-2 group">
-                Create Your Storefront — Free
+                Create your storefront
                 <ArrowRight className="h-5 w-5 transition-transform group-hover:translate-x-1" />
               </Button>
             </Link>
             <p className="mt-4 text-sm text-muted-foreground">
-              No credit card required • Non-custodial • Open source
+              Free to set up. 0.75% per transaction. No hidden fees.
             </p>
           </div>
         </motion.div>

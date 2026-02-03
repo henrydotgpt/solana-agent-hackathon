@@ -4,8 +4,13 @@ import React from "react";
 import Link from "next/link";
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
-import { ArrowRight, Sparkles, Zap, Shield } from "lucide-react";
+import {
+  ArrowRight,
+  Shield,
+  Zap,
+  Clock,
+  Percent,
+} from "lucide-react";
 
 const fadeInUp = {
   initial: { opacity: 0, y: 30 },
@@ -14,7 +19,7 @@ const fadeInUp = {
 
 export function Hero() {
   return (
-    <section className="relative min-h-screen flex items-center justify-center overflow-hidden pt-16">
+    <section className="relative min-h-[90vh] flex items-center justify-center overflow-hidden pt-16">
       {/* Animated background orbs */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         <motion.div
@@ -36,35 +41,17 @@ export function Hero() {
       </div>
 
       <div className="container mx-auto px-4 text-center relative z-10">
-        {/* Badge */}
-        <motion.div
-          variants={fadeInUp}
-          initial="initial"
-          animate="animate"
-          transition={{ duration: 0.5, delay: 0.1 }}
-        >
-          <Badge
-            variant="outline"
-            className="mb-6 gap-1.5 border-solana-purple/30 bg-solana-purple/5 px-4 py-1.5 text-solana-purple-light"
-          >
-            <Sparkles className="h-3.5 w-3.5" />
-            Powered by AI + Solana
-          </Badge>
-        </motion.div>
-
         {/* Headline */}
         <motion.h1
           variants={fadeInUp}
           initial="initial"
           animate="animate"
-          transition={{ duration: 0.6, delay: 0.2 }}
-          className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-bold tracking-tight leading-[0.95] mb-6"
+          transition={{ duration: 0.6, delay: 0.1 }}
+          className="text-5xl sm:text-6xl md:text-7xl lg:text-[5.25rem] font-bold tracking-tight leading-[0.95] mb-6"
         >
-          Your business.
+          Payments infrastructure
           <br />
-          <span className="gradient-text">Paid in crypto.</span>
-          <br />
-          <span className="text-muted-foreground/60">In minutes.</span>
+          <span className="gradient-text">for the AI era.</span>
         </motion.h1>
 
         {/* Subtitle */}
@@ -72,119 +59,75 @@ export function Hero() {
           variants={fadeInUp}
           initial="initial"
           animate="animate"
-          transition={{ duration: 0.6, delay: 0.3 }}
-          className="mx-auto max-w-2xl text-lg sm:text-xl text-muted-foreground mb-10 leading-relaxed"
+          transition={{ duration: 0.6, delay: 0.2 }}
+          className="mx-auto max-w-2xl text-lg sm:text-xl text-muted-foreground mb-4 leading-relaxed"
         >
-          Describe your business to our AI agent. It builds a complete payment
-          storefront with{" "}
-          <span className="text-solana-purple-light font-medium">
-            Solana Pay QR codes
+          Describe your business. Get a complete payment storefront — hosted,
+          live, and accepting money in seconds.{" "}
+          <span className="text-foreground font-medium">
+            No code. No crypto knowledge. Just revenue.
           </span>
-          , product catalogs, and{" "}
-          <span className="text-solana-green font-medium">
-            auto-conversion to USDC
-          </span>
-          . No code. No crypto knowledge needed.
         </motion.p>
 
-        {/* CTA Buttons */}
+        {/* Pricing line */}
+        <motion.p
+          variants={fadeInUp}
+          initial="initial"
+          animate="animate"
+          transition={{ duration: 0.6, delay: 0.25 }}
+          className="text-sm text-muted-foreground/80 mb-10"
+        >
+          0.75% per transaction. No monthly fees. No minimums.
+        </motion.p>
+
+        {/* CTA */}
+        <motion.div
+          variants={fadeInUp}
+          initial="initial"
+          animate="animate"
+          transition={{ duration: 0.6, delay: 0.3 }}
+          className="flex flex-col sm:flex-row items-center justify-center gap-4"
+        >
+          <Link href="/create">
+            <Button variant="gradient" size="xl" className="gap-2 group">
+              Start accepting payments
+              <ArrowRight className="h-5 w-5 transition-transform group-hover:translate-x-1" />
+            </Button>
+          </Link>
+          <Link href="/pay/demo-store">
+            <Button variant="outline" size="xl">
+              See demo storefront
+            </Button>
+          </Link>
+        </motion.div>
+
+        {/* Trust bar */}
         <motion.div
           variants={fadeInUp}
           initial="initial"
           animate="animate"
           transition={{ duration: 0.6, delay: 0.4 }}
-          className="flex flex-col sm:flex-row items-center justify-center gap-4"
+          className="mt-16 inline-flex flex-wrap items-center justify-center gap-x-8 gap-y-3 rounded-2xl border border-border/40 bg-card/30 backdrop-blur-sm px-8 py-4"
         >
-          <Link href="/create">
-            <Button variant="gradient" size="xl" className="gap-2 group">
-              Create Your Storefront
-              <ArrowRight className="h-5 w-5 transition-transform group-hover:translate-x-1" />
-            </Button>
-          </Link>
-          <Link href="#how-it-works">
-            <Button variant="outline" size="xl" className="gap-2">
-              See How It Works
-            </Button>
-          </Link>
-        </motion.div>
-
-        {/* Trust indicators */}
-        <motion.div
-          variants={fadeInUp}
-          initial="initial"
-          animate="animate"
-          transition={{ duration: 0.6, delay: 0.5 }}
-          className="mt-12 flex items-center justify-center gap-8 text-sm text-muted-foreground"
-        >
-          <div className="flex items-center gap-2">
-            <Zap className="h-4 w-4 text-solana-green" />
-            <span>Instant Setup</span>
+          <div className="flex items-center gap-2 text-sm text-muted-foreground">
+            <Shield className="h-4 w-4 text-solana-green" />
+            <span>Non-custodial — your funds, your wallet</span>
           </div>
-          <div className="hidden sm:block w-px h-4 bg-border" />
-          <div className="flex items-center gap-2">
-            <Shield className="h-4 w-4 text-solana-purple-light" />
-            <span>Non-Custodial</span>
+          <div className="hidden sm:block w-px h-4 bg-border/60" />
+          <div className="flex items-center gap-2 text-sm text-muted-foreground">
+            <Percent className="h-4 w-4 text-solana-purple-light" />
+            <span>0.75% flat fee</span>
           </div>
-          <div className="hidden sm:block w-px h-4 bg-border" />
-          <div className="flex items-center gap-2">
+          <div className="hidden sm:block w-px h-4 bg-border/60" />
+          <div className="flex items-center gap-2 text-sm text-muted-foreground">
             <span className="text-solana-green">◎</span>
-            <span>Powered by Solana</span>
+            <span>Built on Solana</span>
           </div>
-        </motion.div>
-
-        {/* Hero visual — Storefront preview mockup */}
-        <motion.div
-          variants={fadeInUp}
-          initial="initial"
-          animate="animate"
-          transition={{ duration: 0.8, delay: 0.6 }}
-          className="mt-16 mx-auto max-w-4xl"
-        >
-          <div className="relative rounded-2xl border border-border/50 bg-card/30 backdrop-blur-sm p-1 glow-purple">
-            <div className="rounded-xl bg-background/80 p-8">
-              {/* Fake storefront preview */}
-              <div className="flex items-center gap-2 mb-6">
-                <div className="w-3 h-3 rounded-full bg-red-500/50" />
-                <div className="w-3 h-3 rounded-full bg-yellow-500/50" />
-                <div className="w-3 h-3 rounded-full bg-green-500/50" />
-                <div className="ml-4 flex-1 h-6 rounded-md bg-muted/50 max-w-sm" />
-              </div>
-              <div className="grid grid-cols-3 gap-4 mb-6">
-                <div className="col-span-2 space-y-4">
-                  <div className="h-8 w-48 rounded-md bg-solana-gradient opacity-30" />
-                  <div className="h-4 w-full rounded bg-muted/30" />
-                  <div className="h-4 w-3/4 rounded bg-muted/20" />
-                  <div className="mt-6 grid grid-cols-2 gap-3">
-                    {[1, 2, 3, 4].map((i) => (
-                      <div
-                        key={i}
-                        className="h-24 rounded-lg bg-muted/20 border border-border/30"
-                      />
-                    ))}
-                  </div>
-                </div>
-                <div className="flex flex-col items-center gap-3">
-                  <div className="w-full aspect-square rounded-xl bg-white/90 p-4 flex items-center justify-center">
-                    <div className="w-full h-full rounded-lg bg-gradient-to-br from-solana-purple/20 to-solana-green/20 grid grid-cols-4 grid-rows-4 gap-0.5 p-2">
-                      {Array.from({ length: 16 }).map((_, i) => (
-                        <div
-                          key={i}
-                          className={`rounded-sm ${
-                            Math.random() > 0.3
-                              ? "bg-gray-800"
-                              : "bg-transparent"
-                          }`}
-                        />
-                      ))}
-                    </div>
-                  </div>
-                  <div className="h-10 w-full rounded-lg bg-solana-gradient opacity-40" />
-                </div>
-              </div>
-            </div>
+          <div className="hidden sm:block w-px h-4 bg-border/60" />
+          <div className="flex items-center gap-2 text-sm text-muted-foreground">
+            <Clock className="h-4 w-4 text-yellow-500" />
+            <span>Live in 60 seconds</span>
           </div>
-          {/* Reflection effect */}
-          <div className="mt-1 h-24 rounded-2xl bg-gradient-to-b from-card/10 to-transparent blur-sm" />
         </motion.div>
       </div>
     </section>

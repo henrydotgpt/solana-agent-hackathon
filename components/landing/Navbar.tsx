@@ -29,16 +29,16 @@ export function Navbar() {
         {/* Nav links */}
         <div className="hidden md:flex items-center gap-8">
           <Link
-            href="#features"
-            className="text-sm text-muted-foreground hover:text-foreground transition-colors"
-          >
-            Features
-          </Link>
-          <Link
             href="#how-it-works"
             className="text-sm text-muted-foreground hover:text-foreground transition-colors"
           >
             How It Works
+          </Link>
+          <Link
+            href="#features"
+            className="text-sm text-muted-foreground hover:text-foreground transition-colors"
+          >
+            Features
           </Link>
           <Link
             href="#pricing"
@@ -46,19 +46,20 @@ export function Navbar() {
           >
             Pricing
           </Link>
+          <Link
+            href="/pay/demo-store"
+            className="text-sm text-muted-foreground hover:text-foreground transition-colors"
+          >
+            Demo
+          </Link>
         </div>
 
         {/* CTA */}
-        <div className="flex items-center gap-3">
-          <Button variant="ghost" size="sm" className="hidden sm:inline-flex">
-            Sign In
+        <Link href="/create">
+          <Button variant="gradient" size="sm">
+            Create Storefront
           </Button>
-          <Link href="/create">
-            <Button variant="gradient" size="sm">
-              Create Storefront
-            </Button>
-          </Link>
-        </div>
+        </Link>
       </div>
     </motion.nav>
   );

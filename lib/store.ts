@@ -306,50 +306,158 @@ function pickTheme(description: string): Storefront["theme"] {
 
 // ─── Demo Data ───────────────────────────────────────────
 
-// Seed a demo storefront
+// Demo 1: Coffee shop (lifestyle/retail)
 const demoStorefront: Storefront = {
   slug: "demo-store",
-  businessName: "Paygent Demo Store",
+  businessName: "Sol Brew Coffee",
   businessDescription:
-    "A demo storefront showing what Paygent can build for your business. Try scanning a QR code!",
+    "Premium specialty coffee roasted in small batches. Pay with crypto, skip the middleman. Direct from roaster to your cup.",
+  tagline: "Wake up to web3 ☕",
+  logo: "https://api.dicebear.com/7.x/shapes/svg?seed=solbrew&backgroundColor=9945FF",
   walletAddress: "11111111111111111111111111111111",
+  links: {
+    website: "https://example.com",
+    twitter: "https://x.com/paygent",
+    instagram: "https://instagram.com/paygent",
+  },
   products: [
     {
       id: "prod_demo_1",
-      name: "Basic Consultation",
-      description: "30-minute strategy session via video call",
-      price: 0.1,
+      name: "Ethiopian Single Origin",
+      description: "Bright & fruity — 250g whole bean bag",
+      price: 0.08,
       currency: "SOL",
+      image: "",
     },
     {
       id: "prod_demo_2",
-      name: "Premium Package",
-      description: "Full service with deliverables and follow-up",
-      price: 1.0,
+      name: "Monthly Subscription Box",
+      description: "3 bags of rotating seasonal blends delivered monthly",
+      price: 0.5,
       currency: "SOL",
+      image: "",
     },
     {
       id: "prod_demo_3",
-      name: "Quick Task",
-      description: "One-off task completion within 24 hours",
-      price: 5,
+      name: "Gift Card — $25",
+      description: "Send a coffee gift to anyone with a Solana wallet",
+      price: 25,
       currency: "USDC",
+      image: "",
     },
   ],
-  theme: { accentColor: "#9945FF", style: "minimal" },
-  createdAt: Date.now(),
+  theme: { accentColor: "#D97706", style: "bold" },
+  createdAt: Date.now() - 86400000 * 3,
   acceptedTokens: ["SOL", "USDC"],
   autoConvertToUSDC: true,
 };
 storefronts.set("demo-store", demoStorefront);
 
-// Seed demo payments for the dashboard
+// Demo 2: Freelance dev agency
+const agencyStore: Storefront = {
+  slug: "web3-studio",
+  businessName: "Nexus Web3 Studio",
+  businessDescription:
+    "Full-stack Solana development. Smart contracts, dApps, and DeFi integrations. Ship faster with battle-tested builders.",
+  tagline: "Build different.",
+  logo: "https://api.dicebear.com/7.x/shapes/svg?seed=nexusweb3&backgroundColor=3B82F6",
+  walletAddress: "11111111111111111111111111111111",
+  links: {
+    website: "https://example.com",
+    twitter: "https://x.com/paygent",
+    telegram: "https://t.me/paygent",
+    discord: "https://discord.gg/paygent",
+  },
+  products: [
+    {
+      id: "prod_agency_1",
+      name: "Smart Contract Audit",
+      description: "Comprehensive security review of your Solana program (up to 2K lines)",
+      price: 5,
+      currency: "SOL",
+    },
+    {
+      id: "prod_agency_2",
+      name: "dApp MVP Sprint",
+      description: "2-week sprint: full-stack dApp from spec to deployed",
+      price: 25,
+      currency: "SOL",
+    },
+    {
+      id: "prod_agency_3",
+      name: "1-Hour Strategy Call",
+      description: "Architecture review, tech stack advice, or roadmap planning",
+      price: 50,
+      currency: "USDC",
+    },
+  ],
+  theme: { accentColor: "#3B82F6", style: "minimal" },
+  createdAt: Date.now() - 86400000 * 7,
+  acceptedTokens: ["SOL", "USDC"],
+  autoConvertToUSDC: false,
+};
+storefronts.set("web3-studio", agencyStore);
+
+// Demo 3: Digital creator / educator
+const creatorStore: Storefront = {
+  slug: "crypto-academy",
+  businessName: "Solana Academy",
+  businessDescription:
+    "Learn Solana development from zero to deployed. Self-paced courses, live workshops, and 1-on-1 mentoring for aspiring web3 builders.",
+  tagline: "From zero to Solana dev 🚀",
+  logo: "https://api.dicebear.com/7.x/shapes/svg?seed=solanacademy&backgroundColor=14F195",
+  walletAddress: "11111111111111111111111111111111",
+  links: {
+    website: "https://example.com",
+    twitter: "https://x.com/paygent",
+    discord: "https://discord.gg/paygent",
+    email: "hello@example.com",
+  },
+  products: [
+    {
+      id: "prod_edu_1",
+      name: "Solana 101 Course",
+      description: "8-module self-paced course with projects and quizzes",
+      price: 0.5,
+      currency: "SOL",
+    },
+    {
+      id: "prod_edu_2",
+      name: "Live Workshop Pass",
+      description: "Access to next live building session (2 hours, recorded)",
+      price: 0.15,
+      currency: "SOL",
+    },
+    {
+      id: "prod_edu_3",
+      name: "1-on-1 Mentoring (4 sessions)",
+      description: "Monthly package: four 45-minute mentoring sessions via Zoom",
+      price: 200,
+      currency: "USDC",
+    },
+    {
+      id: "prod_edu_4",
+      name: "Community Access — Annual",
+      description: "Private Discord, weekly office hours, project reviews",
+      price: 75,
+      currency: "USDC",
+    },
+  ],
+  theme: { accentColor: "#14F195", style: "elegant" },
+  createdAt: Date.now() - 86400000 * 14,
+  acceptedTokens: ["SOL", "USDC"],
+  autoConvertToUSDC: true,
+};
+storefronts.set("crypto-academy", creatorStore);
+
+// Seed demo payments for all demo stores
 const demoPayments: PaymentRecord[] = [
+  // Sol Brew Coffee payments
   {
     id: "pay_demo_1",
     storefrontSlug: "demo-store",
     productId: "prod_demo_1",
-    amount: 0.1,
+    amount: 0.08,
     currency: "SOL",
     reference: "DemoRef1111111111111111111111111111111111111",
     status: "confirmed",
@@ -362,7 +470,7 @@ const demoPayments: PaymentRecord[] = [
     id: "pay_demo_2",
     storefrontSlug: "demo-store",
     productId: "prod_demo_2",
-    amount: 1.0,
+    amount: 0.5,
     currency: "SOL",
     reference: "DemoRef2222222222222222222222222222222222222",
     status: "confirmed",
@@ -375,21 +483,76 @@ const demoPayments: PaymentRecord[] = [
     id: "pay_demo_3",
     storefrontSlug: "demo-store",
     productId: "prod_demo_3",
-    amount: 5,
+    amount: 25,
     currency: "USDC",
     reference: "DemoRef3333333333333333333333333333333333333",
     status: "pending",
     createdAt: Date.now() - 300000,
   },
+  // Nexus Web3 Studio payments
+  {
+    id: "pay_agency_1",
+    storefrontSlug: "web3-studio",
+    productId: "prod_agency_3",
+    amount: 50,
+    currency: "USDC",
+    reference: "DemoRef4444444444444444444444444444444444444",
+    status: "confirmed",
+    signature: "3xBbPiJxUnHzSxGspuhpqLDx6wiyjNtZAMdL1VZHirK",
+    payer: "9WzDXwBbz1nJqMTz7mEP26F4Ye5rSXG7TnvCjbfYNVUx",
+    createdAt: Date.now() - 172800000,
+    confirmedAt: Date.now() - 172790000,
+  },
+  {
+    id: "pay_agency_2",
+    storefrontSlug: "web3-studio",
+    productId: "prod_agency_1",
+    amount: 5,
+    currency: "SOL",
+    reference: "DemoRef5555555555555555555555555555555555555",
+    status: "confirmed",
+    signature: "2kFpLsYxGkJxyscszYEp35KHN8vvw3svAuLKTzXwCFL",
+    payer: "HN7cABqLq46Es1jh92dQQisAi5YqpXLqeM8UPFLwhE3k",
+    createdAt: Date.now() - 86400000,
+    confirmedAt: Date.now() - 86390000,
+  },
+  // Solana Academy payments
+  {
+    id: "pay_edu_1",
+    storefrontSlug: "crypto-academy",
+    productId: "prod_edu_1",
+    amount: 0.5,
+    currency: "SOL",
+    reference: "DemoRef6666666666666666666666666666666666666",
+    status: "confirmed",
+    signature: "7yKmRwZvG8P8NJdTREpY1vzqKqZKvdpKuc147dw2N9d",
+    payer: "DRpbCBMxVnDK7maPM5tGv6MvB3v1sRMC86PZ8okm21hy",
+    createdAt: Date.now() - 43200000,
+    confirmedAt: Date.now() - 43190000,
+  },
+  {
+    id: "pay_edu_2",
+    storefrontSlug: "crypto-academy",
+    productId: "prod_edu_2",
+    amount: 0.15,
+    currency: "SOL",
+    reference: "DemoRef7777777777777777777777777777777777777",
+    status: "confirmed",
+    signature: "9xFkLmYeHdPqNJdTREpY1vzqKqZKvdpKuc147dw2N9d",
+    payer: "3kzJxcPjWnMTvz7mEP26F4Ye5rSXG7TnvCjbfYNVUx",
+    createdAt: Date.now() - 14400000,
+    confirmedAt: Date.now() - 14390000,
+  },
 ];
 demoPayments.forEach((p) => payments.set(p.id, p));
 
 // Seed demo notifications
+// Notifications for Sol Brew Coffee
 addNotification("demo-store", {
   id: "notif_demo_1",
   type: "payment_received",
   title: "Payment Received! 💰",
-  message: "0.1 SOL from 7EcD...FLtV",
+  message: "0.08 SOL from 7EcD...FLtV for Ethiopian Single Origin",
   signature: "5eykt4UsFv8P8NJdTREpY1vzqKqZKvdpKuc147dw2N9d",
   timestamp: Date.now() - 3590000,
   read: false,
@@ -398,7 +561,7 @@ addNotification("demo-store", {
   id: "notif_demo_2",
   type: "payment_received",
   title: "Payment Received! 💰",
-  message: "1.0 SOL from Gh9Z...tKJr",
+  message: "0.5 SOL from Gh9Z...tKJr for Monthly Subscription Box",
   signature: "4sGjMW1sUnHzSxGspuhpqLDx6wiyjNtZAMdL1VZHirK",
   timestamp: Date.now() - 7190000,
   read: true,
@@ -407,7 +570,47 @@ addNotification("demo-store", {
   id: "notif_demo_created",
   type: "storefront_created",
   title: "Storefront Created! 🚀",
-  message: "Paygent Demo Store is live with 3 products.",
-  timestamp: Date.now() - 86400000,
+  message: "Sol Brew Coffee is live with 3 products.",
+  timestamp: Date.now() - 86400000 * 3,
   read: true,
+});
+
+// Notifications for Nexus Web3 Studio
+addNotification("web3-studio", {
+  id: "notif_agency_1",
+  type: "payment_received",
+  title: "Payment Received! 💰",
+  message: "50 USDC from 9WzD...VUx for Strategy Call",
+  signature: "3xBbPiJxUnHzSxGspuhpqLDx6wiyjNtZAMdL1VZHirK",
+  timestamp: Date.now() - 172790000,
+  read: true,
+});
+addNotification("web3-studio", {
+  id: "notif_agency_2",
+  type: "payment_received",
+  title: "Payment Received! 💰",
+  message: "5 SOL from HN7c...E3k for Smart Contract Audit",
+  signature: "2kFpLsYxGkJxyscszYEp35KHN8vvw3svAuLKTzXwCFL",
+  timestamp: Date.now() - 86390000,
+  read: false,
+});
+
+// Notifications for Solana Academy
+addNotification("crypto-academy", {
+  id: "notif_edu_1",
+  type: "payment_received",
+  title: "New Enrollment! 🎓",
+  message: "0.5 SOL from DRpb...21hy for Solana 101 Course",
+  signature: "7yKmRwZvG8P8NJdTREpY1vzqKqZKvdpKuc147dw2N9d",
+  timestamp: Date.now() - 43190000,
+  read: false,
+});
+addNotification("crypto-academy", {
+  id: "notif_edu_2",
+  type: "payment_received",
+  title: "Workshop Pass Sold! 🎟️",
+  message: "0.15 SOL from 3kzJ...VUx for Live Workshop Pass",
+  signature: "9xFkLmYeHdPqNJdTREpY1vzqKqZKvdpKuc147dw2N9d",
+  timestamp: Date.now() - 14390000,
+  read: false,
 });

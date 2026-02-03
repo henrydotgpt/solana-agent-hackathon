@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useEffect, useState, useCallback } from "react";
-import { useParams } from "next/navigation";
+import { useParams, useSearchParams } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
@@ -71,7 +71,9 @@ const socialIcons: Record<string, React.ComponentType<{ className?: string }>> =
 
 export default function StorefrontPage() {
   const params = useParams();
+  const searchParams = useSearchParams();
   const slug = params.slug as string;
+  const isEmbed = searchParams.get("embed") === "1";
 
   const [storefront, setStorefront] = useState<Storefront | null>(null);
   const [loading, setLoading] = useState(true);
@@ -148,30 +150,32 @@ export default function StorefrontPage() {
   );
 
   return (
-    <main className="min-h-screen">
-      {/* Top bar */}
-      <div className="border-b border-border/40 bg-background/60 backdrop-blur-xl">
-        <div className="container mx-auto flex h-14 items-center justify-between px-4">
-          <Link
-            href="/"
-            className="flex items-center gap-1.5 text-xs text-muted-foreground hover:text-foreground transition-colors"
-          >
-            <Zap className="h-3.5 w-3.5" />
-            <span>
-              Powered by <strong>Paygent</strong>
-            </span>
-          </Link>
-          <div className="flex items-center gap-2">
-            <Link href={`/dashboard/${slug}`}>
-              <Button variant="ghost" size="sm" className="gap-1.5 text-xs">
-                <BarChart3 className="h-3.5 w-3.5" />
-                Dashboard
-              </Button>
+    <main className={`min-h-screen ${isEmbed ? "bg-[#0c0c10]" : ""}`}>
+      {/* Top bar — hidden in embed mode */}
+      {!isEmbed && (
+        <div className="border-b border-border/40 bg-background/60 backdrop-blur-xl">
+          <div className="container mx-auto flex h-14 items-center justify-between px-4">
+            <Link
+              href="/"
+              className="flex items-center gap-1.5 text-xs text-muted-foreground hover:text-foreground transition-colors"
+            >
+              <Zap className="h-3.5 w-3.5" />
+              <span>
+                Powered by <strong>Paygent</strong>
+              </span>
             </Link>
-            <WalletButton />
+            <div className="flex items-center gap-2">
+              <Link href={`/dashboard/${slug}`}>
+                <Button variant="ghost" size="sm" className="gap-1.5 text-xs">
+                  <BarChart3 className="h-3.5 w-3.5" />
+                  Dashboard
+                </Button>
+              </Link>
+              <WalletButton />
+            </div>
           </div>
         </div>
-      </div>
+      )}
 
       {/* Storefront header */}
       <motion.section

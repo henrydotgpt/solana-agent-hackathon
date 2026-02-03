@@ -118,18 +118,21 @@ export async function getSOLtoUSDCRate(): Promise<number | null> {
 
 /**
  * Auto-convert received SOL to USDC via Jupiter
+ * Includes Paygent swap spread (PAYGENT_SWAP_SPREAD_BPS)
  */
 export async function createAutoConvertTransaction(
   userPublicKey: PublicKey,
   solAmount: number // In SOL (not lamports)
 ): Promise<VersionedTransaction | null> {
+  // Import fee config for swap spread
+  const { getEffectiveSlippageBps } = await import("./fees");
   const lamports = Math.round(solAmount * 1e9);
 
   const quote = await getSwapQuote(
     SOL_MINT.toBase58(),
     USDC_MINT.toBase58(),
     lamports,
-    100 // 1% slippage for auto-convert
+    getEffectiveSlippageBps(100) // base 1% + our 0.2% spread
   );
 
   if (!quote) return null;

@@ -115,7 +115,7 @@ export default function CreatePage() {
             .map((p) => `  • ${p.name} — ${p.price} ${p.currency}`)
             .join("\n");
           addAgentMessage(
-            `Perfect, I've got ${parsed.length} item${parsed.length > 1 ? "s" : ""}:\n${productList}\n\nLast thing — what's your Solana wallet address? (This is where all payments go directly. I never hold your funds.)`
+            `Perfect, I've got ${parsed.length} item${parsed.length > 1 ? "s" : ""}:\n${productList}\n\n💡 Quick note: Paygent charges a 0.75% platform fee on each payment (like Stripe, but way less). It's deducted automatically — your customers pay the listed price, you receive 99.25%.\n\nLast thing — what's your Solana wallet address? (This is where payments go directly. Non-custodial — I never hold your funds.)`
           );
         }
         break;

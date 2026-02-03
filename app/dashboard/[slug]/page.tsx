@@ -41,6 +41,11 @@ interface DashboardData {
     pendingPayments: number;
     totalSOL: number;
     totalUSDC: number;
+    feesSOL: number;
+    feesUSDC: number;
+    feeBps: number;
+    merchantSOL: number;
+    merchantUSDC: number;
     recentPayments: PaymentRecord[];
   };
   notifications: Notification[];
@@ -151,6 +156,10 @@ export default function DashboardPage() {
   const { storefront, stats, notifications, unreadCount } = data;
   const totalUSD =
     stats.totalSOL * (solPrice || 0) + stats.totalUSDC;
+  const merchantUSD =
+    stats.merchantSOL * (solPrice || 0) + stats.merchantUSDC;
+  const feesUSD =
+    stats.feesSOL * (solPrice || 0) + stats.feesUSDC;
 
   return (
     <main className="min-h-screen">
@@ -308,16 +317,16 @@ export default function DashboardPage() {
         >
           <StatCard
             icon={DollarSign}
-            label="Total Revenue"
-            value={`$${totalUSD.toFixed(2)}`}
-            sub={`${stats.totalSOL.toFixed(2)} SOL + ${stats.totalUSDC.toFixed(2)} USDC`}
+            label="Your Revenue"
+            value={`$${merchantUSD.toFixed(2)}`}
+            sub={`${stats.merchantSOL.toFixed(4)} SOL + ${stats.merchantUSDC.toFixed(2)} USDC`}
             color="#14F195"
           />
           <StatCard
             icon={TrendingUp}
-            label="Confirmed"
-            value={stats.confirmedPayments.toString()}
-            sub="payments"
+            label="Total Processed"
+            value={`$${totalUSD.toFixed(2)}`}
+            sub={`${stats.confirmedPayments} confirmed payments`}
             color="#9945FF"
           />
           <StatCard
@@ -328,10 +337,10 @@ export default function DashboardPage() {
             color="#FFB020"
           />
           <StatCard
-            icon={Users}
-            label="Products"
-            value={storefront.products.length.toString()}
-            sub="active listings"
+            icon={ArrowRightLeft}
+            label={`Platform Fee (${(stats.feeBps / 100).toFixed(2)}%)`}
+            value={`$${feesUSD.toFixed(2)}`}
+            sub={`${stats.feesSOL.toFixed(4)} SOL + ${stats.feesUSDC.toFixed(2)} USDC`}
             color="#4FC3F7"
           />
         </motion.div>

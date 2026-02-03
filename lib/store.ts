@@ -167,12 +167,22 @@ export function getPaymentStats(storefrontSlug: string) {
     .filter((p) => p.currency === "USDC")
     .reduce((sum, p) => sum + p.amount, 0);
 
+  // Calculate fees collected (0.75% of confirmed payments)
+  const feeBps = parseInt(process.env.PAYGENT_FEE_BPS || "75", 10);
+  const feesSOL = (totalSOL * feeBps) / 10000;
+  const feesUSDC = (totalUSDC * feeBps) / 10000;
+
   return {
     totalPayments: storePayments.length,
     confirmedPayments: confirmed.length,
     pendingPayments: storePayments.filter((p) => p.status === "pending").length,
     totalSOL,
     totalUSDC,
+    feesSOL,
+    feesUSDC,
+    feeBps,
+    merchantSOL: totalSOL - feesSOL,
+    merchantUSDC: totalUSDC - feesUSDC,
     recentPayments: confirmed.slice(0, 10),
   };
 }

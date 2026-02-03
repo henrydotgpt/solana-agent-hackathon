@@ -15,11 +15,10 @@ import {
   X,
   Check,
   Clock,
-  Loader2,
   ExternalLink,
   Copy,
-  Wallet,
   ArrowRightLeft,
+  Info,
 } from "lucide-react";
 
 interface PaymentModalProps {
@@ -29,7 +28,18 @@ interface PaymentModalProps {
   onClose: () => void;
 }
 
-type PaymentStatus = "pending" | "checking" | "confirmed";
+type PaymentStatus = "pending" | "confirmed";
+
+interface FeeInfo {
+  enabled: boolean;
+  platformFeePercent: string;
+  platformFeeBps: number;
+  breakdown?: {
+    totalAmount: number;
+    merchantAmount: number;
+    feeAmount: number;
+  };
+}
 
 export function PaymentModal({
   product,
@@ -41,12 +51,37 @@ export function PaymentModal({
   const [signature, setSignature] = useState<string | null>(null);
   const [payToken, setPayToken] = useState<"SOL" | "USDC">(product.currency);
   const [copied, setCopied] = useState(false);
+  const [feeInfo, setFeeInfo] = useState<FeeInfo | null>(null);
 
   // Generate a unique reference for this payment
   const reference = useMemo(() => Keypair.generate().publicKey, []);
 
-  // Build Solana Pay URL
+  // Fetch fee info
+  useEffect(() => {
+    async function fetchFees() {
+      try {
+        const res = await fetch(`/api/fees?amount=${product.price}`);
+        const data = await res.json();
+        if (data.success) setFeeInfo(data.data);
+      } catch {}
+    }
+    fetchFees();
+  }, [product.price]);
+
+  // Build Solana Pay URL (simple transfer — works with all wallets)
+  // The /api/pay endpoint handles the fee-split transaction for transaction requests
   const paymentURL = useMemo(() => {
+    // Use transaction request URL so wallets fetch the fee-split transaction from our API
+    const appUrl = typeof window !== "undefined" ? window.location.origin : "";
+    const txRequestUrl = `${appUrl}/api/pay?slug=${storefront.slug}&product=${product.id}&currency=${payToken}`;
+
+    // Encode as Solana Pay transaction request
+    // solana:<url> format for transaction requests
+    return `solana:${encodeURIComponent(txRequestUrl)}`;
+  }, [storefront.slug, product.id, payToken]);
+
+  // Also build a simple transfer URL as fallback (for wallets that don't support tx requests)
+  const fallbackURL = useMemo(() => {
     const recipient = new PublicKey(storefront.walletAddress);
     const amount = new BigNumber(product.price);
 
@@ -79,27 +114,26 @@ export function PaymentModal({
           setSignature(result.signature);
           clearInterval(interval);
         }
-      } catch {
-        // Keep polling
-      }
+      } catch {}
     }, 3000);
 
     return () => clearInterval(interval);
   }, [reference, storefront.walletAddress, product.price, payToken, status]);
 
   const handleCopyURL = useCallback(async () => {
-    await navigator.clipboard.writeText(paymentURL);
+    await navigator.clipboard.writeText(fallbackURL);
     setCopied(true);
     setTimeout(() => setCopied(false), 2000);
-  }, [paymentURL]);
+  }, [fallbackURL]);
 
-  // Calculate cross-token display
   const displayUSD =
     payToken === "SOL" && solPrice
       ? `≈ $${(product.price * solPrice).toFixed(2)}`
       : payToken === "USDC"
       ? `= $${product.price.toFixed(2)}`
       : null;
+
+  const feeBreakdown = feeInfo?.breakdown;
 
   return (
     <motion.div
@@ -141,7 +175,6 @@ export function PaymentModal({
         {/* Content */}
         <div className="p-6">
           {status === "confirmed" ? (
-            /* Confirmed state */
             <motion.div
               initial={{ scale: 0.8, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
@@ -152,7 +185,7 @@ export function PaymentModal({
               </div>
               <h3 className="text-2xl font-bold mb-2">Payment Confirmed!</h3>
               <p className="text-muted-foreground mb-6">
-                {product.price} {payToken} has been sent to{" "}
+                {product.price} {payToken} sent to{" "}
                 {truncateAddress(storefront.walletAddress)}
               </p>
               {signature && (
@@ -168,11 +201,10 @@ export function PaymentModal({
               )}
             </motion.div>
           ) : (
-            /* QR Code payment state */
             <>
               {/* Token selector */}
               {storefront.acceptedTokens.length > 1 && (
-                <div className="flex items-center justify-center gap-2 mb-6">
+                <div className="flex items-center justify-center gap-2 mb-5">
                   <span className="text-xs text-muted-foreground mr-1">
                     Pay with:
                   </span>
@@ -203,25 +235,25 @@ export function PaymentModal({
               )}
 
               {/* QR Code */}
-              <div className="flex justify-center mb-6">
+              <div className="flex justify-center mb-5">
                 <div className="qr-container">
                   <QRCodeSVG
                     value={paymentURL}
-                    size={240}
+                    size={220}
                     level="M"
                     bgColor="#FFFFFF"
                     fgColor="#1A1A2E"
                     imageSettings={{
                       src: "/solana-logo.svg",
-                      height: 32,
-                      width: 32,
+                      height: 28,
+                      width: 28,
                       excavate: true,
                     }}
                   />
                 </div>
               </div>
 
-              {/* Amount */}
+              {/* Amount + fee breakdown */}
               <div className="text-center mb-4">
                 <p className="text-3xl font-bold">
                   {payToken === "SOL" ? "◎" : "$"} {product.price}
@@ -236,8 +268,42 @@ export function PaymentModal({
                 )}
               </div>
 
+              {/* Fee disclosure */}
+              {feeInfo?.enabled && feeBreakdown && feeBreakdown.feeAmount > 0 && (
+                <div className="mb-5 mx-auto max-w-xs rounded-lg border border-border/40 bg-muted/30 p-3">
+                  <div className="flex items-center gap-1.5 mb-2">
+                    <Info className="h-3 w-3 text-muted-foreground" />
+                    <span className="text-xs font-medium text-muted-foreground">
+                      Payment breakdown
+                    </span>
+                  </div>
+                  <div className="space-y-1 text-xs">
+                    <div className="flex justify-between">
+                      <span className="text-muted-foreground">Merchant receives</span>
+                      <span className="font-mono">
+                        {feeBreakdown.merchantAmount} {payToken}
+                      </span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span className="text-muted-foreground">
+                        Platform fee ({feeInfo.platformFeePercent})
+                      </span>
+                      <span className="font-mono">
+                        {feeBreakdown.feeAmount} {payToken}
+                      </span>
+                    </div>
+                    <div className="border-t border-border/40 pt-1 flex justify-between font-medium">
+                      <span>Total</span>
+                      <span className="font-mono">
+                        {feeBreakdown.totalAmount} {payToken}
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              )}
+
               {/* Status */}
-              <div className="flex items-center justify-center gap-2 mb-6">
+              <div className="flex items-center justify-center gap-2 mb-5">
                 <Badge variant="outline" className="gap-1.5">
                   <Clock className="h-3 w-3 animate-pulse" />
                   Waiting for payment...

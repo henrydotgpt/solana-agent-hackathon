@@ -48,6 +48,15 @@ export const SUPPORTED_TOKENS = [
   },
 ] as const;
 
+// Fees (client-safe — reads from NEXT_PUBLIC_ env vars)
+export const PAYGENT_FEE_BPS = parseInt(
+  process.env.NEXT_PUBLIC_PAYGENT_FEE_BPS || process.env.PAYGENT_FEE_BPS || "75",
+  10
+);
+export const PAYGENT_FEE_PERCENT = `${(PAYGENT_FEE_BPS / 100).toFixed(2)}%`;
+export const PAYGENT_FEE_WALLET =
+  process.env.NEXT_PUBLIC_PAYGENT_FEE_WALLET || "";
+
 // Design
 export const GRADIENT = {
   primary: "linear-gradient(135deg, #9945FF 0%, #14F195 100%)",

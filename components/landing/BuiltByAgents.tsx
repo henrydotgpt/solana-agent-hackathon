@@ -1,6 +1,7 @@
 "use client";
 
 import React from "react";
+import { motion } from "framer-motion";
 import { Reveal } from "@/components/ui/reveal";
 import { AnimatedTerminal } from "@/components/ui/animated-terminal";
 import { SectionGlow } from "@/components/ui/gradient-mesh";
@@ -18,18 +19,25 @@ const terminalLines = [
   { type: "info" as const, text: "Building merchant dashboard...", delay: 300 },
   { type: "info" as const, text: "Setting up Jupiter auto-convert...", delay: 300 },
   { type: "info" as const, text: "Configuring Helius webhooks...", delay: 300 },
-  { type: "success" as const, text: "Build complete. 6,000+ lines. 42 files.", delay: 500 },
+  { type: "success" as const, text: "Build complete. 7,000+ lines. 48 files.", delay: 500 },
   { type: "command" as const, text: "paygent deploy --network=devnet", delay: 800 },
-  { type: "success" as const, text: "Deployed → paygent.app ✨", delay: 0 },
+  { type: "success" as const, text: "Deployed → paygent-app.vercel.app ✨", delay: 0 },
 ];
 
 const techStack = [
-  { name: "Next.js 14", role: "Framework" },
-  { name: "Solana Pay", role: "Payments" },
-  { name: "Jupiter", role: "Swaps" },
-  { name: "Helius", role: "Webhooks" },
-  { name: "OpenClaw", role: "Agent runtime" },
-  { name: "Claude", role: "AI backbone" },
+  { name: "Next.js 15", role: "Framework", icon: "⚡" },
+  { name: "Solana Pay", role: "Payments", icon: "💳" },
+  { name: "Jupiter V6", role: "Swaps", icon: "🔄" },
+  { name: "Helius", role: "Webhooks", icon: "📡" },
+  { name: "OpenClaw", role: "Agent runtime", icon: "🤖" },
+  { name: "Claude", role: "AI backbone", icon: "🧠" },
+];
+
+const buildStats = [
+  { label: "Lines of code", value: "7,000+", accent: "text-emerald-400" },
+  { label: "Files", value: "48", accent: "text-blue-400" },
+  { label: "Commits", value: "25+", accent: "text-purple-400" },
+  { label: "Human code", value: "0", accent: "text-amber-400" },
 ];
 
 export function BuiltByAgents() {
@@ -53,7 +61,12 @@ export function BuiltByAgents() {
           {/* Right — Story */}
           <div className="lg:sticky lg:top-24">
             <Reveal delay={0.15}>
-              <div className="inline-flex items-center gap-2.5 px-4 py-1.5 rounded-full glass text-xs tracking-wide mb-6">
+              <div className="inline-flex items-center gap-2.5 px-4 py-1.5 rounded-full border border-purple-500/15 bg-purple-500/5 text-xs tracking-wide mb-6">
+                <motion.div
+                  className="w-1.5 h-1.5 rounded-full bg-purple-400"
+                  animate={{ opacity: [0.4, 1, 0.4] }}
+                  transition={{ duration: 2, repeat: Infinity }}
+                />
                 <span className="text-purple-400/70 font-display font-500">
                   Colosseum AI Agent Hackathon
                 </span>
@@ -84,24 +97,54 @@ export function BuiltByAgents() {
               </p>
             </Reveal>
 
+            {/* Build stats */}
+            <Reveal delay={0.25}>
+              <div className="grid grid-cols-4 gap-2 mb-6">
+                {buildStats.map((stat, i) => (
+                  <motion.div
+                    key={stat.label}
+                    className="rounded-xl border border-white/[0.04] bg-white/[0.02] p-3 text-center"
+                    initial={{ opacity: 0, y: 10 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ delay: 0.3 + i * 0.08 }}
+                  >
+                    <div className={`text-lg font-display font-800 ${stat.accent}`}>
+                      {stat.value}
+                    </div>
+                    <div className="text-[9px] text-gray-600 font-mono uppercase tracking-wider mt-0.5">
+                      {stat.label}
+                    </div>
+                  </motion.div>
+                ))}
+              </div>
+            </Reveal>
+
             {/* Tech stack grid */}
-            <Reveal delay={0.3}>
+            <Reveal delay={0.35}>
               <div className="text-xs font-display font-600 uppercase tracking-wider text-gray-600 mb-3">
                 Tech stack
               </div>
               <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
-                {techStack.map((tech) => (
-                  <div
+                {techStack.map((tech, i) => (
+                  <motion.div
                     key={tech.name}
-                    className="px-3 py-2.5 rounded-xl border border-white/[0.04] bg-white/[0.02] hover:bg-white/[0.04] transition-colors"
+                    className="group px-3 py-2.5 rounded-xl border border-white/[0.04] bg-[#0A0A10]/60 hover:bg-white/[0.04] hover:border-white/[0.08] transition-all duration-300"
+                    whileHover={{ y: -1 }}
+                    transition={{ duration: 0.2 }}
                   >
-                    <div className="text-sm font-display font-600 text-gray-300">
-                      {tech.name}
+                    <div className="flex items-center gap-2">
+                      <span className="text-sm">{tech.icon}</span>
+                      <div>
+                        <div className="text-sm font-display font-600 text-gray-300 group-hover:text-white transition-colors">
+                          {tech.name}
+                        </div>
+                        <div className="text-[10px] text-gray-600 mt-0.5">
+                          {tech.role}
+                        </div>
+                      </div>
                     </div>
-                    <div className="text-[10px] text-gray-600 mt-0.5">
-                      {tech.role}
-                    </div>
-                  </div>
+                  </motion.div>
                 ))}
               </div>
             </Reveal>

@@ -19,7 +19,6 @@ function AnimatedCounter({ value, suffix = "" }: { value: number; suffix?: strin
 
   useEffect(() => {
     if (!inView) return;
-    let start = 0;
     const duration = 1500;
     const startTime = Date.now();
 
@@ -55,62 +54,82 @@ export function Problem() {
         <div className="grid lg:grid-cols-2 gap-16 lg:gap-20 items-center">
           {/* Left — Visual comparison */}
           <div ref={barsRef} className="order-2 lg:order-1">
-            <div className="space-y-5">
-              {competitors.map((c, i) => (
+            <div className="rounded-2xl border border-white/[0.04] bg-[#0A0A10]/80 backdrop-blur-sm p-6 sm:p-8">
+              <div className="text-[11px] font-mono text-gray-700 uppercase tracking-wider mb-6">
+                Annual cost at $10K/mo volume
+              </div>
+
+              <div className="space-y-5">
+                {competitors.map((c, i) => (
+                  <motion.div
+                    key={c.name}
+                    initial={{ opacity: 0, x: -30 }}
+                    animate={barsInView ? { opacity: 1, x: 0 } : {}}
+                    transition={{ duration: 0.6, delay: i * 0.1, ease: [0.16, 1, 0.3, 1] }}
+                  >
+                    <div className="flex items-baseline justify-between mb-2">
+                      <div className="flex items-baseline gap-3">
+                        <span className="text-sm font-display font-500 text-gray-500">
+                          {c.name}
+                        </span>
+                        <span className="text-[11px] text-gray-700 font-mono">{c.fee}</span>
+                      </div>
+                      <span className="text-sm font-mono text-gray-600">
+                        ${c.annual.toLocaleString()}<span className="text-gray-700">/yr</span>
+                      </span>
+                    </div>
+                    <div className="h-2.5 rounded-full bg-white/[0.03] overflow-hidden">
+                      <motion.div
+                        className={`h-full rounded-full bg-gradient-to-r ${c.color}`}
+                        initial={{ width: 0 }}
+                        animate={barsInView ? { width: `${c.pct}%` } : { width: 0 }}
+                        transition={{ duration: 1.2, delay: 0.3 + i * 0.1, ease: [0.16, 1, 0.3, 1] }}
+                      />
+                    </div>
+                  </motion.div>
+                ))}
+
+                {/* Paygent bar — green, glowing */}
                 <motion.div
-                  key={c.name}
                   initial={{ opacity: 0, x: -30 }}
                   animate={barsInView ? { opacity: 1, x: 0 } : {}}
-                  transition={{ duration: 0.6, delay: i * 0.1, ease: [0.16, 1, 0.3, 1] }}
+                  transition={{ duration: 0.6, delay: 0.5, ease: [0.16, 1, 0.3, 1] }}
+                  className="pt-5 mt-5 border-t border-white/[0.06]"
                 >
                   <div className="flex items-baseline justify-between mb-2">
                     <div className="flex items-baseline gap-3">
-                      <span className="text-sm font-display font-500 text-gray-500">
-                        {c.name}
+                      <span className="text-sm font-display font-700 text-white">
+                        Paygent
                       </span>
-                      <span className="text-xs text-gray-700 font-mono">{c.fee}</span>
+                      <span className="text-xs text-emerald-400/60 font-mono">0.75%</span>
                     </div>
-                    <span className="text-sm font-mono text-gray-600">
-                      ${c.annual.toLocaleString()}<span className="text-gray-700">/yr</span>
+                    <span className="text-sm font-mono text-emerald-400 font-600">
+                      $900<span className="text-emerald-400/40">/yr</span>
                     </span>
                   </div>
                   <div className="h-2.5 rounded-full bg-white/[0.03] overflow-hidden">
                     <motion.div
-                      className={`h-full rounded-full bg-gradient-to-r ${c.color}`}
+                      className="h-full rounded-full bg-gradient-to-r from-emerald-500 to-emerald-400 shadow-[0_0_20px_rgba(20,241,149,0.3)]"
                       initial={{ width: 0 }}
-                      animate={barsInView ? { width: `${c.pct}%` } : { width: 0 }}
-                      transition={{ duration: 1.2, delay: 0.3 + i * 0.1, ease: [0.16, 1, 0.3, 1] }}
+                      animate={barsInView ? { width: "22%" } : { width: 0 }}
+                      transition={{ duration: 1.2, delay: 0.8, ease: [0.16, 1, 0.3, 1] }}
                     />
                   </div>
                 </motion.div>
-              ))}
+              </div>
 
-              {/* Paygent bar — green, glowing */}
+              {/* Bottom summary */}
               <motion.div
-                initial={{ opacity: 0, x: -30 }}
-                animate={barsInView ? { opacity: 1, x: 0 } : {}}
-                transition={{ duration: 0.6, delay: 0.5, ease: [0.16, 1, 0.3, 1] }}
-                className="pt-5 mt-5 border-t border-white/[0.06]"
+                className="mt-6 pt-4 border-t border-white/[0.04] flex items-center justify-between"
+                initial={{ opacity: 0 }}
+                animate={barsInView ? { opacity: 1 } : {}}
+                transition={{ delay: 1.2, duration: 0.6 }}
               >
-                <div className="flex items-baseline justify-between mb-2">
-                  <div className="flex items-baseline gap-3">
-                    <span className="text-sm font-display font-700 text-white">
-                      Paygent
-                    </span>
-                    <span className="text-xs text-emerald-400/60 font-mono">0.75%</span>
-                  </div>
-                  <span className="text-sm font-mono text-emerald-400 font-600">
-                    $900<span className="text-emerald-400/40">/yr</span>
-                  </span>
-                </div>
-                <div className="h-2.5 rounded-full bg-white/[0.03] overflow-hidden">
-                  <motion.div
-                    className="h-full rounded-full bg-gradient-to-r from-emerald-500 to-emerald-400 shadow-[0_0_20px_rgba(20,241,149,0.3)]"
-                    initial={{ width: 0 }}
-                    animate={barsInView ? { width: "22%" } : { width: 0 }}
-                    transition={{ duration: 1.2, delay: 0.8, ease: [0.16, 1, 0.3, 1] }}
-                  />
-                </div>
+                <span className="text-[11px] text-gray-600 font-mono">Based on $120K annual volume</span>
+                <span className="text-[11px] text-emerald-400/60 font-mono flex items-center gap-1">
+                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-400/50 animate-pulse" />
+                  4x cheaper
+                </span>
               </motion.div>
             </div>
           </div>
@@ -133,17 +152,28 @@ export function Problem() {
             </Reveal>
 
             <Reveal delay={0.2}>
-              <div className="rounded-2xl glass-strong p-6 gradient-border">
+              <motion.div
+                className="group rounded-2xl border border-white/[0.04] bg-[#0A0A10]/80 backdrop-blur-sm p-6 hover:border-emerald-500/10 transition-all duration-500 relative overflow-hidden"
+                whileHover={{ y: -2 }}
+                transition={{ duration: 0.3 }}
+              >
+                {/* Top glow */}
+                <div className="absolute top-0 left-1/4 right-1/4 h-px bg-gradient-to-r from-transparent via-emerald-500/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+
                 <div className="text-xs text-emerald-400/60 uppercase tracking-wider font-display font-600 mb-2">
                   Your annual savings at $10K/mo
                 </div>
                 <div className="font-display text-5xl font-800 gradient-text">
                   $<AnimatedCounter value={2616} />
                 </div>
-                <div className="text-sm text-gray-600 mt-2">
-                  vs Stripe · instant settlement · no lock-in
+                <div className="text-sm text-gray-600 mt-2 flex items-center gap-2">
+                  <span>vs Stripe</span>
+                  <span className="text-gray-700">·</span>
+                  <span>instant settlement</span>
+                  <span className="text-gray-700">·</span>
+                  <span>no lock-in</span>
                 </div>
-              </div>
+              </motion.div>
             </Reveal>
           </div>
         </div>

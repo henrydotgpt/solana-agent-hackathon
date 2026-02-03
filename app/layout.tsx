@@ -10,9 +10,15 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: "Paygent — AI-Powered Solana Payment Storefronts",
+  metadataBase: new URL(
+    process.env.NEXT_PUBLIC_APP_URL || "https://paygent.vercel.app"
+  ),
+  title: {
+    default: "Paygent — Payments infrastructure for the AI era",
+    template: "%s | Paygent",
+  },
   description:
-    "Tell the agent about your business. Get a complete payment storefront with Solana Pay QR codes, product catalog, and auto-conversion to USDC. No code. No crypto knowledge needed.",
+    "Describe your business. Get a complete payment storefront — hosted, live, and accepting money in seconds. 0.75% flat fee. Non-custodial. Built on Solana.",
   keywords: [
     "Solana",
     "payment",
@@ -23,12 +29,25 @@ export const metadata: Metadata = {
     "USDC",
     "QR code",
     "Paygent",
+    "Solana Pay",
+    "non-custodial",
   ],
   openGraph: {
-    title: "Paygent",
+    title: "Paygent — Payments infrastructure for the AI era",
     description:
-      "AI-powered Solana payment storefronts for businesses. No code. No crypto knowledge needed.",
+      "Describe your business. Get a live payment storefront in 60 seconds. 0.75% flat fee. Non-custodial. Built on Solana.",
     type: "website",
+    siteName: "Paygent",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Paygent — Payments infrastructure for the AI era",
+    description:
+      "AI-powered payment storefronts on Solana. 0.75% flat fee. Live in 60 seconds.",
+  },
+  robots: {
+    index: true,
+    follow: true,
   },
 };
 

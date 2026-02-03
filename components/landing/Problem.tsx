@@ -2,47 +2,83 @@
 
 import React from "react";
 
+const comparisons = [
+  { name: "Stripe", fee: "2.9% + 30¢", annual: "$3,516", bar: 85 },
+  { name: "PayPal", fee: "3.49%", annual: "$4,188", bar: 100 },
+  { name: "Square", fee: "2.6%", annual: "$3,156", bar: 75 },
+  { name: "Paygent", fee: "0.75%", annual: "$900", bar: 22, highlight: true },
+];
+
 export function Problem() {
   return (
-    <section className="py-20 sm:py-28 relative">
-      <div className="mx-auto px-4 sm:px-6 max-w-3xl">
-        <div className="text-center">
-          <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight mb-8">
-            Payment processors{" "}
-            <span className="gradient-text">weren&apos;t built for you.</span>
-          </h2>
+    <section className="py-20 sm:py-28">
+      <div className="mx-auto max-w-6xl px-5 sm:px-8">
+        <div className="grid lg:grid-cols-2 gap-12 lg:gap-20 items-center">
+          {/* Left — copy */}
+          <div>
+            <h2 className="text-3xl sm:text-4xl font-bold tracking-tight leading-tight mb-5">
+              You&apos;re overpaying
+              <br />
+              for payments.
+            </h2>
 
-          <div className="space-y-5 text-base sm:text-lg text-white/50 leading-relaxed">
-            <p>
-              Stripe takes{" "}
-              <span className="text-white font-semibold">2.9% + 30¢</span>.
-              PayPal takes{" "}
-              <span className="text-white font-semibold">3.49%</span>. Square
-              takes <span className="text-white font-semibold">2.6%</span>.
-              You&apos;re paying thousands per year in fees for infrastructure
-              designed for Fortune 500 companies.
+            <p className="text-white/45 leading-relaxed mb-6 max-w-md">
+              Traditional processors charge 2-3% plus per-transaction fees,
+              require developer setup, and hold your funds for days. You&apos;re
+              paying for infrastructure designed for Fortune 500 companies.
             </p>
 
-            <p>
-              Paygent charges{" "}
-              <span className="gradient-text font-bold text-xl sm:text-2xl">
-                0.75%
-              </span>
-              . Flat. That&apos;s it.
-            </p>
+            <div className="rounded-xl border border-solana-green/20 bg-solana-green/[0.03] px-5 py-4 inline-block">
+              <div className="text-xs text-solana-green/70 uppercase tracking-wider font-medium mb-1">
+                Annual savings at $10K/month
+              </div>
+              <div className="text-2xl sm:text-3xl font-bold text-solana-green">
+                $2,616
+              </div>
+            </div>
           </div>
 
-          {/* Savings callout */}
-          <div className="mt-10 sm:mt-14 rounded-2xl border border-solana-green/20 bg-solana-green/[0.03] p-6 sm:p-8">
-            <p className="text-xs sm:text-sm text-solana-green font-medium uppercase tracking-wider mb-2">
-              For a business doing $10,000/month
-            </p>
-            <p className="text-3xl sm:text-4xl md:text-5xl font-bold gradient-text mb-1.5">
-              $217/month saved.
-            </p>
-            <p className="text-white/40 text-sm sm:text-base">
-              Every month. Forever.
-            </p>
+          {/* Right — visual comparison */}
+          <div className="space-y-4">
+            <div className="text-xs text-white/25 uppercase tracking-wider mb-5">
+              Annual cost on $10K/month volume
+            </div>
+
+            {comparisons.map((item) => (
+              <div key={item.name} className="group">
+                <div className="flex items-baseline justify-between mb-2">
+                  <div className="flex items-center gap-2">
+                    <span
+                      className={`text-sm font-medium ${
+                        item.highlight ? "text-white" : "text-white/50"
+                      }`}
+                    >
+                      {item.name}
+                    </span>
+                    <span className="text-xs text-white/20">{item.fee}</span>
+                  </div>
+                  <span
+                    className={`text-sm font-mono ${
+                      item.highlight
+                        ? "text-solana-green font-semibold"
+                        : "text-white/35"
+                    }`}
+                  >
+                    {item.annual}/yr
+                  </span>
+                </div>
+                <div className="h-2 rounded-full bg-white/[0.04] overflow-hidden">
+                  <div
+                    className={`h-full rounded-full transition-all duration-700 ${
+                      item.highlight
+                        ? "bg-solana-green"
+                        : "bg-white/[0.12]"
+                    }`}
+                    style={{ width: `${item.bar}%` }}
+                  />
+                </div>
+              </div>
+            ))}
           </div>
         </div>
       </div>

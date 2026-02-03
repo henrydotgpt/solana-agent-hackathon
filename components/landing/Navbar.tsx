@@ -6,108 +6,95 @@ import { Button } from "@/components/ui/button";
 import { Zap, Menu, X } from "lucide-react";
 
 const navLinks = [
-  { href: "#how-it-works", label: "How It Works" },
+  { href: "#how-it-works", label: "How it works" },
   { href: "#features", label: "Features" },
   { href: "#pricing", label: "Pricing" },
   { href: "/pay/demo-store", label: "Demo" },
 ];
 
 export function Navbar() {
-  const [mobileOpen, setMobileOpen] = useState(false);
+  const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
 
   useEffect(() => {
-    const handleScroll = () => setScrolled(window.scrollY > 20);
-    window.addEventListener("scroll", handleScroll, { passive: true });
-    return () => window.removeEventListener("scroll", handleScroll);
+    const onScroll = () => setScrolled(window.scrollY > 20);
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
   }, []);
-
-  // Close mobile menu on navigation
-  const handleLinkClick = () => setMobileOpen(false);
 
   return (
     <nav
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-        scrolled
-          ? "border-b border-white/[0.06] bg-black/80 backdrop-blur-xl"
-          : "bg-transparent"
+      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-200 ${
+        scrolled || open
+          ? "bg-[#050505]/90 backdrop-blur-xl border-b border-white/[0.04]"
+          : ""
       }`}
     >
-      <div className="mx-auto flex h-16 items-center justify-between px-4 sm:px-6 max-w-6xl">
-        {/* Logo */}
-        <Link href="/" className="flex items-center gap-2 group">
-          <div className="relative flex h-8 w-8 items-center justify-center rounded-lg bg-solana-gradient shadow-lg shadow-solana-purple/20">
-            <Zap className="h-4 w-4 text-white" />
-          </div>
-          <span className="text-lg font-bold tracking-tight">
-            Pay<span className="gradient-text">gent</span>
+      <div className="mx-auto max-w-6xl flex h-14 items-center justify-between px-5 sm:px-8">
+        <Link href="/" className="flex items-center gap-2">
+          <Zap className="h-4 w-4 text-solana-green" />
+          <span className="text-sm font-semibold tracking-tight">
+            Paygent
           </span>
         </Link>
 
-        {/* Desktop nav links */}
-        <div className="hidden md:flex items-center gap-8">
-          {navLinks.map((link) => (
+        {/* Desktop */}
+        <div className="hidden md:flex items-center gap-7">
+          {navLinks.map((l) => (
             <Link
-              key={link.href}
-              href={link.href}
-              className="text-sm text-white/50 hover:text-white transition-colors"
+              key={l.href}
+              href={l.href}
+              className="text-[13px] text-white/35 hover:text-white/70 transition-colors"
             >
-              {link.label}
+              {l.label}
             </Link>
           ))}
-        </div>
-
-        {/* Desktop CTA */}
-        <div className="hidden md:block">
           <Link href="/create">
-            <Button variant="gradient" size="sm">
-              Create Storefront
+            <Button
+              size="sm"
+              className="h-8 px-3 text-xs bg-white text-black hover:bg-white/90 font-medium rounded-lg"
+            >
+              Get started
             </Button>
           </Link>
         </div>
 
-        {/* Mobile: CTA + hamburger */}
-        <div className="flex md:hidden items-center gap-3">
+        {/* Mobile */}
+        <div className="md:hidden flex items-center gap-2">
           <Link href="/create">
-            <Button variant="gradient" size="sm" className="text-xs px-3 h-8">
-              Create
+            <Button
+              size="sm"
+              className="h-7 px-2.5 text-[11px] bg-white text-black hover:bg-white/90 font-medium rounded-md"
+            >
+              Get started
             </Button>
           </Link>
           <button
-            onClick={() => setMobileOpen(!mobileOpen)}
-            className="flex items-center justify-center w-9 h-9 rounded-lg border border-white/[0.08] bg-white/[0.03] text-white/60 hover:text-white hover:bg-white/[0.06] transition-all"
-            aria-label="Toggle menu"
+            onClick={() => setOpen(!open)}
+            className="w-8 h-8 flex items-center justify-center text-white/40 hover:text-white/70 transition-colors"
           >
-            {mobileOpen ? (
-              <X className="h-4 w-4" />
-            ) : (
-              <Menu className="h-4 w-4" />
-            )}
+            {open ? <X className="h-4 w-4" /> : <Menu className="h-4 w-4" />}
           </button>
         </div>
       </div>
 
-      {/* Mobile dropdown */}
-      <div
-        className={`md:hidden overflow-hidden transition-all duration-300 ease-in-out ${
-          mobileOpen ? "max-h-64 opacity-100" : "max-h-0 opacity-0"
-        }`}
-      >
-        <div className="px-4 pb-4 pt-2 border-t border-white/[0.06] bg-black/90 backdrop-blur-xl">
-          <div className="flex flex-col gap-1">
-            {navLinks.map((link) => (
+      {/* Mobile menu */}
+      {open && (
+        <div className="md:hidden border-t border-white/[0.04] bg-[#050505]/95 backdrop-blur-xl">
+          <div className="px-5 py-3 space-y-1">
+            {navLinks.map((l) => (
               <Link
-                key={link.href}
-                href={link.href}
-                onClick={handleLinkClick}
-                className="flex items-center h-11 px-3 rounded-lg text-sm text-white/60 hover:text-white hover:bg-white/[0.04] transition-all"
+                key={l.href}
+                href={l.href}
+                onClick={() => setOpen(false)}
+                className="block py-2.5 text-sm text-white/40 hover:text-white transition-colors"
               >
-                {link.label}
+                {l.label}
               </Link>
             ))}
           </div>
         </div>
-      </div>
+      )}
     </nav>
   );
 }

@@ -10,95 +10,104 @@ import {
   FileCheck,
 } from "lucide-react";
 
-const features = [
-  {
-    icon: Bot,
-    title: "Instant storefronts",
-    description:
-      "AI generates your entire checkout experience from a text description. Products, pricing, branding — handled.",
-    gradient: "from-solana-purple to-blue-500",
-    glow: "group-hover:shadow-solana-purple/20",
-  },
-  {
-    icon: QrCode,
-    title: "Payment links & QR codes",
-    description:
-      "Share a link or scan a code. Works everywhere — WhatsApp, email, in person, social media.",
-    gradient: "from-blue-500 to-cyan-500",
-    glow: "group-hover:shadow-blue-500/20",
-  },
-  {
-    icon: Shield,
-    title: "Non-custodial",
-    description:
-      "We never touch your money. Payments flow directly from customer to your wallet. Your keys, your funds.",
-    gradient: "from-cyan-500 to-solana-green",
-    glow: "group-hover:shadow-cyan-500/20",
-  },
-  {
-    icon: ArrowRightLeft,
-    title: "Auto-convert",
-    description:
-      "Receive SOL or any token → auto-swap to USDC via Jupiter. Stable revenue, zero volatility risk.",
-    gradient: "from-solana-green to-emerald-500",
-    glow: "group-hover:shadow-solana-green/20",
-  },
-  {
-    icon: Bell,
-    title: "Real-time notifications",
-    description:
-      "Know the moment you get paid. Webhooks, email, or Telegram — your choice.",
-    gradient: "from-emerald-500 to-solana-purple",
-    glow: "group-hover:shadow-emerald-500/20",
-  },
-  {
-    icon: FileCheck,
-    title: "On-chain receipts",
-    description:
-      "Every payment generates a verifiable on-chain record. Tax-ready. Dispute-proof. Permanent.",
-    gradient: "from-solana-purple to-pink-500",
-    glow: "group-hover:shadow-solana-purple/20",
-  },
-];
-
 export function Features() {
   return (
-    <section id="features" className="py-20 sm:py-28 relative">
-      <div className="mx-auto px-4 sm:px-6 max-w-6xl">
-        {/* Section header */}
-        <div className="text-center mb-14 sm:mb-20">
-          <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight mb-4">
-            Everything you need.
+    <section id="features" className="py-20 sm:py-28">
+      <div className="mx-auto max-w-6xl px-5 sm:px-8">
+        <div className="mb-14 sm:mb-20 max-w-lg">
+          <h2 className="text-3xl sm:text-4xl font-bold tracking-tight leading-tight mb-4">
+            Built for how you
             <br />
-            <span className="gradient-text">Nothing you don&apos;t.</span>
+            actually work.
           </h2>
+          <p className="text-white/40 leading-relaxed">
+            Everything a business needs to accept crypto payments. Nothing it
+            doesn&apos;t.
+          </p>
         </div>
 
-        {/* Feature grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5">
-          {features.map((feature, i) => (
-            <div
-              key={i}
-              className={`group relative rounded-2xl border border-white/[0.06] bg-white/[0.02] p-6 sm:p-7 hover:border-white/[0.12] hover:bg-white/[0.04] transition-all duration-300 hover:shadow-xl ${feature.glow}`}
-            >
-              {/* Icon container */}
-              <div
-                className={`mb-5 inline-flex h-12 w-12 sm:h-14 sm:w-14 items-center justify-center rounded-2xl bg-gradient-to-br ${feature.gradient} shadow-lg opacity-90 group-hover:opacity-100 group-hover:scale-105 transition-all duration-300`}
-              >
-                <feature.icon className="h-6 w-6 sm:h-7 sm:w-7 text-white" />
-              </div>
-
-              {/* Content */}
-              <h3 className="text-lg font-semibold text-white mb-2">
-                {feature.title}
-              </h3>
-              <p className="text-[15px] text-white/50 leading-relaxed">
-                {feature.description}
-              </p>
-            </div>
-          ))}
+        {/* Bento grid */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-px bg-white/[0.04] rounded-2xl overflow-hidden border border-white/[0.06]">
+          <BentoCard
+            icon={Bot}
+            title="AI-generated storefronts"
+            description="Describe your business. Get product pages, checkout flow, QR codes, and payment links — in under 60 seconds."
+            className="sm:col-span-2 lg:col-span-2"
+            large
+          />
+          <BentoCard
+            icon={Shield}
+            title="Non-custodial"
+            description="We never touch your money. Direct wallet-to-wallet payments."
+          />
+          <BentoCard
+            icon={QrCode}
+            title="Payment links & QR"
+            description="Share via WhatsApp, email, social — or scan in person. Works everywhere."
+          />
+          <BentoCard
+            icon={ArrowRightLeft}
+            title="Auto-convert"
+            description="Any token → USDC via Jupiter. Stable revenue, zero volatility."
+          />
+          <BentoCard
+            icon={Bell}
+            title="Real-time alerts"
+            description="Webhooks, email, or Telegram the moment you get paid."
+          />
+          <BentoCard
+            icon={FileCheck}
+            title="On-chain receipts"
+            description="Verifiable, tax-ready, dispute-proof. Every transaction on the blockchain."
+            className="sm:col-span-2 lg:col-span-2"
+          />
+          <BentoCard
+            icon={ArrowRightLeft}
+            title="Multi-currency"
+            description="Accept SOL, USDC, USDT, and any SPL token. Customers pay how they want."
+          />
         </div>
       </div>
     </section>
+  );
+}
+
+function BentoCard({
+  icon: Icon,
+  title,
+  description,
+  className = "",
+  large,
+}: {
+  icon: React.ElementType;
+  title: string;
+  description: string;
+  className?: string;
+  large?: boolean;
+}) {
+  return (
+    <div
+      className={`group bg-[#0a0a0a] p-6 sm:p-7 hover:bg-white/[0.02] transition-colors ${className}`}
+    >
+      <Icon
+        className={`${
+          large ? "h-6 w-6" : "h-5 w-5"
+        } text-white/25 group-hover:text-solana-green transition-colors mb-4`}
+      />
+      <h3
+        className={`font-semibold text-white mb-1.5 ${
+          large ? "text-lg" : "text-base"
+        }`}
+      >
+        {title}
+      </h3>
+      <p
+        className={`text-white/35 leading-relaxed ${
+          large ? "text-[15px] max-w-md" : "text-sm"
+        }`}
+      >
+        {description}
+      </p>
+    </div>
   );
 }

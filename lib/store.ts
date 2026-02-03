@@ -52,13 +52,17 @@ function generateProductId(): string {
 export function createStorefront(params: {
   businessName: string;
   businessDescription: string;
+  tagline?: string;
+  logo?: string;
   walletAddress: string;
   products: Array<{
     name: string;
     description: string;
     price: number;
     currency: "SOL" | "USDC";
+    image?: string;
   }>;
+  links?: import("./types").StorefrontLinks;
   autoConvertToUSDC?: boolean;
 }): Storefront {
   const slug = generateSlug(params.businessName);
@@ -68,11 +72,14 @@ export function createStorefront(params: {
     slug,
     businessName: params.businessName,
     businessDescription: params.businessDescription,
+    tagline: params.tagline,
+    logo: params.logo,
     walletAddress: params.walletAddress,
     products: params.products.map((p) => ({
       ...p,
       id: generateProductId(),
     })),
+    links: params.links,
     theme,
     createdAt: Date.now(),
     acceptedTokens: ["SOL", "USDC"],

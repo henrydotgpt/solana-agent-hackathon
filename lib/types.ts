@@ -21,14 +21,30 @@ export interface StorefrontTheme {
 }
 
 /**
+ * Business links for a storefront
+ */
+export interface StorefrontLinks {
+  website?: string;
+  twitter?: string;
+  instagram?: string;
+  telegram?: string;
+  discord?: string;
+  email?: string;
+  custom?: Array<{ label: string; url: string }>;
+}
+
+/**
  * Complete storefront configuration
  */
 export interface Storefront {
   slug: string;
   businessName: string;
   businessDescription: string;
+  tagline?: string;
+  logo?: string; // URL to logo image
   walletAddress: string;
   products: StorefrontProduct[];
+  links?: StorefrontLinks;
   theme: StorefrontTheme;
   createdAt: number;
   acceptedTokens: ("SOL" | "USDC")[];
@@ -67,8 +83,11 @@ export interface ApiResponse<T> {
 export interface CreateStorefrontRequest {
   businessName: string;
   businessDescription: string;
+  tagline?: string;
+  logo?: string;
   walletAddress: string;
   products: Omit<StorefrontProduct, "id">[];
+  links?: StorefrontLinks;
   autoConvertToUSDC?: boolean;
 }
 

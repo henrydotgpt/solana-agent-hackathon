@@ -66,13 +66,17 @@ export async function POST(
       businessDescription: sanitizeInput(
         (body.businessDescription || "").trim()
       ),
+      tagline: body.tagline ? sanitizeInput(body.tagline.trim()) : undefined,
+      logo: body.logo?.trim() || undefined,
       walletAddress: body.walletAddress.trim(),
       products: body.products.map((p) => ({
         name: sanitizeInput(p.name.trim()),
         description: sanitizeInput((p.description || "").trim()),
         price: p.price,
         currency: p.currency === "USDC" ? "USDC" : "SOL",
+        image: (p as any).image?.trim() || undefined,
       })),
+      links: body.links || undefined,
       autoConvertToUSDC: body.autoConvertToUSDC,
     });
 

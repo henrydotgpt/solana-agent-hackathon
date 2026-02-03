@@ -34,6 +34,7 @@ type AgentState =
   | "greeting"
   | "awaiting_description"
   | "awaiting_products"
+  | "awaiting_extras"
   | "awaiting_wallet"
   | "ready_to_build";
 
@@ -48,6 +49,9 @@ export default function CreatePage() {
   // Collected data
   const [businessName, setBusinessName] = useState("");
   const [businessDescription, setBusinessDescription] = useState("");
+  const [tagline, setTagline] = useState("");
+  const [logo, setLogo] = useState("");
+  const [links, setLinks] = useState<Record<string, string>>({});
   const [walletAddress, setWalletAddress] = useState("");
   const [products, setProducts] = useState<
     Array<{ name: string; description: string; price: number; currency: "SOL" | "USDC" }>
@@ -121,6 +125,9 @@ export default function CreatePage() {
       // Update state from AI response
       if (data?.businessName) setBusinessName(data.businessName);
       if (data?.businessDescription) setBusinessDescription(data.businessDescription);
+      if (data?.tagline) setTagline(data.tagline);
+      if (data?.logo) setLogo(data.logo);
+      if (data?.links) setLinks((prev) => ({ ...prev, ...data.links }));
       if (data?.products?.length > 0) setProducts(data.products);
 
       if (data?.nextState) {
@@ -135,11 +142,15 @@ export default function CreatePage() {
             await streamAgentMessage(message);
             setTimeout(() => {
               setStep("generating");
+              const finalLinks = { ...links, ...(data.links || {}) };
               createStorefront(
                 wallet,
                 data.businessName || businessName,
                 data.businessDescription || businessDescription,
-                data.products?.length > 0 ? data.products : products
+                data.products?.length > 0 ? data.products : products,
+                data.tagline || tagline,
+                data.logo || logo,
+                Object.keys(finalLinks).length > 0 ? finalLinks : undefined
               );
             }, 1500);
             setIsThinking(false);
@@ -172,7 +183,10 @@ export default function CreatePage() {
     wallet: string,
     name: string,
     description: string,
-    prods: typeof products
+    prods: typeof products,
+    tl?: string,
+    lg?: string,
+    lk?: Record<string, string>
   ) => {
     try {
       const res = await fetch("/api/storefront", {
@@ -181,11 +195,14 @@ export default function CreatePage() {
         body: JSON.stringify({
           businessName: name,
           businessDescription: description,
+          tagline: tl || undefined,
+          logo: lg || undefined,
           walletAddress: wallet,
           products: prods.map((p) => ({
             ...p,
             description: p.description || `${p.name} from ${name}`,
           })),
+          links: lk || undefined,
           autoConvertToUSDC: true,
         }),
       });
@@ -359,6 +376,8 @@ export default function CreatePage() {
                         placeholder={
                           agentState === "awaiting_products"
                             ? "List your products with prices..."
+                            : agentState === "awaiting_extras"
+                            ? "Paste logo URL, website, or social links..."
                             : agentState === "awaiting_wallet"
                             ? "Paste your Solana wallet address..."
                             : "Describe your business..."

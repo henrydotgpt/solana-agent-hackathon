@@ -290,4 +290,28 @@ html, body {
   .animate-float { animation: float 4s ease-in-out infinite; }
   .animate-pulse-glow { animation: pulseGlow 3s ease-in-out infinite; }
   .animate-blink { animation: blink 1s step-start infinite; }
+
+  /* ========== MOBILE OPTIMIZATIONS ========== */
+  @media (max-width: 640px) {
+    .gradient-orb-1 { width: 400px; height: 400px; }
+    .gradient-orb-2 { width: 350px; height: 350px; }
+    .gradient-orb-3 { width: 300px; height: 300px; }
+    .gradient-orb-4 { display: none; }
+  }
+}
+
+/* ========== SAFE AREA / MOBILE VIEWPORT ========== */
+@supports (padding-top: env(safe-area-inset-top)) {
+  body {
+    padding-top: env(safe-area-inset-top);
+    padding-bottom: env(safe-area-inset-bottom);
+  }
+}
+
+/* Touch target sizing */
+@media (pointer: coarse) {
+  button, a, [role="button"] {
+    min-height: 44px;
+    min-width: 44px;
+  }
 }

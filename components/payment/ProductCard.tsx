@@ -5,7 +5,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import type { StorefrontProduct } from "@/lib/types";
-import { QrCode } from "lucide-react";
+import { QrCode, Package } from "lucide-react";
 
 interface ProductCardProps {
   product: StorefrontProduct;
@@ -28,43 +28,64 @@ export function ProductCard({
       : null;
 
   return (
-    <Card className="group hover:border-border hover:shadow-lg transition-all duration-300 overflow-hidden h-full flex flex-col">
-      {/* Accent bar */}
-      <div
-        className="h-1 w-full"
-        style={{
-          background: `linear-gradient(90deg, ${accentColor}, ${accentColor}66)`,
-        }}
-      />
+    <Card className="group hover:border-border/80 hover:shadow-xl hover:shadow-black/10 transition-all duration-300 overflow-hidden h-full flex flex-col">
+      {/* Product image or accent gradient */}
+      {product.image ? (
+        <div className="relative h-40 overflow-hidden bg-muted/30">
+          <img
+            src={product.image}
+            alt={product.name}
+            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+            onError={(e) => {
+              (e.target as HTMLImageElement).style.display = "none";
+            }}
+          />
+          <div className="absolute inset-0 bg-gradient-to-t from-card/80 to-transparent" />
+        </div>
+      ) : (
+        <div
+          className="h-2 w-full"
+          style={{
+            background: `linear-gradient(90deg, ${accentColor}, ${accentColor}44)`,
+          }}
+        />
+      )}
 
-      <CardContent className="p-6 flex flex-col flex-1">
-        {/* Product name */}
-        <h3 className="text-lg font-semibold mb-1">{product.name}</h3>
+      <CardContent className="p-5 flex flex-col flex-1">
+        {/* Product name + badge */}
+        <div className="flex items-start justify-between gap-2 mb-2">
+          <h3 className="text-base font-semibold leading-tight">{product.name}</h3>
+          <Badge
+            variant="outline"
+            className="text-[10px] flex-shrink-0 font-mono"
+            style={{
+              borderColor: `${accentColor}30`,
+              color: accentColor,
+            }}
+          >
+            {product.currency}
+          </Badge>
+        </div>
 
         {/* Description */}
-        <p className="text-sm text-muted-foreground mb-4 flex-1">
-          {product.description}
-        </p>
+        {product.description && (
+          <p className="text-sm text-muted-foreground mb-4 flex-1 line-clamp-2">
+            {product.description}
+          </p>
+        )}
 
         {/* Price */}
         <div className="mb-4">
-          <div className="flex items-baseline gap-2">
-            <span className="text-2xl font-bold">
+          <div className="flex items-baseline gap-1.5">
+            <span className="text-2xl font-bold tracking-tight">
               {product.price}
             </span>
-            <Badge
-              variant="outline"
-              className="text-xs"
-              style={{
-                borderColor: `${accentColor}40`,
-                color: accentColor,
-              }}
-            >
+            <span className="text-sm text-muted-foreground font-medium">
               {product.currency}
-            </Badge>
+            </span>
           </div>
           {usdValue && (
-            <p className="text-xs text-muted-foreground mt-1">
+            <p className="text-xs text-muted-foreground/70 mt-0.5">
               ≈ ${usdValue} USD
             </p>
           )}
@@ -73,7 +94,7 @@ export function ProductCard({
         {/* Pay button */}
         <Button
           onClick={() => onSelect(product)}
-          className="w-full gap-2 group-hover:shadow-md transition-all"
+          className="w-full gap-2 font-medium transition-all hover:shadow-lg"
           style={{
             background: `linear-gradient(135deg, ${accentColor}, ${accentColor}cc)`,
           }}

@@ -272,14 +272,26 @@ export default function DashboardPage() {
           className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-8"
         >
           <div className="flex items-center gap-4">
-            <div
-              className="flex h-14 w-14 items-center justify-center rounded-2xl"
-              style={{
-                background: `linear-gradient(135deg, ${storefront.theme.accentColor}, ${storefront.theme.accentColor}88)`,
-              }}
-            >
-              <Store className="h-7 w-7 text-white" />
-            </div>
+            {storefront.logo ? (
+              <img
+                src={storefront.logo}
+                alt={storefront.businessName}
+                className="h-14 w-14 rounded-2xl object-cover shadow-lg"
+                style={{ boxShadow: `0 4px 20px ${storefront.theme.accentColor}25` }}
+              />
+            ) : (
+              <div
+                className="flex h-14 w-14 items-center justify-center rounded-2xl shadow-lg"
+                style={{
+                  background: `linear-gradient(135deg, ${storefront.theme.accentColor}, ${storefront.theme.accentColor}88)`,
+                  boxShadow: `0 4px 20px ${storefront.theme.accentColor}25`,
+                }}
+              >
+                <span className="text-xl font-bold text-white">
+                  {storefront.businessName.charAt(0).toUpperCase()}
+                </span>
+              </div>
+            )}
             <div>
               <h1 className="text-2xl font-bold">{storefront.businessName}</h1>
               <p className="text-sm text-muted-foreground">

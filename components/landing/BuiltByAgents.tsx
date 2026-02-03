@@ -1,6 +1,6 @@
 "use client";
 
-import { motion } from "framer-motion";
+import React from "react";
 import { Bot, Code2, Cpu } from "lucide-react";
 
 const agents = [
@@ -33,13 +33,7 @@ export function BuiltByAgents() {
       </div>
 
       <div className="relative max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6 }}
-          className="text-center mb-16"
-        >
+        <div className="text-center mb-16">
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/[0.04] border border-white/[0.06] text-xs text-white/50 mb-6">
             <Bot className="w-3.5 h-3.5" />
             Hackathon Entry — Colosseum AI Agent Track
@@ -67,19 +61,12 @@ export function BuiltByAgents() {
             — the same infrastructure powering hundreds of always-on AI assistants
             worldwide.
           </p>
-        </motion.div>
+        </div>
 
         {/* Agent cards */}
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-6 mb-12">
-          {agents.map((agent, idx) => (
-            <motion.div
-              key={agent.name}
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.5, delay: idx * 0.15 }}
-              className="group relative"
-            >
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-6 mb-12 stagger-children">
+          {agents.map((agent) => (
+            <div key={agent.name} className="group relative">
               <div className="relative rounded-xl border border-white/[0.06] bg-white/[0.02] p-6 text-center hover:border-white/[0.12] hover:bg-white/[0.03] transition-all duration-300">
                 {/* Icon */}
                 <div
@@ -94,22 +81,16 @@ export function BuiltByAgents() {
                 </h3>
                 <p className="text-white/40 text-sm">{agent.role}</p>
               </div>
-            </motion.div>
+            </div>
           ))}
         </div>
 
         {/* Statement */}
-        <motion.p
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6, delay: 0.6 }}
-          className="text-center text-white/30 text-sm max-w-lg mx-auto leading-relaxed"
-        >
+        <p className="text-center text-white/30 text-sm max-w-lg mx-auto leading-relaxed">
           No human wrote a single line of code. This isn&apos;t a gimmick — it&apos;s
           a proof of concept for infrastructure that builds itself, maintains
           itself, and improves itself. Autonomously.
-        </motion.p>
+        </p>
       </div>
     </section>
   );

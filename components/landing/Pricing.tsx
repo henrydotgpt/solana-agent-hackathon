@@ -1,8 +1,6 @@
 "use client";
 
 import React from "react";
-import { motion } from "framer-motion";
-import { Check, X } from "lucide-react";
 
 const processors = [
   {
@@ -48,27 +46,15 @@ export function Pricing() {
     <section id="pricing" className="py-24 relative">
       <div className="container mx-auto px-4">
         {/* Section header */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6 }}
-          className="text-center mb-16"
-        >
+        <div className="text-center mb-16">
           <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight mb-4">
             Stop overpaying{" "}
             <span className="gradient-text">for payments.</span>
           </h2>
-        </motion.div>
+        </div>
 
         {/* Comparison table — desktop */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6, delay: 0.1 }}
-          className="mx-auto max-w-4xl hidden md:block"
-        >
+        <div className="mx-auto max-w-4xl hidden md:block">
           <div className="rounded-2xl border border-border/50 overflow-hidden">
             {/* Header */}
             <div className="grid grid-cols-5 bg-muted/30 text-xs uppercase tracking-wider font-medium text-muted-foreground">
@@ -80,7 +66,7 @@ export function Pricing() {
             </div>
 
             {/* Rows */}
-            {processors.map((proc, i) => (
+            {processors.map((proc) => (
               <div
                 key={proc.name}
                 className={`grid grid-cols-5 border-t border-border/30 ${
@@ -134,16 +120,10 @@ export function Pricing() {
               </div>
             ))}
           </div>
-        </motion.div>
+        </div>
 
         {/* Comparison cards — mobile */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6, delay: 0.1 }}
-          className="md:hidden space-y-4 max-w-sm mx-auto"
-        >
+        <div className="md:hidden space-y-4 max-w-sm mx-auto">
           {processors.map((proc) => (
             <div
               key={proc.name}
@@ -193,16 +173,10 @@ export function Pricing() {
               </div>
             </div>
           ))}
-        </motion.div>
+        </div>
 
         {/* Savings callout */}
-        <motion.p
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          viewport={{ once: true }}
-          transition={{ delay: 0.3 }}
-          className="text-center mt-10 text-lg"
-        >
+        <p className="text-center mt-10 text-lg">
           <span className="font-bold gradient-text">
             You save $2,600+/year.
           </span>{" "}
@@ -210,7 +184,7 @@ export function Pricing() {
             That&apos;s not optimization. That&apos;s a different business
             model.
           </span>
-        </motion.p>
+        </p>
       </div>
     </section>
   );

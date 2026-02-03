@@ -1,7 +1,6 @@
 "use client";
 
 import React from "react";
-import { motion } from "framer-motion";
 import { MessageSquare, Wand2, DollarSign } from "lucide-react";
 
 const steps = [
@@ -45,28 +44,18 @@ export function HowItWorks() {
     <section id="how-it-works" className="py-24 relative">
       <div className="container mx-auto px-4">
         {/* Section header */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6 }}
-          className="text-center mb-16"
-        >
+        <div className="text-center mb-16">
           <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight mb-4">
             Three sentences.{" "}
             <span className="gradient-text">One storefront.</span>
           </h2>
-        </motion.div>
+        </div>
 
         {/* Steps */}
         <div className="mx-auto max-w-2xl">
           {steps.map((step, i) => (
-            <motion.div
+            <div
               key={i}
-              initial={{ opacity: 0, x: -30 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.5, delay: i * 0.15 }}
               className="relative flex gap-6 pb-14 last:pb-0"
             >
               {/* Connecting line */}
@@ -106,7 +95,7 @@ export function HowItWorks() {
                   </p>
                 )}
               </div>
-            </motion.div>
+            </div>
           ))}
         </div>
       </div>

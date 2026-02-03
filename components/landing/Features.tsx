@@ -1,7 +1,6 @@
 "use client";
 
 import React from "react";
-import { motion } from "framer-motion";
 import { Card, CardContent } from "@/components/ui/card";
 import {
   Bot,
@@ -57,49 +56,24 @@ const features = [
   },
 ];
 
-const containerVariants = {
-  hidden: { opacity: 0 },
-  visible: {
-    opacity: 1,
-    transition: { staggerChildren: 0.1 },
-  },
-};
-
-const itemVariants = {
-  hidden: { opacity: 0, y: 20 },
-  visible: { opacity: 1, y: 0 },
-};
-
 export function Features() {
   return (
     <section id="features" className="py-24 relative">
       <div className="container mx-auto px-4">
         {/* Section header */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6 }}
-          className="text-center mb-16"
-        >
+        <div className="text-center mb-16">
           <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight mb-4">
             Everything you need.
             <br />
             <span className="gradient-text">Nothing you don&apos;t.</span>
           </h2>
-        </motion.div>
+        </div>
 
         {/* Feature grid */}
-        <motion.div
-          variants={containerVariants}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true }}
-          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-5xl mx-auto"
-        >
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-5xl mx-auto stagger-children">
           {features.map((feature, i) => (
-            <motion.div key={i} variants={itemVariants}>
-              <Card className="h-full group hover:border-border hover:bg-card/80 cursor-default">
+            <div key={i}>
+              <Card className="h-full group hover:border-border hover:bg-card/80 cursor-default transition-colors duration-200">
                 <CardContent className="p-6">
                   {/* Icon */}
                   <div
@@ -117,9 +91,9 @@ export function Features() {
                   </p>
                 </CardContent>
               </Card>
-            </motion.div>
+            </div>
           ))}
-        </motion.div>
+        </div>
       </div>
     </section>
   );

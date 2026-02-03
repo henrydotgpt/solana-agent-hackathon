@@ -1,38 +1,34 @@
 <p align="center">
   <img src="https://img.shields.io/badge/Solana-14F195?style=for-the-badge&logo=solana&logoColor=black" />
   <img src="https://img.shields.io/badge/Next.js-000000?style=for-the-badge&logo=next.js&logoColor=white" />
-  <img src="https://img.shields.io/badge/AI_Agents-9945FF?style=for-the-badge" />
   <img src="https://img.shields.io/badge/Fee-0.75%25-14F195?style=for-the-badge" />
+  <img src="https://img.shields.io/badge/Settlement-~2s-9945FF?style=for-the-badge" />
 </p>
 
-<h1 align="center">Paygent</h1>
-<p align="center"><strong>AI-powered payment storefronts on Solana.</strong></p>
-<p align="center">Describe your business → get a live payment page in 60 seconds.</p>
+# Paygent
+
+**Accept payments at 0.75%. Settle in 2 seconds. Set up in 60.**
+
+One sentence describes your business. Paygent builds the rest — storefront, checkout, payment links, QR codes — live on Solana. Non-custodial. Your wallet. Your money. No middleman holding funds for 3-5 business days.
+
+> *"I run a coffee shop in Austin selling bags of single-origin beans."*
+> → Live payment page, embeddable widget, shareable link. Done.
+
+**Why not Stripe?** They charge 2.9% + 30¢ and hold your money. At $10K/mo, that's $2,616/yr you're giving away. Paygent: $900/yr. Same volume. Instant settlement. You do the math.
 
 <p align="center">
-  <a href="https://paygent-app.vercel.app"><strong>Live Demo</strong></a> ·
+  <a href="https://paygent-app.vercel.app/create"><strong>Create a Store →</strong></a> ·
   <a href="https://paygent-app.vercel.app/docs"><strong>API Docs</strong></a> ·
-  <a href="https://paygent-app.vercel.app/explore"><strong>Explore Stores</strong></a> ·
-  <a href="https://paygent-app.vercel.app/create"><strong>Create Storefront</strong></a>
+  <a href="https://paygent-app.vercel.app/explore"><strong>Explore Stores</strong></a>
 </p>
 
 ---
-
-## The Problem
-
-Stripe charges **2.9%**. PayPal takes **3.49%**. For a business doing $10K/month, that's **$3,000+/year** in fees for infrastructure designed for Fortune 500 companies.
-
-## The Solution
-
-**Paygent charges 0.75%.** Flat. Non-custodial. Instant settlement on Solana.
-
-An AI agent builds your entire payment storefront from a single sentence. No code. No crypto knowledge. No setup fees.
 
 ## How It Works
 
 ```
 1. Describe  →  "I sell coffee beans in three roast levels"
-2. Generate  →  AI creates storefront, products, QR codes, branding
+2. Generate  →  Storefront, products, QR codes, branding — built automatically
 3. Get Paid  →  Share link → customers pay in SOL/USDC → funds hit your wallet in ~2s
 ```
 

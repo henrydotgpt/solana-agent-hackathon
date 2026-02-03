@@ -151,9 +151,12 @@ export async function POST(request: NextRequest) {
       }`,
     });
   } catch (error: any) {
-    console.error("Payment transaction build error:", error);
+    console.error("Payment transaction build error:", error?.message, error?.stack?.split("\n").slice(0, 5).join("\n"));
     return NextResponse.json(
-      { error: error.message || "Failed to build transaction" },
+      { 
+        error: error.message || "Failed to build transaction",
+        detail: process.env.NODE_ENV === "development" ? error.stack?.split("\n").slice(0, 3) : undefined,
+      },
       { status: 500 }
     );
   }

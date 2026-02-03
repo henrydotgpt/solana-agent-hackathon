@@ -42,7 +42,7 @@ export const SWAP_SPREAD_BPS = parseInt(
 
 /** Paygent treasury wallet address */
 export const FEE_WALLET_ADDRESS =
-  process.env.NEXT_PUBLIC_PAYGENT_FEE_WALLET || "";
+  (process.env.NEXT_PUBLIC_PAYGENT_FEE_WALLET || "").trim();
 
 /** Whether fee routing is enabled (requires a fee wallet) */
 export const FEE_ROUTING_ENABLED =

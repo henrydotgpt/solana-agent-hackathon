@@ -41,10 +41,16 @@ export function Footer() {
               OpenClaw
             </Link>
             <Link
-              href="/pay/demo-store"
+              href="/explore"
               className="hover:text-gray-400 transition-colors"
             >
-              Demo
+              Explore
+            </Link>
+            <Link
+              href="/docs"
+              className="hover:text-gray-400 transition-colors"
+            >
+              Docs
             </Link>
           </div>
         </div>

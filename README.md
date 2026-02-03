@@ -1,77 +1,161 @@
-# Paygent — AI Payment Agent for Solana
+<p align="center">
+  <img src="https://img.shields.io/badge/Solana-14F195?style=for-the-badge&logo=solana&logoColor=black" />
+  <img src="https://img.shields.io/badge/Next.js-000000?style=for-the-badge&logo=next.js&logoColor=white" />
+  <img src="https://img.shields.io/badge/AI_Agents-9945FF?style=for-the-badge" />
+  <img src="https://img.shields.io/badge/Fee-0.75%25-14F195?style=for-the-badge" />
+</p>
 
-> Tell it about your business. Get a complete payment storefront in minutes.
+<h1 align="center">Paygent</h1>
+<p align="center"><strong>AI-powered payment storefronts on Solana.</strong></p>
+<p align="center">Describe your business → get a live payment page in 60 seconds.</p>
 
-**Paygent** is an autonomous AI agent that builds complete Solana payment storefronts for businesses. No code. No crypto knowledge. Just describe your business and start accepting payments.
+<p align="center">
+  <a href="https://paygent-app.vercel.app"><strong>Live Demo</strong></a> ·
+  <a href="https://paygent-app.vercel.app/docs"><strong>API Docs</strong></a> ·
+  <a href="https://paygent-app.vercel.app/explore"><strong>Explore Stores</strong></a> ·
+  <a href="https://paygent-app.vercel.app/create"><strong>Create Storefront</strong></a>
+</p>
 
-## What It Does
+---
 
-1. **Describe your business** — "I'm a freelance designer charging $500/project"
-2. **AI builds your storefront** — layout, products, pricing, payment QR codes
-3. **Deploy and get paid** — live payment page with Solana Pay, auto-conversion to USDC
+## The Problem
+
+Stripe charges **2.9%**. PayPal takes **3.49%**. For a business doing $10K/month, that's **$3,000+/year** in fees for infrastructure designed for Fortune 500 companies.
+
+## The Solution
+
+**Paygent charges 0.75%.** Flat. Non-custodial. Instant settlement on Solana.
+
+An AI agent builds your entire payment storefront from a single sentence. No code. No crypto knowledge. No setup fees.
+
+## How It Works
+
+```
+1. Describe  →  "I sell coffee beans in three roast levels"
+2. Generate  →  AI creates storefront, products, QR codes, branding
+3. Get Paid  →  Share link → customers pay in SOL/USDC → funds hit your wallet in ~2s
+```
 
 ## Features
 
-- 🤖 **AI-Powered** — Conversational business intake, autonomous storefront generation
-- 💳 **Solana Pay** — QR code payments, transaction verification, payment links
-- 🔄 **Auto-Convert** — Receive SOL, auto-swap to USDC via Jupiter
-- 📊 **Payment Dashboard** — Track transactions, generate invoices
-- 🔔 **Real-time Notifications** — Helius webhooks for instant payment alerts
-- 📱 **Mobile-First** — Responsive, works on any device
-- 🔒 **Non-Custodial** — Users connect their own wallets. We never touch your funds.
+| Feature | Description |
+|---------|-------------|
+| 🤖 **AI Storefront Builder** | Conversational setup — describe your business, AI handles everything |
+| 💳 **Solana Pay** | QR code payments with real-time transaction verification |
+| 🔌 **Embeddable Widget** | One `<script>` tag adds "Pay with Solana" to any website |
+| 📊 **Analytics Dashboard** | Revenue charts, payment tracking, real-time notifications |
+| 🔄 **Multi-Token** | Accept SOL, USDC, or any SPL token via Jupiter aggregator |
+| 🎯 **AI Marketing Toolkit** | Auto-generates launch tweets, embed code, and share links |
+| 📝 **REST API** | Full developer API with 7 endpoints — [docs](https://paygent-app.vercel.app/docs) |
+| 🔔 **Helius Webhooks** | Sub-second payment confirmations via on-chain monitoring |
+| 📱 **Mobile-First** | Responsive design, touch-optimized, safe-area support |
+| 🔒 **Non-Custodial** | Funds flow directly to merchant wallets. We never touch your money. |
+
+## Demo Stores
+
+| Store | Type | Link |
+|-------|------|------|
+| ☕ Sol Brew Coffee | Retail / E-Commerce | [View Store](https://paygent-app.vercel.app/pay/demo-store) |
+| 💻 Nexus Web3 Studio | Services / Agency | [View Store](https://paygent-app.vercel.app/pay/web3-studio) |
+| 🎓 Solana Academy | Education / Digital | [View Store](https://paygent-app.vercel.app/pay/crypto-academy) |
 
 ## Tech Stack
 
-- **Frontend:** Next.js 14, Tailwind CSS, shadcn/ui, Framer Motion
-- **Payments:** Solana Pay SDK, Jupiter V6 API
-- **Monitoring:** Helius Webhooks
-- **Wallets:** Phantom, Solflare (via wallet-adapter)
-- **Chain:** Solana (devnet / mainnet)
+| Layer | Technology |
+|-------|-----------|
+| **Framework** | Next.js 15, React 18, TypeScript |
+| **Styling** | Tailwind CSS, Framer Motion, Recharts |
+| **Payments** | Solana Pay SDK, Jupiter V6 API |
+| **Monitoring** | Helius Webhooks |
+| **AI** | GPT-4o-mini (storefront generation) |
+| **Wallets** | Phantom, Solflare via `@solana/wallet-adapter` |
+| **Deployment** | Vercel (Edge + Serverless) |
 
-## Built By Agents
+## Architecture
 
-Paygent was built entirely by AI agents as part of the [Colosseum Agent Hackathon](https://colosseum.com/agent-hackathon) (Feb 2-12, 2026).
+```
+┌─────────────┐     ┌──────────────┐     ┌─────────────┐
+│   Client     │────▶│  Next.js API │────▶│   Solana     │
+│  (React)     │     │   Routes     │     │  (devnet)    │
+└─────────────┘     └──────┬───────┘     └──────┬──────┘
+                           │                     │
+                    ┌──────▼───────┐     ┌──────▼──────┐
+                    │  GPT-4o-mini │     │   Jupiter    │
+                    │  (AI Chat)   │     │  (Quotes)    │
+                    └──────────────┘     └─────────────┘
+                                                │
+                                         ┌──────▼──────┐
+                                         │   Helius     │
+                                         │  (Webhooks)  │
+                                         └─────────────┘
+```
 
-- **Sentai** — Commander & orchestrator
-- **Claudius** — Primary builder
-- **Mimir** — Research & QA
+## Fee Structure
 
-Powered by [OpenClaw](https://openclaw.ai) multi-agent infrastructure.
+| | Stripe | PayPal | Paygent |
+|---|--------|--------|---------|
+| **Transaction Fee** | 2.90% + 30¢ | 3.49% + 49¢ | **0.75%** |
+| **Monthly Fee** | $0 | $0 | **$0** |
+| **Settlement** | 2-7 days | 1-3 days | **~2 seconds** |
+| **Custody** | Custodial | Custodial | **Non-custodial** |
+| **Annual cost @ $10K/mo** | $3,840 | $4,776 | **$900** |
 
-## Getting Started
+## Quick Start
 
 ```bash
-# Clone
 git clone https://github.com/henrydotgpt/solana-agent-hackathon.git
 cd solana-agent-hackathon
-
-# Install
 npm install
-
-# Configure
-cp .env.example .env
-# Add your RPC URL and API keys
-
-# Run
-npm run dev
+cp .env.example .env   # Add your API keys
+npm run dev             # http://localhost:3000
 ```
 
-## Environment Variables
+### Environment Variables
 
-```
-NEXT_PUBLIC_SOLANA_RPC_URL=       # Solana RPC endpoint
+```env
+NEXT_PUBLIC_SOLANA_RPC_URL=       # Solana RPC (Helius recommended)
 NEXT_PUBLIC_SOLANA_NETWORK=       # devnet or mainnet-beta
 HELIUS_API_KEY=                   # Helius webhook API key
+OPENAI_API_KEY=                   # GPT-4o-mini for AI chat
 NEXT_PUBLIC_JUPITER_API_URL=      # Jupiter V6 API endpoint
 ```
 
+## Embed on Any Website
+
+```html
+<!-- One line. That's it. -->
+<script src="https://paygent-app.vercel.app/api/widget/YOUR-STORE-SLUG"></script>
+```
+
+Adds a "Pay with Solana" button that opens a modal checkout. Works with HTML, WordPress, Shopify, and any web platform.
+
+## Built By AI Agents
+
+Paygent was built **100% by AI agents** for the [Colosseum Agent Hackathon](https://www.colosseum.org) (Feb 2–12, 2026 · $100K USDC).
+
+| Agent | Role | Platform |
+|-------|------|----------|
+| 🧘‍♂️ **Sentai** | Commander — architecture, code review, forum engagement | [OpenClaw](https://openclaw.ai) |
+| 🔨 **Claudius** | Builder — frontend, APIs, deployment | [OpenClaw](https://openclaw.ai) |
+| 📚 **Mimir** | Research — market analysis, copywriting, strategy | [OpenClaw](https://openclaw.ai) |
+
+Zero human-written code. Humans configured the environment and provided feedback.
+
 ## Security
 
-- All secrets in environment variables, never in code
-- Non-custodial — wallet-adapter signing only
-- Input validation on all user inputs
-- CORS and CSP headers configured
-- See [SECURITY.md](./SECURITY.md) for full protocol
+- All secrets in environment variables, never in source code
+- Non-custodial architecture — wallet-adapter signing only
+- Input validation on all API endpoints
+- Server-side only API keys (`OPENAI_API_KEY`, `HELIUS_API_KEY`)
+- Git history scrubbed of any accidental leaks
+- See [SECURITY.md](./SECURITY.md) for full audit
+
+## Links
+
+- **Live App:** [paygent-app.vercel.app](https://paygent-app.vercel.app)
+- **API Docs:** [paygent-app.vercel.app/docs](https://paygent-app.vercel.app/docs)
+- **Colosseum:** Agent #188, Project #101
+- **GitHub:** [henrydotgpt/solana-agent-hackathon](https://github.com/henrydotgpt/solana-agent-hackathon)
 
 ## License
 

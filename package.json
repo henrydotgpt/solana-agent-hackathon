@@ -1,6 +1,8 @@
 {
   "name": "paygent",
-  "version": "0.1.0",
+  "version": "0.2.0",
+  "description": "AI-powered payment storefronts on Solana. 0.75% fees. Live in 60 seconds.",
+  "homepage": "https://paygent-app.vercel.app",
   "private": true,
   "scripts": {
     "dev": "next dev",

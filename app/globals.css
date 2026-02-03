@@ -154,26 +154,81 @@
 }
 
 @layer utilities {
-  /* Fade in animation */
-  .fade-in {
-    animation: fadeIn 0.5s ease-out forwards;
+  /* Fade in up — primary entrance animation */
+  @keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
   }
 
-  @keyframes fadeIn {
-    from {
-      opacity: 0;
-      transform: translateY(10px);
-    }
-    to {
-      opacity: 1;
-      transform: translateY(0);
-    }
+  @keyframes fadeInLeft {
+    from { opacity: 0; transform: translateX(-20px); }
+    to { opacity: 1; transform: translateX(0); }
+  }
+
+  @keyframes fadeInDown {
+    from { opacity: 0; transform: translateY(-16px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  @keyframes fadeInScale {
+    from { opacity: 0; transform: scale(0.95); }
+    to { opacity: 1; transform: scale(1); }
+  }
+
+  @keyframes pulseOrb {
+    0%, 100% { transform: scale(1); opacity: 0.1; }
+    50% { transform: scale(1.2); opacity: 0.2; }
+  }
+
+  @keyframes pulseOrbAlt {
+    0%, 100% { transform: scale(1.2); opacity: 0.1; }
+    50% { transform: scale(1); opacity: 0.15; }
+  }
+
+  .animate-fade-in-up {
+    animation: fadeInUp 0.6s ease-out both;
+  }
+
+  .animate-fade-in-left {
+    animation: fadeInLeft 0.5s ease-out both;
+  }
+
+  .animate-fade-in-down {
+    animation: fadeInDown 0.5s ease-out both;
+  }
+
+  .animate-fade-in-scale {
+    animation: fadeInScale 0.5s ease-out both;
+  }
+
+  .animate-pulse-orb {
+    animation: pulseOrb 8s ease-in-out infinite;
+  }
+
+  .animate-pulse-orb-alt {
+    animation: pulseOrbAlt 10s ease-in-out infinite;
+  }
+
+  /* Delays */
+  .delay-0 { animation-delay: 0s; }
+  .delay-100 { animation-delay: 0.1s; }
+  .delay-150 { animation-delay: 0.15s; }
+  .delay-200 { animation-delay: 0.2s; }
+  .delay-250 { animation-delay: 0.25s; }
+  .delay-300 { animation-delay: 0.3s; }
+  .delay-400 { animation-delay: 0.4s; }
+  .delay-500 { animation-delay: 0.5s; }
+  .delay-600 { animation-delay: 0.6s; }
+
+  /* Legacy fade-in */
+  .fade-in {
+    animation: fadeInUp 0.5s ease-out forwards;
   }
 
   /* Staggered children */
   .stagger-children > * {
     opacity: 0;
-    animation: fadeIn 0.5s ease-out forwards;
+    animation: fadeInUp 0.5s ease-out forwards;
   }
 
   .stagger-children > *:nth-child(1) { animation-delay: 0.1s; }
@@ -182,4 +237,20 @@
   .stagger-children > *:nth-child(4) { animation-delay: 0.4s; }
   .stagger-children > *:nth-child(5) { animation-delay: 0.5s; }
   .stagger-children > *:nth-child(6) { animation-delay: 0.6s; }
+}
+
+/* SSR-safe animations (no JS dependency) */
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.animate-fade-in-up {
+  animation: fadeInUp 0.6s ease-out forwards;
+}
+
+/* SSR override — ensure content is visible even without JS */
+[style*="opacity: 0"], [style*="opacity:0"] {
+  opacity: 1 !important;
+  transform: none !important;
 }

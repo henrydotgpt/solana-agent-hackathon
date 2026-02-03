@@ -145,6 +145,18 @@ export async function POST(request: NextRequest) {
       parsed = { message: content, data: { nextState: currentState as any } };
     }
 
+    // Decode HTML entities in all string fields (GPT sometimes returns &#x27; etc.)
+    parsed.message = decodeHtmlEntities(parsed.message);
+    if (parsed.data?.businessName) parsed.data.businessName = decodeHtmlEntities(parsed.data.businessName);
+    if (parsed.data?.businessDescription) parsed.data.businessDescription = decodeHtmlEntities(parsed.data.businessDescription);
+    if (parsed.data?.products) {
+      parsed.data.products = parsed.data.products.map((p) => ({
+        ...p,
+        name: decodeHtmlEntities(p.name),
+        description: decodeHtmlEntities(p.description),
+      }));
+    }
+
     return NextResponse.json({
       success: true,
       data: parsed,
@@ -156,4 +168,21 @@ export async function POST(request: NextRequest) {
       { status: 500 }
     );
   }
+}
+
+/** Decode common HTML entities that GPT sometimes includes in JSON */
+function decodeHtmlEntities(text: string): string {
+  if (!text) return text;
+  return text
+    .replace(/&#x27;/g, "'")
+    .replace(/&#x22;/g, '"')
+    .replace(/&#39;/g, "'")
+    .replace(/&#34;/g, '"')
+    .replace(/&amp;/g, "&")
+    .replace(/&lt;/g, "<")
+    .replace(/&gt;/g, ">")
+    .replace(/&quot;/g, '"')
+    .replace(/&apos;/g, "'")
+    .replace(/&#(\d+);/g, (_, n) => String.fromCharCode(parseInt(n)))
+    .replace(/&#x([0-9a-fA-F]+);/g, (_, n) => String.fromCharCode(parseInt(n, 16)));
 }

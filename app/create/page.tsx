@@ -29,6 +29,7 @@ type Step = "describe" | "generating" | "preview";
 interface ChatMessage {
   role: "user" | "agent";
   content: string;
+  id?: number;
 }
 
 type AgentState =
@@ -72,8 +73,27 @@ export default function CreatePage() {
     chatEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [chatMessages, isThinking]);
 
-  const addAgentMessage = (content: string) => {
-    setChatMessages((prev) => [...prev, { role: "agent", content }]);
+  const addAgentMessage = async (content: string) => {
+    // Add message with typing effect — appears character by character
+    const id = Date.now();
+    setChatMessages((prev) => [
+      ...prev,
+      { role: "agent", content: "", id },
+    ]);
+
+    // Type out the message
+    const words = content.split(" ");
+    let displayed = "";
+    for (let i = 0; i < words.length; i++) {
+      displayed += (i > 0 ? " " : "") + words[i];
+      const current = displayed;
+      setChatMessages((prev) =>
+        prev.map((m) =>
+          (m as any).id === id ? { ...m, content: current } : m
+        )
+      );
+      await new Promise((r) => setTimeout(r, 18 + Math.random() * 22));
+    }
   };
 
   const handleSendMessage = async () => {
@@ -94,10 +114,27 @@ export default function CreatePage() {
         const name = extractBusinessName(userMessage);
         setBusinessName(name);
         setBusinessDescription(userMessage);
-        setAgentState("awaiting_products");
-        addAgentMessage(
-          `Got it — "${name}" sounds great! Now let's set up what you're selling.\n\nList your products or services with prices. Format like:\n• Consultation - 0.5 SOL\n• Premium Package - 2 SOL\n• Quick Review - 10 USDC\n\nYou can use SOL or USDC for each item.`
-        );
+
+        // Try to auto-detect products from the description
+        const autoProducts = parseProducts(userMessage);
+
+        if (autoProducts.length > 0) {
+          // User included pricing — skip product step
+          setProducts(autoProducts);
+          setAgentState("awaiting_wallet");
+          const productList = autoProducts
+            .map((p) => `  • ${p.name} — ${p.price} ${p.currency}`)
+            .join("\n");
+          await addAgentMessage(
+            `Nice — I can already see your pricing:\n${productList}\n\n💡 Quick note: Paygent charges a 0.75% platform fee on each payment (like Stripe, but way less). Your customers pay the listed price, you receive 99.25%.\n\nWhat's your Solana wallet address? (Payments go directly to your wallet — non-custodial.)`
+          );
+        } else {
+          setAgentState("awaiting_products");
+          const businessType = detectBusinessType(userMessage);
+          await addAgentMessage(
+            `Love it — ${businessType.response}\n\nNow let's set up your pricing. List what you offer with prices, like:\n• ${businessType.example1}\n• ${businessType.example2}\n• ${businessType.example3}\n\nUse SOL or USDC for each item.`
+          );
+        }
         break;
       }
 
@@ -105,8 +142,8 @@ export default function CreatePage() {
         // Parse products from message
         const parsed = parseProducts(userMessage);
         if (parsed.length === 0) {
-          addAgentMessage(
-            "I couldn't parse any products from that. Try formatting like:\n• Service Name - 0.5 SOL\n• Another Service - 10 USDC\n\nEach line should have a name, dash, then price with currency."
+          await addAgentMessage(
+            "Hmm, I couldn't quite parse that. Try this format:\n• Service Name - 0.5 SOL\n• Another Service - 10 USDC\n\nEach line: name, dash, price with SOL or USDC."
           );
         } else {
           setProducts(parsed);
@@ -114,8 +151,8 @@ export default function CreatePage() {
           const productList = parsed
             .map((p) => `  • ${p.name} — ${p.price} ${p.currency}`)
             .join("\n");
-          addAgentMessage(
-            `Perfect, I've got ${parsed.length} item${parsed.length > 1 ? "s" : ""}:\n${productList}\n\n💡 Quick note: Paygent charges a 0.75% platform fee on each payment (like Stripe, but way less). It's deducted automatically — your customers pay the listed price, you receive 99.25%.\n\nLast thing — what's your Solana wallet address? (This is where payments go directly. Non-custodial — I never hold your funds.)`
+          await addAgentMessage(
+            `${parsed.length} item${parsed.length > 1 ? "s" : ""} locked in:\n${productList}\n\n💡 Paygent charges 0.75% per payment — your customers pay the listed price, you receive 99.25%. Way cheaper than Stripe's 2.9%.\n\nLast thing — paste your Solana wallet address. (Payments go directly to you — non-custodial.)`
           );
         }
         break;
@@ -125,14 +162,14 @@ export default function CreatePage() {
         // Validate wallet address
         const address = userMessage.trim();
         if (!isValidSolanaAddress(address)) {
-          addAgentMessage(
-            "That doesn't look like a valid Solana address. It should be a 32-44 character base58 string. You can copy it from Phantom or Solflare.\n\nPaste your wallet address here:"
+          await addAgentMessage(
+            "That doesn't look like a valid Solana address. Should be 32-44 characters, base58 format. Copy it from Phantom or Solflare and paste here:"
           );
         } else {
           setWalletAddress(address);
           setAgentState("ready_to_build");
-          addAgentMessage(
-            `Wallet confirmed! ✅\n\nI have everything I need:\n• Business: ${businessName}\n• Products: ${products.length} items\n• Wallet: ${address.slice(0, 6)}...${address.slice(-4)}\n\nBuilding your storefront now... 🔨`
+          await addAgentMessage(
+            `Wallet set ✅\n\nHere's what I'm building:\n• Business: ${businessName}\n• Products: ${products.length} item${products.length !== 1 ? "s" : ""}\n• Wallet: ${address.slice(0, 6)}...${address.slice(-4)}\n• Fee: 0.75% per payment\n\nDeploying your storefront now... 🔨`
           );
 
           // Trigger actual storefront creation
@@ -558,6 +595,83 @@ export default function CreatePage() {
       </div>
     </main>
   );
+}
+
+/**
+ * Detect business type and return contextual response + examples
+ */
+function detectBusinessType(description: string): {
+  response: string;
+  example1: string;
+  example2: string;
+  example3: string;
+} {
+  const desc = description.toLowerCase();
+
+  if (desc.includes("design") || desc.includes("creative") || desc.includes("logo") || desc.includes("brand")) {
+    return {
+      response: "a design business! I'll set up something sleek for your clients.",
+      example1: "Logo Design - 2 SOL",
+      example2: "Brand Package - 5 SOL",
+      example3: "Rush Delivery - 50 USDC",
+    };
+  }
+  if (desc.includes("consult") || desc.includes("coach") || desc.includes("mentor") || desc.includes("advisor")) {
+    return {
+      response: "consulting — smart. Let me build you a professional intake page.",
+      example1: "Discovery Call - 0.5 SOL",
+      example2: "Strategy Session - 2 SOL",
+      example3: "Monthly Retainer - 200 USDC",
+    };
+  }
+  if (desc.includes("food") || desc.includes("cafe") || desc.includes("restaurant") || desc.includes("bakery") || desc.includes("coffee")) {
+    return {
+      response: "food business! I'll make your menu look delicious.",
+      example1: "Small Order - 0.1 SOL",
+      example2: "Family Meal - 0.5 SOL",
+      example3: "Catering Package - 100 USDC",
+    };
+  }
+  if (desc.includes("photo") || desc.includes("video") || desc.includes("film") || desc.includes("shoot")) {
+    return {
+      response: "visual work — perfect for Paygent. Clients will love scanning a QR code to book.",
+      example1: "Mini Session - 1 SOL",
+      example2: "Full Shoot - 5 SOL",
+      example3: "Video Edit - 100 USDC",
+    };
+  }
+  if (desc.includes("develop") || desc.includes("code") || desc.includes("software") || desc.includes("app") || desc.includes("web")) {
+    return {
+      response: "a dev shop! Your clients are going to love paying with zero friction.",
+      example1: "Bug Fix - 0.5 SOL",
+      example2: "Feature Build - 5 SOL",
+      example3: "Full Project - 500 USDC",
+    };
+  }
+  if (desc.includes("teach") || desc.includes("tutor") || desc.includes("course") || desc.includes("lesson") || desc.includes("class")) {
+    return {
+      response: "education — great use case. Let's get your students paying easily.",
+      example1: "Single Lesson - 0.3 SOL",
+      example2: "Course Bundle - 2 SOL",
+      example3: "Private Tutoring - 50 USDC",
+    };
+  }
+  if (desc.includes("fitness") || desc.includes("gym") || desc.includes("train") || desc.includes("yoga") || desc.includes("workout")) {
+    return {
+      response: "fitness! Your storefront is going to look clean and energetic.",
+      example1: "Single Session - 0.2 SOL",
+      example2: "10-Pack - 1.5 SOL",
+      example3: "Monthly Pass - 30 USDC",
+    };
+  }
+
+  // Default
+  return {
+    response: "I can work with that. Let's get your pricing set up.",
+    example1: "Basic Package - 0.5 SOL",
+    example2: "Premium Service - 2 SOL",
+    example3: "Custom Work - 50 USDC",
+  };
 }
 
 /**

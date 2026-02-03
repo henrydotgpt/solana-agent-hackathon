@@ -383,8 +383,8 @@ export default function DashboardPage() {
                 </div>
               ) : (
                 <div className="space-y-2">
-                  {/* Table header */}
-                  <div className="grid grid-cols-12 gap-4 px-4 py-2 text-xs font-medium text-muted-foreground uppercase tracking-wider">
+                  {/* Table header — hidden on mobile */}
+                  <div className="hidden md:grid grid-cols-12 gap-4 px-4 py-2 text-xs font-medium text-muted-foreground uppercase tracking-wider">
                     <div className="col-span-2">Status</div>
                     <div className="col-span-3">From</div>
                     <div className="col-span-2">Amount</div>
@@ -392,66 +392,103 @@ export default function DashboardPage() {
                     <div className="col-span-3">Time</div>
                   </div>
 
-                  {/* Payment rows */}
+                  {/* Payment rows — desktop */}
                   {stats.recentPayments.map((payment, i) => (
                     <motion.div
                       key={payment.id}
                       initial={{ opacity: 0, x: -10 }}
                       animate={{ opacity: 1, x: 0 }}
                       transition={{ delay: 0.05 * i }}
-                      className="grid grid-cols-12 gap-4 items-center px-4 py-3 rounded-lg hover:bg-muted/30 transition-colors group"
                     >
-                      {/* Status */}
-                      <div className="col-span-2">
-                        <Badge
-                          variant={
-                            payment.status === "confirmed"
-                              ? "success"
-                              : "outline"
-                          }
-                          className="text-xs"
-                        >
-                          {payment.status === "confirmed" ? (
-                            <Check className="h-3 w-3 mr-1" />
-                          ) : (
-                            <Clock className="h-3 w-3 mr-1" />
+                      {/* Desktop row */}
+                      <div className="hidden md:grid grid-cols-12 gap-4 items-center px-4 py-3 rounded-lg hover:bg-muted/30 transition-colors group">
+                        <div className="col-span-2">
+                          <Badge
+                            variant={
+                              payment.status === "confirmed"
+                                ? "success"
+                                : "outline"
+                            }
+                            className="text-xs"
+                          >
+                            {payment.status === "confirmed" ? (
+                              <Check className="h-3 w-3 mr-1" />
+                            ) : (
+                              <Clock className="h-3 w-3 mr-1" />
+                            )}
+                            {payment.status}
+                          </Badge>
+                        </div>
+                        <div className="col-span-3 font-mono text-xs text-muted-foreground">
+                          {payment.payer
+                            ? truncateAddress(payment.payer, 6)
+                            : "—"}
+                        </div>
+                        <div className="col-span-2 font-semibold text-sm">
+                          {payment.amount}
+                        </div>
+                        <div className="col-span-2">
+                          <Badge variant="outline" className="text-xs">
+                            {payment.currency}
+                          </Badge>
+                        </div>
+                        <div className="col-span-3 flex items-center justify-between">
+                          <span className="text-xs text-muted-foreground">
+                            {formatTimeAgo(payment.createdAt)}
+                          </span>
+                          {payment.signature && (
+                            <a
+                              href={`https://explorer.solana.com/tx/${payment.signature}?cluster=devnet`}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="opacity-0 group-hover:opacity-100 transition-opacity"
+                            >
+                              <ExternalLink className="h-3.5 w-3.5 text-muted-foreground hover:text-solana-purple-light" />
+                            </a>
                           )}
-                          {payment.status}
-                        </Badge>
+                        </div>
                       </div>
 
-                      {/* From */}
-                      <div className="col-span-3 font-mono text-xs text-muted-foreground">
-                        {payment.payer
-                          ? truncateAddress(payment.payer, 6)
-                          : "—"}
-                      </div>
-
-                      {/* Amount */}
-                      <div className="col-span-2 font-semibold text-sm">
-                        {payment.amount}
-                      </div>
-
-                      {/* Currency */}
-                      <div className="col-span-2">
-                        <Badge variant="outline" className="text-xs">
-                          {payment.currency}
-                        </Badge>
-                      </div>
-
-                      {/* Time */}
-                      <div className="col-span-3 flex items-center justify-between">
-                        <span className="text-xs text-muted-foreground">
-                          {formatTimeAgo(payment.createdAt)}
-                        </span>
+                      {/* Mobile card */}
+                      <div className="md:hidden rounded-lg border border-border/30 p-4 space-y-2">
+                        <div className="flex items-center justify-between">
+                          <Badge
+                            variant={
+                              payment.status === "confirmed"
+                                ? "success"
+                                : "outline"
+                            }
+                            className="text-xs"
+                          >
+                            {payment.status === "confirmed" ? (
+                              <Check className="h-3 w-3 mr-1" />
+                            ) : (
+                              <Clock className="h-3 w-3 mr-1" />
+                            )}
+                            {payment.status}
+                          </Badge>
+                          <span className="text-xs text-muted-foreground">
+                            {formatTimeAgo(payment.createdAt)}
+                          </span>
+                        </div>
+                        <div className="flex items-baseline justify-between">
+                          <span className="font-semibold">
+                            {payment.amount} {payment.currency}
+                          </span>
+                          <span className="font-mono text-xs text-muted-foreground">
+                            {payment.payer
+                              ? truncateAddress(payment.payer, 4)
+                              : "—"}
+                          </span>
+                        </div>
                         {payment.signature && (
                           <a
                             href={`https://explorer.solana.com/tx/${payment.signature}?cluster=devnet`}
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="opacity-0 group-hover:opacity-100 transition-opacity"
+                            className="text-xs text-solana-purple-light flex items-center gap-1"
                           >
-                            <ExternalLink className="h-3.5 w-3.5 text-muted-foreground hover:text-solana-purple-light" />
+                            View tx <ExternalLink className="h-3 w-3" />
                           </a>
                         )}
                       </div>

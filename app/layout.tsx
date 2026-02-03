@@ -19,7 +19,7 @@ const dmSans = DM_Sans({
 
 export const metadata: Metadata = {
   metadataBase: new URL(
-    process.env.NEXT_PUBLIC_APP_URL || "https://paygent-app.vercel.app"
+    process.env.NEXT_PUBLIC_APP_URL || "https://paygent-solana.vercel.app"
   ),
   title: {
     default: "Paygent — Accept payments. Skip the setup.",

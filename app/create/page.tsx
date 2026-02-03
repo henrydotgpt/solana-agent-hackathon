@@ -502,9 +502,9 @@ function PreviewStep({ storefront, router }: { storefront: Storefront; router: a
 
   const storeUrl = typeof window !== "undefined"
     ? `${window.location.origin}/pay/${storefront.slug}`
-    : `https://paygent-app.vercel.app/pay/${storefront.slug}`;
+    : `https://paygent-solana.vercel.app/pay/${storefront.slug}`;
 
-  const embedCode = `<!-- Paygent Payment Button -->\n<script src="${typeof window !== "undefined" ? window.location.origin : "https://paygent-app.vercel.app"}/api/widget/${storefront.slug}"></script>`;
+  const embedCode = `<!-- Paygent Payment Button -->\n<script src="${typeof window !== "undefined" ? window.location.origin : "https://paygent-solana.vercel.app"}/api/widget/${storefront.slug}"></script>`;
 
   const tweetText = `🚀 Just launched my crypto payment page with @paygent!\n\n${storefront.businessName} now accepts SOL & USDC — powered by Solana Pay.\n\n0% setup fee. 0.75% per transaction. Instant settlement.\n\n${storeUrl}`;
 

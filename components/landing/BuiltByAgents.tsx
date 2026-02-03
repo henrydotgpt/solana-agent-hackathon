@@ -21,7 +21,7 @@ const terminalLines = [
   { type: "info" as const, text: "Configuring Helius webhooks...", delay: 300 },
   { type: "success" as const, text: "Build complete. 7,000+ lines. 48 files.", delay: 500 },
   { type: "command" as const, text: "paygent deploy --network=devnet", delay: 800 },
-  { type: "success" as const, text: "Deployed → paygent-app.vercel.app ✨", delay: 0 },
+  { type: "success" as const, text: "Deployed → paygent-solana.vercel.app ✨", delay: 0 },
 ];
 
 const techStack = [

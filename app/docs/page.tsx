@@ -177,11 +177,11 @@ const endpoints = [
 ];
 
 const widgetCode = `<!-- Add to any website -->
-<script src="https://paygent-app.vercel.app/api/widget/YOUR-STORE-SLUG"></script>
+<script src="https://paygent-solana.vercel.app/api/widget/YOUR-STORE-SLUG"></script>
 
 <!-- Or target a specific element -->
 <div data-paygent data-paygent-text="Buy Now with SOL"></div>
-<script src="https://paygent-app.vercel.app/api/widget/YOUR-STORE-SLUG"></script>
+<script src="https://paygent-solana.vercel.app/api/widget/YOUR-STORE-SLUG"></script>
 
 <!-- Listen for payment events -->
 <script>
@@ -272,7 +272,7 @@ export default function DocsPage() {
                 className="text-xs text-muted-foreground hover:text-foreground transition-colors flex items-center gap-1"
                 onClick={() =>
                   copyToClipboard(
-                    `curl -X POST https://paygent-app.vercel.app/api/storefront \\
+                    `curl -X POST https://paygent-solana.vercel.app/api/storefront \\
   -H "Content-Type: application/json" \\
   -d '{
     "businessName": "My Store",
@@ -295,7 +295,7 @@ export default function DocsPage() {
             <pre className="p-4 text-sm overflow-x-auto">
               <code className="text-muted-foreground">
                 <span className="text-emerald-400">curl</span> -X POST
-                https://paygent-app.vercel.app/api/storefront \{"\n"}
+                https://paygent-solana.vercel.app/api/storefront \{"\n"}
                 {"  "}-H{" "}
                 <span className="text-amber-300">
                   &quot;Content-Type: application/json&quot;
@@ -364,7 +364,7 @@ export default function DocsPage() {
           <p className="text-muted-foreground mb-8">
             Base URL:{" "}
             <code className="px-2 py-0.5 rounded-md bg-muted/50 text-sm font-mono">
-              https://paygent-app.vercel.app
+              https://paygent-solana.vercel.app
             </code>
           </p>
 

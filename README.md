@@ -17,9 +17,9 @@ One sentence describes your business. Paygent builds the rest — storefront, ch
 **Why not Stripe?** They charge 2.9% + 30¢ and hold your money. At $10K/mo, that's $2,616/yr you're giving away. Paygent: $900/yr. Same volume. Instant settlement. You do the math.
 
 <p align="center">
-  <a href="https://paygent-app.vercel.app/create"><strong>Create a Store →</strong></a> ·
-  <a href="https://paygent-app.vercel.app/docs"><strong>API Docs</strong></a> ·
-  <a href="https://paygent-app.vercel.app/explore"><strong>Explore Stores</strong></a>
+  <a href="https://paygent-solana.vercel.app/create"><strong>Create a Store →</strong></a> ·
+  <a href="https://paygent-solana.vercel.app/docs"><strong>API Docs</strong></a> ·
+  <a href="https://paygent-solana.vercel.app/explore"><strong>Explore Stores</strong></a>
 </p>
 
 ---
@@ -42,7 +42,7 @@ One sentence describes your business. Paygent builds the rest — storefront, ch
 | 📊 **Analytics Dashboard** | Revenue charts, payment tracking, real-time notifications |
 | 🔄 **Multi-Token** | Accept SOL, USDC, or any SPL token via Jupiter aggregator |
 | 🎯 **AI Marketing Toolkit** | Auto-generates launch tweets, embed code, and share links |
-| 📝 **REST API** | Full developer API with 7 endpoints — [docs](https://paygent-app.vercel.app/docs) |
+| 📝 **REST API** | Full developer API with 7 endpoints — [docs](https://paygent-solana.vercel.app/docs) |
 | 🔔 **Helius Webhooks** | Sub-second payment confirmations via on-chain monitoring |
 | 📱 **Mobile-First** | Responsive design, touch-optimized, safe-area support |
 | 🔒 **Non-Custodial** | Funds flow directly to merchant wallets. We never touch your money. |
@@ -51,9 +51,9 @@ One sentence describes your business. Paygent builds the rest — storefront, ch
 
 | Store | Type | Link |
 |-------|------|------|
-| ☕ Sol Brew Coffee | Retail / E-Commerce | [View Store](https://paygent-app.vercel.app/pay/demo-store) |
-| 💻 Nexus Web3 Studio | Services / Agency | [View Store](https://paygent-app.vercel.app/pay/web3-studio) |
-| 🎓 Solana Academy | Education / Digital | [View Store](https://paygent-app.vercel.app/pay/crypto-academy) |
+| ☕ Sol Brew Coffee | Retail / E-Commerce | [View Store](https://paygent-solana.vercel.app/pay/demo-store) |
+| 💻 Nexus Web3 Studio | Services / Agency | [View Store](https://paygent-solana.vercel.app/pay/web3-studio) |
+| 🎓 Solana Academy | Education / Digital | [View Store](https://paygent-solana.vercel.app/pay/crypto-academy) |
 
 ## Tech Stack
 
@@ -120,7 +120,7 @@ NEXT_PUBLIC_JUPITER_API_URL=      # Jupiter V6 API endpoint
 
 ```html
 <!-- One line. That's it. -->
-<script src="https://paygent-app.vercel.app/api/widget/YOUR-STORE-SLUG"></script>
+<script src="https://paygent-solana.vercel.app/api/widget/YOUR-STORE-SLUG"></script>
 ```
 
 Adds a "Pay with Solana" button that opens a modal checkout. Works with HTML, WordPress, Shopify, and any web platform.
@@ -136,8 +136,8 @@ Adds a "Pay with Solana" button that opens a modal checkout. Works with HTML, Wo
 
 ## Links
 
-- **Live App:** [paygent-app.vercel.app](https://paygent-app.vercel.app)
-- **API Docs:** [paygent-app.vercel.app/docs](https://paygent-app.vercel.app/docs)
+- **Live App:** [paygent-solana.vercel.app](https://paygent-solana.vercel.app)
+- **API Docs:** [paygent-solana.vercel.app/docs](https://paygent-solana.vercel.app/docs)
 - **Colosseum:** Agent #188, Project #101
 - **GitHub:** [henrydotgpt/solana-agent-hackathon](https://github.com/henrydotgpt/solana-agent-hackathon)
 

@@ -4,7 +4,7 @@ import { getStorefront } from "@/lib/store";
 /**
  * Embeddable payment widget endpoint
  * Returns a JavaScript snippet that renders a Paygent pay button on any website
- * Usage: <script src="https://paygent-app.vercel.app/api/widget/SLUG"></script>
+ * Usage: <script src="https://paygent-solana.vercel.app/api/widget/SLUG"></script>
  */
 export async function GET(
   request: NextRequest,
@@ -26,7 +26,7 @@ export async function GET(
   }
 
   const baseUrl =
-    process.env.NEXT_PUBLIC_APP_URL || "https://paygent-app.vercel.app";
+    process.env.NEXT_PUBLIC_APP_URL || "https://paygent-solana.vercel.app";
 
   const widgetScript = `
 (function() {

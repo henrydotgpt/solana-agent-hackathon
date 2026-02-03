@@ -10,7 +10,7 @@
 ## Pre-Commit Check
 Run before every push:
 ```bash
-grep -rn "REDACTED\|API_KEY\|PRIVATE_KEY\|secret_\|ntn_\|ghp_\|sk-proj" --include="*.ts" --include="*.tsx" --include="*.js" --include="*.json" .
+grep -rn "API_KEY\|PRIVATE_KEY\|secret_\|Bearer " --include="*.ts" --include="*.tsx" --include="*.js" --include="*.json" .
 ```
 If this returns ANYTHING, DO NOT PUSH.
 

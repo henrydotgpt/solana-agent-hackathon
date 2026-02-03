@@ -1,9 +1,19 @@
 node_modules/
 .env
 .env.*
+.env.local
 *.key
 *.pem
+*.secret
 .next/
 out/
 dist/
 .vercel
+
+# Internal research docs (not for public repo)
+RESEARCH.md
+FORUM-ANALYSIS.md
+
+# OS
+.DS_Store
+Thumbs.db

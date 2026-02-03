@@ -1,3 +1,4 @@
+import { GradientMesh } from "@/components/ui/gradient-mesh";
 import { Navbar } from "@/components/landing/Navbar";
 import { Hero } from "@/components/landing/Hero";
 import { Problem } from "@/components/landing/Problem";
@@ -10,16 +11,25 @@ import { Footer } from "@/components/landing/Footer";
 
 export default function Home() {
   return (
-    <main className="min-h-screen">
-      <Navbar />
-      <Hero />
-      <Problem />
-      <HowItWorks />
-      <Features />
-      <Pricing />
-      <BuiltByAgents />
-      <CTA />
-      <Footer />
+    <main className="min-h-screen relative">
+      {/* Global animated gradient mesh */}
+      <GradientMesh />
+
+      {/* Noise texture overlay */}
+      <div className="noise" />
+
+      {/* Content */}
+      <div className="relative z-10">
+        <Navbar />
+        <Hero />
+        <Problem />
+        <HowItWorks />
+        <Features />
+        <Pricing />
+        <BuiltByAgents />
+        <CTA />
+        <Footer />
+      </div>
     </main>
   );
 }

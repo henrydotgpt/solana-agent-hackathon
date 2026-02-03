@@ -608,7 +608,35 @@ function detectBusinessType(description: string): {
 } {
   const desc = description.toLowerCase();
 
-  if (desc.includes("design") || desc.includes("creative") || desc.includes("logo") || desc.includes("brand")) {
+  // Extract what they sell for smarter examples
+  const sellsMatch = desc.match(/(?:sell[s]?|offer[s]?|make[s]?|create[s]?)\s+(.+?)(?:\.|,|$)/);
+  const productHint = sellsMatch ? sellsMatch[1].trim() : "";
+
+  // E-commerce / physical products — check FIRST (before design, since "brand" can overlap)
+  if (
+    desc.includes("ecommerce") || desc.includes("e-commerce") ||
+    desc.includes("shop") || desc.includes("store") ||
+    desc.includes("retail") || desc.includes("merch") ||
+    desc.includes("dropship") || desc.includes("product") ||
+    (desc.includes("sell") && !desc.includes("consult"))
+  ) {
+    const item = productHint || "products";
+    const itemCap = item.charAt(0).toUpperCase() + item.slice(1);
+    return {
+      response: `an ${desc.includes("ecommerce") || desc.includes("e-commerce") ? "e-commerce" : "online"} business selling ${item}! Let me set up your storefront.`,
+      example1: `${itemCap} (Small) - 25 USDC`,
+      example2: `${itemCap} (Premium) - 50 USDC`,
+      example3: `Bundle Pack - 100 USDC`,
+    };
+  }
+
+  // Design / creative services (excluding generic "brand" — must have design-related context)
+  if (
+    desc.includes("design") || desc.includes("creative") ||
+    desc.includes("logo") || desc.includes("illustrat") ||
+    desc.includes("graphic") ||
+    (desc.includes("brand") && (desc.includes("design") || desc.includes("agency") || desc.includes("studio")))
+  ) {
     return {
       response: "a design business! I'll set up something sleek for your clients.",
       example1: "Logo Design - 2 SOL",
@@ -616,6 +644,8 @@ function detectBusinessType(description: string): {
       example3: "Rush Delivery - 50 USDC",
     };
   }
+
+  // Consulting / coaching
   if (desc.includes("consult") || desc.includes("coach") || desc.includes("mentor") || desc.includes("advisor")) {
     return {
       response: "consulting — smart. Let me build you a professional intake page.",
@@ -624,23 +654,29 @@ function detectBusinessType(description: string): {
       example3: "Monthly Retainer - 200 USDC",
     };
   }
-  if (desc.includes("food") || desc.includes("cafe") || desc.includes("restaurant") || desc.includes("bakery") || desc.includes("coffee")) {
+
+  // Food & beverage
+  if (desc.includes("food") || desc.includes("cafe") || desc.includes("restaurant") || desc.includes("bakery") || desc.includes("coffee") || desc.includes("catering")) {
     return {
       response: "food business! I'll make your menu look delicious.",
-      example1: "Small Order - 0.1 SOL",
-      example2: "Family Meal - 0.5 SOL",
+      example1: "Small Order - 10 USDC",
+      example2: "Family Meal - 25 USDC",
       example3: "Catering Package - 100 USDC",
     };
   }
-  if (desc.includes("photo") || desc.includes("video") || desc.includes("film") || desc.includes("shoot")) {
+
+  // Photography / videography
+  if (desc.includes("photo") || desc.includes("video") || desc.includes("film") || desc.includes("shoot") || desc.includes("camera")) {
     return {
-      response: "visual work — perfect for Paygent. Clients will love scanning a QR code to book.",
+      response: "visual work — perfect for Paygent. Clients will love scanning a QR to book.",
       example1: "Mini Session - 1 SOL",
       example2: "Full Shoot - 5 SOL",
       example3: "Video Edit - 100 USDC",
     };
   }
-  if (desc.includes("develop") || desc.includes("code") || desc.includes("software") || desc.includes("app") || desc.includes("web")) {
+
+  // Software / development
+  if (desc.includes("develop") || desc.includes("code") || desc.includes("software") || desc.includes("app") || desc.includes("saas")) {
     return {
       response: "a dev shop! Your clients are going to love paying with zero friction.",
       example1: "Bug Fix - 0.5 SOL",
@@ -648,7 +684,9 @@ function detectBusinessType(description: string): {
       example3: "Full Project - 500 USDC",
     };
   }
-  if (desc.includes("teach") || desc.includes("tutor") || desc.includes("course") || desc.includes("lesson") || desc.includes("class")) {
+
+  // Education / courses
+  if (desc.includes("teach") || desc.includes("tutor") || desc.includes("course") || desc.includes("lesson") || desc.includes("class") || desc.includes("workshop")) {
     return {
       response: "education — great use case. Let's get your students paying easily.",
       example1: "Single Lesson - 0.3 SOL",
@@ -656,7 +694,9 @@ function detectBusinessType(description: string): {
       example3: "Private Tutoring - 50 USDC",
     };
   }
-  if (desc.includes("fitness") || desc.includes("gym") || desc.includes("train") || desc.includes("yoga") || desc.includes("workout")) {
+
+  // Fitness / wellness
+  if (desc.includes("fitness") || desc.includes("gym") || desc.includes("train") || desc.includes("yoga") || desc.includes("workout") || desc.includes("wellness")) {
     return {
       response: "fitness! Your storefront is going to look clean and energetic.",
       example1: "Single Session - 0.2 SOL",
@@ -665,12 +705,43 @@ function detectBusinessType(description: string): {
     };
   }
 
-  // Default
+  // Music / art / digital content
+  if (desc.includes("music") || desc.includes("art") || desc.includes("nft") || desc.includes("digital") || desc.includes("beat") || desc.includes("print")) {
+    return {
+      response: "digital content — great fit for crypto payments. Let's set up your catalog.",
+      example1: "Digital Download - 0.1 SOL",
+      example2: "Premium Collection - 1 SOL",
+      example3: "Custom Commission - 50 USDC",
+    };
+  }
+
+  // Freelance / services (generic)
+  if (desc.includes("freelan") || desc.includes("service") || desc.includes("agency") || desc.includes("hire")) {
+    return {
+      response: "a service business — perfect. Let's get your pricing dialed in.",
+      example1: "Starter Package - 1 SOL",
+      example2: "Standard Package - 3 SOL",
+      example3: "Premium Package - 100 USDC",
+    };
+  }
+
+  // Default — use product hint if available
+  if (productHint) {
+    const hint = productHint.charAt(0).toUpperCase() + productHint.slice(1);
+    return {
+      response: `nice — let me build you a storefront for that.`,
+      example1: `${hint} (Basic) - 25 USDC`,
+      example2: `${hint} (Pro) - 50 USDC`,
+      example3: `${hint} (Premium) - 100 USDC`,
+    };
+  }
+
+  // True default
   return {
-    response: "I can work with that. Let's get your pricing set up.",
-    example1: "Basic Package - 0.5 SOL",
-    example2: "Premium Service - 2 SOL",
-    example3: "Custom Work - 50 USDC",
+    response: "sounds interesting! Let's get your pricing set up.",
+    example1: "Basic Package - 25 USDC",
+    example2: "Standard Package - 50 USDC",
+    example3: "Premium Package - 100 USDC",
   };
 }
 
@@ -678,22 +749,45 @@ function detectBusinessType(description: string): {
  * Extract a business name from a description
  */
 function extractBusinessName(description: string): string {
-  // Check for patterns like "I run X" or "My business is X" or "I'm a X"
-  const patterns = [
+  // Check for explicit names first
+  const namePatterns = [
     /(?:called|named)\s+["']?([^"'\n,]+)/i,
-    /(?:I run|I own|We are|I'm|We're|I am)\s+(?:a\s+)?["']?([^"'\n,]+)/i,
+    /(?:my (?:business|company|shop|store|brand) (?:is|name is))\s+["']?([^"'\n,]+?)(?:\s+(?:and|that|which|we|i)\b|["'\n,.]|$)/i,
   ];
 
-  for (const pattern of patterns) {
+  for (const pattern of namePatterns) {
     const match = description.match(pattern);
     if (match) {
-      return match[1].trim().slice(0, 60);
+      const name = (match[1] || match[2] || "").trim().slice(0, 60);
+      if (name && name.split(/\s+/).length <= 6) return name;
     }
+  }
+
+  // Try to extract what they sell/do
+  const sellMatch = description.match(
+    /(?:sell[s]?|offer[s]?|make[s]?|provide[s]?)\s+(.+?)(?:\.|,|and|$)/i
+  );
+  if (sellMatch) {
+    const product = sellMatch[1].trim();
+    // Capitalize and clean
+    const words = product.split(/\s+/).slice(0, 3);
+    return words.map((w) => w.charAt(0).toUpperCase() + w.slice(1).toLowerCase()).join(" ") + " Store";
+  }
+
+  // Try "I run/own" patterns
+  const runMatch = description.match(
+    /(?:I run|I own|We are|I'm|We're|I am)\s+(?:a[n]?\s+)?(.+?)(?:\.|,|that|which|and|$)/i
+  );
+  if (runMatch) {
+    const biz = runMatch[1].trim();
+    const words = biz.split(/\s+/).slice(0, 4);
+    return words.map((w) => w.charAt(0).toUpperCase() + w.slice(1).toLowerCase()).join(" ");
   }
 
   // Fallback: first few meaningful words
   const words = description
-    .replace(/^(I|We|My|Our|The)\s+/i, "")
+    .replace(/^(I|We|My|Our|The|my|we|our|the)\s+/i, "")
+    .replace(/^(business|company|brand|shop|store)\s+(is|are)\s+/i, "")
     .split(/\s+/)
     .slice(0, 3)
     .map((w) => w.charAt(0).toUpperCase() + w.slice(1).toLowerCase());

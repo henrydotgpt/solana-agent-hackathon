@@ -2,97 +2,110 @@
 
 import React from "react";
 import { Reveal } from "@/components/ui/reveal";
+import { AnimatedTerminal } from "@/components/ui/animated-terminal";
+import { SectionGlow } from "@/components/ui/gradient-mesh";
 
-const agents = [
-  {
-    name: "Sentai",
-    role: "Architecture, orchestration, code review",
-    tag: "Lead",
-  },
-  {
-    name: "Claudius",
-    role: "Smart contracts, frontend, deployment",
-    tag: "Builder",
-  },
-  {
-    name: "Mimir",
-    role: "Market research, strategy, copywriting",
-    tag: "Research",
-  },
+const terminalLines = [
+  { type: "command" as const, text: "paygent init --mode=autonomous", delay: 600 },
+  { type: "info" as const, text: "Initializing agent squad...", delay: 400 },
+  { type: "output" as const, text: "Sentai (lead)    → architecture, orchestration", delay: 200 },
+  { type: "output" as const, text: "Claudius (build)  → frontend, smart contracts", delay: 200 },
+  { type: "output" as const, text: "Mimir (research)  → market analysis, copywriting", delay: 400 },
+  { type: "success" as const, text: "3 agents online. Zero humans coding.", delay: 600 },
+  { type: "command" as const, text: "paygent build --target=production", delay: 600 },
+  { type: "info" as const, text: "Scaffolding Next.js + Solana Pay...", delay: 300 },
+  { type: "info" as const, text: "Generating payment routes...", delay: 300 },
+  { type: "info" as const, text: "Building merchant dashboard...", delay: 300 },
+  { type: "info" as const, text: "Setting up Jupiter auto-convert...", delay: 300 },
+  { type: "info" as const, text: "Configuring Helius webhooks...", delay: 300 },
+  { type: "success" as const, text: "Build complete. 6,000+ lines. 42 files.", delay: 500 },
+  { type: "command" as const, text: "paygent deploy --network=devnet", delay: 800 },
+  { type: "success" as const, text: "Deployed → paygent.app ✨", delay: 0 },
+];
+
+const techStack = [
+  { name: "Next.js 14", role: "Framework" },
+  { name: "Solana Pay", role: "Payments" },
+  { name: "Jupiter", role: "Swaps" },
+  { name: "Helius", role: "Webhooks" },
+  { name: "OpenClaw", role: "Agent runtime" },
+  { name: "Claude", role: "AI backbone" },
 ];
 
 export function BuiltByAgents() {
   return (
-    <section className="py-24 sm:py-32 relative overflow-hidden">
-      <div className="absolute top-0 inset-x-0 h-px bg-gradient-to-r from-transparent via-white/[0.06] to-transparent" />
-
-      {/* Subtle background */}
-      <div className="absolute inset-0">
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-blue-500/[0.03] rounded-full blur-[150px]" />
-      </div>
+    <section className="py-28 sm:py-36 relative overflow-hidden">
+      <div className="section-divider absolute top-0 inset-x-0" />
+      <SectionGlow color="purple" position="left" />
 
       <div className="relative mx-auto max-w-7xl px-6 sm:px-8">
-        <div className="grid lg:grid-cols-2 gap-16 lg:gap-24 items-start">
-          {/* Left */}
-          <Reveal>
-            <div className="inline-flex items-center gap-2.5 px-4 py-1.5 rounded-full glass text-xs tracking-wide mb-6">
-              <span className="text-blue-400/70 font-display font-500">
-                Colosseum AI Agent Hackathon
-              </span>
-            </div>
-
-            <h2 className="font-display text-4xl sm:text-5xl font-800 tracking-tight leading-tight mb-5">
-              Built entirely
-              <br />
-              by AI agents.
-            </h2>
-
-            <p className="text-lg text-[#6B6B78] leading-relaxed max-w-md">
-              No human wrote a single line of code. Paygent was designed,
-              architected, and deployed by autonomous AI agents running on{" "}
-              <a
-                href="https://openclaw.ai"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-[#8A8A96] underline underline-offset-4 decoration-white/10 hover:text-white hover:decoration-white/25 transition-colors"
-              >
-                OpenClaw
-              </a>
-              .
-            </p>
+        <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-start">
+          {/* Left — Animated terminal */}
+          <Reveal direction="left">
+            <AnimatedTerminal
+              lines={terminalLines}
+              typingSpeed={25}
+              title="paygent — autonomous build"
+              className="border border-white/[0.06] shadow-2xl shadow-black/40"
+            />
           </Reveal>
 
-          {/* Right — agent list */}
-          <Reveal delay={0.15}>
-            <div className="rounded-2xl glass p-7 sm:p-8">
-              <div className="text-xs font-display font-600 uppercase tracking-[0.15em] text-[#5A5A66] mb-4">
-                The team
+          {/* Right — Story */}
+          <div className="lg:sticky lg:top-24">
+            <Reveal delay={0.15}>
+              <div className="inline-flex items-center gap-2.5 px-4 py-1.5 rounded-full glass text-xs tracking-wide mb-6">
+                <span className="text-purple-400/70 font-display font-500">
+                  Colosseum AI Agent Hackathon
+                </span>
               </div>
 
-              {agents.map((agent, i) => (
-                <div
-                  key={agent.name}
-                  className={`flex items-center justify-between py-5 ${
-                    i < agents.length - 1
-                      ? "border-b border-white/[0.04]"
-                      : ""
-                  }`}
+              <h2 className="font-display text-4xl sm:text-5xl font-800 tracking-tight leading-tight mb-5">
+                Built entirely
+                <br />
+                by{" "}
+                <span className="bg-clip-text text-transparent bg-gradient-to-r from-purple-400 to-emerald-400">
+                  AI agents.
+                </span>
+              </h2>
+
+              <p className="text-lg text-gray-500 leading-relaxed mb-8 max-w-md">
+                No human wrote a single line of code. Three autonomous agents —
+                Sentai, Claudius, and Mimir — designed, built, and deployed Paygent
+                from scratch on{" "}
+                <a
+                  href="https://openclaw.ai"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-gray-400 underline underline-offset-4 decoration-white/10 hover:text-white hover:decoration-white/25 transition-colors"
                 >
-                  <div>
-                    <div className="font-display font-600 text-white text-[15px]">
-                      {agent.name}
+                  OpenClaw
+                </a>
+                .
+              </p>
+            </Reveal>
+
+            {/* Tech stack grid */}
+            <Reveal delay={0.3}>
+              <div className="text-xs font-display font-600 uppercase tracking-wider text-gray-600 mb-3">
+                Tech stack
+              </div>
+              <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
+                {techStack.map((tech) => (
+                  <div
+                    key={tech.name}
+                    className="px-3 py-2.5 rounded-xl border border-white/[0.04] bg-white/[0.02] hover:bg-white/[0.04] transition-colors"
+                  >
+                    <div className="text-sm font-display font-600 text-gray-300">
+                      {tech.name}
                     </div>
-                    <div className="text-sm text-[#5A5A66] mt-0.5">
-                      {agent.role}
+                    <div className="text-[10px] text-gray-600 mt-0.5">
+                      {tech.role}
                     </div>
                   </div>
-                  <div className="text-[11px] font-display font-500 text-[#3A3A44] px-2.5 py-1 rounded-lg border border-white/[0.06]">
-                    {agent.tag}
-                  </div>
-                </div>
-              ))}
-            </div>
-          </Reveal>
+                ))}
+              </div>
+            </Reveal>
+          </div>
         </div>
       </div>
     </section>

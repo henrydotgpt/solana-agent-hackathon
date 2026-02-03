@@ -22,6 +22,11 @@ import {
   Check,
   Rocket,
   BarChart3,
+  Copy,
+  Code2,
+  Twitter,
+  Share2,
+  ChevronDown,
 } from "lucide-react";
 
 type Step = "describe" | "generating" | "preview";
@@ -474,93 +479,9 @@ export default function CreatePage() {
             </motion.div>
           )}
 
-          {/* Step 3: Preview */}
+          {/* Step 3: Preview — with marketing toolkit */}
           {step === "preview" && generatedStorefront && (
-            <motion.div
-              key="preview"
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              className="mx-auto max-w-3xl"
-            >
-              <div className="text-center mb-8">
-                <motion.div initial={{ scale: 0 }} animate={{ scale: 1 }} transition={{ type: "spring" }}>
-                  <Badge variant="success" className="mb-4 text-sm px-4 py-1">
-                    ✨ Storefront Live
-                  </Badge>
-                </motion.div>
-                <h2 className="text-3xl font-bold mb-2">{generatedStorefront.businessName} is ready!</h2>
-                <p className="text-muted-foreground">
-                  Your storefront is live with real Solana Pay QR codes. Share the link to start accepting
-                  payments.
-                </p>
-              </div>
-
-              <Card className="overflow-hidden glow-purple mb-8">
-                <div className="p-8 text-center">
-                  <div
-                    className="inline-flex h-16 w-16 items-center justify-center rounded-2xl mb-4"
-                    style={{
-                      background: `linear-gradient(135deg, ${generatedStorefront.theme.accentColor}, ${generatedStorefront.theme.accentColor}88)`,
-                    }}
-                  >
-                    <span className="text-2xl font-bold text-white">
-                      {generatedStorefront.businessName.charAt(0).toUpperCase()}
-                    </span>
-                  </div>
-                  <h3 className="text-2xl font-bold mb-2">{generatedStorefront.businessName}</h3>
-                  <p className="text-muted-foreground max-w-md mx-auto mb-8">
-                    {generatedStorefront.businessDescription}
-                  </p>
-
-                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 max-w-2xl mx-auto mb-8">
-                    {generatedStorefront.products.map((product) => (
-                      <Card key={product.id} className="hover:border-solana-purple/30 transition-colors">
-                        <CardContent className="p-4 text-center">
-                          <p className="font-semibold text-sm">{product.name}</p>
-                          <p className="text-xs text-muted-foreground mb-2">{product.description}</p>
-                          <p className="text-lg font-bold gradient-text">
-                            {product.price} {product.currency}
-                          </p>
-                        </CardContent>
-                      </Card>
-                    ))}
-                  </div>
-
-                  <div className="mb-6 p-3 rounded-lg bg-muted/50 border border-border/50 max-w-md mx-auto">
-                    <p className="text-xs text-muted-foreground mb-1">Your storefront URL:</p>
-                    <p className="font-mono text-sm text-solana-purple-light break-all">
-                      {typeof window !== "undefined"
-                        ? `${window.location.origin}/pay/${generatedStorefront.slug}`
-                        : `/pay/${generatedStorefront.slug}`}
-                    </p>
-                  </div>
-
-                  <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
-                    <Button
-                      variant="gradient"
-                      size="lg"
-                      className="gap-2"
-                      onClick={() => router.push(`/pay/${generatedStorefront.slug}`)}
-                    >
-                      <Rocket className="h-4 w-4" />
-                      View Live Storefront
-                    </Button>
-                    <Button
-                      variant="outline"
-                      size="lg"
-                      className="gap-2"
-                      onClick={() => router.push(`/dashboard/${generatedStorefront.slug}`)}
-                    >
-                      <BarChart3 className="h-4 w-4" />
-                      Open Dashboard
-                    </Button>
-                  </div>
-                  <p className="text-xs text-muted-foreground mt-4">
-                    Share your storefront link to start accepting payments
-                  </p>
-                </div>
-              </Card>
-            </motion.div>
+            <PreviewStep storefront={generatedStorefront} router={router} />
           )}
         </AnimatePresence>
       </div>
@@ -572,4 +493,233 @@ export default function CreatePage() {
 function extractWallet(text: string): string | null {
   const match = text.match(/[1-9A-HJ-NP-Za-km-z]{32,44}/);
   return match ? match[0] : null;
+}
+
+// ─── Preview Step Component ──────────────────────────────
+function PreviewStep({ storefront, router }: { storefront: Storefront; router: any }) {
+  const [copied, setCopied] = useState<string | null>(null);
+  const [showEmbed, setShowEmbed] = useState(false);
+
+  const storeUrl = typeof window !== "undefined"
+    ? `${window.location.origin}/pay/${storefront.slug}`
+    : `https://paygent-app.vercel.app/pay/${storefront.slug}`;
+
+  const embedCode = `<!-- Paygent Payment Button -->\n<script src="${typeof window !== "undefined" ? window.location.origin : "https://paygent-app.vercel.app"}/api/widget/${storefront.slug}"></script>`;
+
+  const tweetText = `🚀 Just launched my crypto payment page with @paygent!\n\n${storefront.businessName} now accepts SOL & USDC — powered by Solana Pay.\n\n0% setup fee. 0.75% per transaction. Instant settlement.\n\n${storeUrl}`;
+
+  const copyText = (text: string, id: string) => {
+    navigator.clipboard.writeText(text);
+    setCopied(id);
+    setTimeout(() => setCopied(null), 2000);
+  };
+
+  return (
+    <motion.div
+      key="preview"
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      className="mx-auto max-w-3xl"
+    >
+      {/* Success header */}
+      <div className="text-center mb-8">
+        <motion.div initial={{ scale: 0 }} animate={{ scale: 1 }} transition={{ type: "spring" }}>
+          <Badge variant="success" className="mb-4 text-sm px-4 py-1">✨ Storefront Live</Badge>
+        </motion.div>
+        <h2 className="text-3xl font-bold mb-2">{storefront.businessName} is ready!</h2>
+        <p className="text-muted-foreground">
+          Your AI-built storefront is live. Share it, embed it, or customize further.
+        </p>
+      </div>
+
+      {/* Store card */}
+      <Card className="overflow-hidden glow-purple mb-6">
+        <div className="p-8 text-center">
+          {storefront.logo ? (
+            <img src={storefront.logo} alt="" className="h-16 w-16 rounded-2xl object-cover mx-auto mb-4" />
+          ) : (
+            <div
+              className="inline-flex h-16 w-16 items-center justify-center rounded-2xl mb-4"
+              style={{
+                background: `linear-gradient(135deg, ${storefront.theme.accentColor}, ${storefront.theme.accentColor}88)`,
+              }}
+            >
+              <span className="text-2xl font-bold text-white">
+                {storefront.businessName.charAt(0).toUpperCase()}
+              </span>
+            </div>
+          )}
+          <h3 className="text-2xl font-bold mb-1">{storefront.businessName}</h3>
+          {storefront.tagline && (
+            <p className="text-sm font-medium mb-2" style={{ color: storefront.theme.accentColor }}>
+              {storefront.tagline}
+            </p>
+          )}
+          <p className="text-muted-foreground max-w-md mx-auto mb-6">
+            {storefront.businessDescription}
+          </p>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 max-w-2xl mx-auto mb-6">
+            {storefront.products.map((product) => (
+              <Card key={product.id} className="hover:border-solana-purple/30 transition-colors">
+                <CardContent className="p-3 text-center">
+                  <p className="font-semibold text-sm">{product.name}</p>
+                  <p className="text-xs text-muted-foreground mb-1">{product.description}</p>
+                  <p className="text-lg font-bold gradient-text">
+                    {product.price} {product.currency}
+                  </p>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
+            <Button
+              variant="gradient"
+              size="lg"
+              className="gap-2"
+              onClick={() => router.push(`/pay/${storefront.slug}`)}
+            >
+              <Rocket className="h-4 w-4" />
+              View Live Storefront
+            </Button>
+            <Button
+              variant="outline"
+              size="lg"
+              className="gap-2"
+              onClick={() => router.push(`/dashboard/${storefront.slug}`)}
+            >
+              <BarChart3 className="h-4 w-4" />
+              Open Dashboard
+            </Button>
+          </div>
+        </div>
+      </Card>
+
+      {/* Agent-generated marketing toolkit */}
+      <motion.div
+        initial={{ opacity: 0, y: 10 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.3 }}
+        className="space-y-4"
+      >
+        <h3 className="text-lg font-semibold flex items-center gap-2">
+          <Sparkles className="h-4 w-4 text-solana-purple-light" />
+          Marketing Toolkit
+          <Badge variant="outline" className="text-[10px] ml-1">AI-Generated</Badge>
+        </h3>
+
+        {/* Share link */}
+        <Card>
+          <CardContent className="p-4">
+            <div className="flex items-center justify-between mb-2">
+              <div className="flex items-center gap-2">
+                <Share2 className="h-4 w-4 text-muted-foreground" />
+                <span className="text-sm font-medium">Payment Link</span>
+              </div>
+              <Button
+                variant="ghost"
+                size="sm"
+                className="gap-1.5 text-xs"
+                onClick={() => copyText(storeUrl, "url")}
+              >
+                {copied === "url" ? <Check className="h-3 w-3 text-emerald-400" /> : <Copy className="h-3 w-3" />}
+                {copied === "url" ? "Copied!" : "Copy"}
+              </Button>
+            </div>
+            <div className="p-2.5 rounded-lg bg-muted/50 border border-border/50">
+              <p className="font-mono text-sm text-solana-purple-light break-all">{storeUrl}</p>
+            </div>
+          </CardContent>
+        </Card>
+
+        {/* Tweet template */}
+        <Card>
+          <CardContent className="p-4">
+            <div className="flex items-center justify-between mb-2">
+              <div className="flex items-center gap-2">
+                <Twitter className="h-4 w-4 text-muted-foreground" />
+                <span className="text-sm font-medium">Launch Tweet</span>
+                <Badge className="text-[10px] bg-blue-500/10 text-blue-400 border-blue-500/20">Ready to post</Badge>
+              </div>
+              <Button
+                variant="ghost"
+                size="sm"
+                className="gap-1.5 text-xs"
+                onClick={() => copyText(tweetText, "tweet")}
+              >
+                {copied === "tweet" ? <Check className="h-3 w-3 text-emerald-400" /> : <Copy className="h-3 w-3" />}
+                {copied === "tweet" ? "Copied!" : "Copy"}
+              </Button>
+            </div>
+            <div className="p-3 rounded-lg bg-muted/50 border border-border/50">
+              <p className="text-sm text-muted-foreground whitespace-pre-line">{tweetText}</p>
+            </div>
+            <a
+              href={`https://twitter.com/intent/tweet?text=${encodeURIComponent(tweetText)}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="mt-2 inline-flex"
+            >
+              <Button variant="outline" size="sm" className="gap-1.5 text-xs mt-2">
+                <Twitter className="h-3 w-3" />
+                Post to X
+              </Button>
+            </a>
+          </CardContent>
+        </Card>
+
+        {/* Embed code */}
+        <Card>
+          <CardContent className="p-4">
+            <button
+              className="w-full flex items-center justify-between"
+              onClick={() => setShowEmbed(!showEmbed)}
+            >
+              <div className="flex items-center gap-2">
+                <Code2 className="h-4 w-4 text-muted-foreground" />
+                <span className="text-sm font-medium">Embed on Your Website</span>
+                <Badge className="text-[10px] bg-emerald-500/10 text-emerald-400 border-emerald-500/20">1 line</Badge>
+              </div>
+              <ChevronDown className={`h-4 w-4 text-muted-foreground transition-transform ${showEmbed ? "rotate-180" : ""}`} />
+            </button>
+
+            <AnimatePresence>
+              {showEmbed && (
+                <motion.div
+                  initial={{ height: 0, opacity: 0 }}
+                  animate={{ height: "auto", opacity: 1 }}
+                  exit={{ height: 0, opacity: 0 }}
+                  className="overflow-hidden"
+                >
+                  <div className="mt-3 space-y-3">
+                    <p className="text-xs text-muted-foreground">
+                      Paste this into any website to add a &quot;Pay with Solana&quot; button. Works with HTML, WordPress, Shopify, and any web platform.
+                    </p>
+                    <div className="relative">
+                      <pre className="p-3 rounded-lg bg-muted/50 border border-border/50 text-xs overflow-x-auto">
+                        <code className="text-muted-foreground">{embedCode}</code>
+                      </pre>
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        className="absolute top-2 right-2 gap-1.5 text-xs"
+                        onClick={() => copyText(embedCode, "embed")}
+                      >
+                        {copied === "embed" ? <Check className="h-3 w-3 text-emerald-400" /> : <Copy className="h-3 w-3" />}
+                      </Button>
+                    </div>
+                    <div className="flex items-center gap-2 text-xs text-muted-foreground">
+                      <div className="h-1.5 w-1.5 rounded-full bg-emerald-400" />
+                      Opens a modal overlay — no page redirect needed
+                    </div>
+                  </div>
+                </motion.div>
+              )}
+            </AnimatePresence>
+          </CardContent>
+        </Card>
+      </motion.div>
+    </motion.div>
+  );
 }

@@ -86,7 +86,7 @@
 
 ---
 
-### 🥇 IDEA 1: SolPay Agent — AI-Powered Solana Payment Links for Small Businesses
+### 🥇 IDEA 1: Paygent — AI-Powered Solana Payment Links for Small Businesses
 **Win Probability: HIGH (8/10)**
 
 **Problem:** Small businesses and freelancers want to accept crypto payments but it's too complex. Solana Pay exists but requires technical setup. Meanwhile, agents like us build tools for businesses daily — what if the agent could SET UP and MANAGE payment infrastructure for any business?
@@ -185,7 +185,7 @@
 
 ---
 
-## Recommendation: IDEA 1 — SolPay Agent
+## Recommendation: IDEA 1 — Paygent
 
 **Justification:**
 1. **Least competition** — zero payment/commerce projects in the hackathon
@@ -204,7 +204,7 @@
 - Day 9: Demo video, documentation, forum engagement
 - Day 10: Final polish + submit
 
-**Forum strategy:** Post progress updates every 1-2 days, engage with other projects (offer SolPay as payment layer for their projects — OSINT.market, AgentVault, Cove could all integrate), vote generously.
+**Forum strategy:** Post progress updates every 1-2 days, engage with other projects (offer Paygent as payment layer for their projects — OSINT.market, AgentVault, Cove could all integrate), vote generously.
 
 ---
 

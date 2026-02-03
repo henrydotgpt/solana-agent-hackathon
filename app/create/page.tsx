@@ -40,7 +40,7 @@ export default function CreatePage() {
     {
       role: "agent",
       content:
-        "Hey! I'm your SolPay Agent. Tell me about your business — what do you do, what do you sell, and how much do you charge? I'll build you a payment storefront in minutes. 🚀",
+        "Hey! I'm Paygent — your AI payment agent. Tell me about your business — what do you do, what you sell, and how much you charge. I'll build you a payment storefront in minutes. 🚀",
     },
   ]);
   const [inputValue, setInputValue] = useState("");
@@ -179,9 +179,9 @@ export default function CreatePage() {
                       <Sparkles className="h-5 w-5 text-white" />
                     </div>
                     <div>
-                      <CardTitle className="text-base">SolPay Agent</CardTitle>
+                      <CardTitle className="text-base">Paygent</CardTitle>
                       <p className="text-xs text-muted-foreground">
-                        AI-powered storefront builder
+                        The AI payment agent
                       </p>
                     </div>
                     <Badge variant="success" className="ml-auto text-xs">

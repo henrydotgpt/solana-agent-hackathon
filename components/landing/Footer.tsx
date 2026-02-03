@@ -15,7 +15,7 @@ export function Footer() {
               <Zap className="h-3.5 w-3.5 text-white" />
             </div>
             <span className="text-sm font-semibold">
-              Sol<span className="gradient-text">Pay</span> Agent
+              Pay<span className="gradient-text">gent</span>
             </span>
           </div>
 

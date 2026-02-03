@@ -22,7 +22,7 @@ export function Navbar() {
             <div className="absolute inset-0 rounded-lg bg-solana-gradient opacity-0 blur-lg transition-opacity group-hover:opacity-50" />
           </div>
           <span className="text-lg font-bold tracking-tight">
-            Sol<span className="gradient-text">Pay</span>
+            Pay<span className="gradient-text">gent</span>
           </span>
         </Link>
 

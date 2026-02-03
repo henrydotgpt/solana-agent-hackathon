@@ -23,9 +23,9 @@ export const SOL_MINT = new PublicKey(
 );
 
 // App metadata
-export const APP_NAME = "SolPay Agent";
+export const APP_NAME = "Paygent";
 export const APP_DESCRIPTION =
-  "AI-powered Solana payment storefronts for businesses. No code. No crypto knowledge needed.";
+  "The AI payment agent. Describe your business, get a complete Solana payment storefront. No code. No crypto knowledge needed.";
 export const APP_URL = process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000";
 
 // Supported tokens

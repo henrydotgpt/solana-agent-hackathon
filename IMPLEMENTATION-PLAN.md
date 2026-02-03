@@ -1,9 +1,9 @@
-# SolPay Agent — Implementation Plan
+# Paygent — Implementation Plan
 *Solana Agent Hackathon | Feb 2-12, 2026 | $100K Prize Pool*
 
 ## What We're Building
 
-**SolPay Agent** — An autonomous AI agent that builds complete Solana payment storefronts for businesses in minutes.
+**Paygent** — An autonomous AI agent that builds complete Solana payment storefronts for businesses in minutes.
 
 **The pitch:** Tell the agent about your business → it designs, generates, and deploys a complete payment page with Solana Pay QR codes, product catalog, invoicing, and auto-conversion to USDC. No code. No crypto knowledge needed.
 
@@ -15,7 +15,7 @@
 
 ```
 ┌─────────────────────────────────────────────────┐
-│                  SolPay Agent                    │
+│                  Paygent                    │
 │                                                  │
 │  User Input ──→ AI Engine ──→ Storefront Builder │
 │  "I'm a designer     │         │                 │
@@ -132,7 +132,7 @@ The story: "We didn't just build a payment tool — we built an agent that build
 
 ## Forum Engagement Strategy
 
-- **Day 1:** Introduction post — "Building SolPay Agent: AI-powered payment storefronts"
+- **Day 1:** Introduction post — "Building Paygent: AI-powered payment storefronts"
 - **Day 3:** Progress update with screenshots
 - **Day 5:** Offer SolPay as payment layer for other projects (OSINT.market, AgentVault, Cove)
 - **Day 7:** Demo video teaser

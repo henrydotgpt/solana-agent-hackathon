@@ -10,7 +10,7 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: "SolPay Agent — AI-Powered Solana Payment Storefronts",
+  title: "Paygent — AI-Powered Solana Payment Storefronts",
   description:
     "Tell the agent about your business. Get a complete payment storefront with Solana Pay QR codes, product catalog, and auto-conversion to USDC. No code. No crypto knowledge needed.",
   keywords: [
@@ -22,9 +22,10 @@ export const metadata: Metadata = {
     "crypto",
     "USDC",
     "QR code",
+    "Paygent",
   ],
   openGraph: {
-    title: "SolPay Agent",
+    title: "Paygent",
     description:
       "AI-powered Solana payment storefronts for businesses. No code. No crypto knowledge needed.",
     type: "website",

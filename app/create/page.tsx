@@ -55,6 +55,11 @@ export default function CreatePage() {
     Array<{ name: string; description: string; price: number; currency: "SOL" | "USDC" }>
   >([]);
 
+  // Last suggested example products (for "same like that" / "yes" / "those" confirmations)
+  const [suggestedProducts, setSuggestedProducts] = useState<
+    Array<{ name: string; description: string; price: number; currency: "SOL" | "USDC" }>
+  >([]);
+
   // Generated storefront
   const [generatedStorefront, setGeneratedStorefront] =
     useState<Storefront | null>(null);
@@ -131,6 +136,11 @@ export default function CreatePage() {
         } else {
           setAgentState("awaiting_products");
           const businessType = detectBusinessType(userMessage);
+          // Store suggested examples so user can confirm them
+          const suggested = parseProducts(
+            `${businessType.example1}\n${businessType.example2}\n${businessType.example3}`
+          );
+          setSuggestedProducts(suggested);
           await addAgentMessage(
             `Love it — ${businessType.response}\n\nNow let's set up your pricing. List what you offer with prices, like:\n• ${businessType.example1}\n• ${businessType.example2}\n• ${businessType.example3}\n\nUse SOL or USDC for each item.`
           );
@@ -139,11 +149,20 @@ export default function CreatePage() {
       }
 
       case "awaiting_products": {
-        // Parse products from message
-        const parsed = parseProducts(userMessage);
+        // Check if user is confirming the suggested examples
+        const confirmPhrases = /^(same|yes|yeah|yep|yup|those|exactly|that|ok|okay|sure|perfect|go|do it|use those|same like that|like that|works|good|fine|sounds good|let's go|lgtm)\s*[.!]?\s*$/i;
+        let parsed: Array<{ name: string; description: string; price: number; currency: "SOL" | "USDC" }>;
+
+        if (confirmPhrases.test(userMessage.trim()) && suggestedProducts.length > 0) {
+          // User confirmed the suggested examples
+          parsed = suggestedProducts;
+        } else {
+          parsed = parseProducts(userMessage);
+        }
+
         if (parsed.length === 0) {
           await addAgentMessage(
-            "Hmm, I couldn't quite parse that. Try this format:\n• Service Name - 0.5 SOL\n• Another Service - 10 USDC\n\nEach line: name, dash, price with SOL or USDC."
+            "Hmm, I couldn't quite parse that. Try this format:\n• Service Name - 0.5 SOL\n• Another Service - 10 USDC\n\nOr just say \"yes\" to use the examples I suggested."
           );
         } else {
           setProducts(parsed);
@@ -801,6 +820,8 @@ function extractBusinessName(description: string): string {
  * - "Product Name - 0.5 SOL"
  * - "Product Name: 10 USDC"
  * - "Product Name 2.5 SOL"
+ * - Handles all Unicode dashes (en dash, em dash, etc.)
+ * - Single or multi-line input
  */
 function parseProducts(
   message: string
@@ -810,7 +831,23 @@ function parseProducts(
   price: number;
   currency: "SOL" | "USDC";
 }> {
-  const lines = message.split("\n").filter((l) => l.trim());
+  // Normalize all Unicode dashes to regular hyphen first
+  const normalized = message
+    .replace(/[\u2010\u2011\u2012\u2013\u2014\u2015\u2212\uFE58\uFE63\uFF0D]/g, "-")
+    .replace(/\s+/g, " ");
+
+  // Split on newlines, commas, or semicolons (in case user puts multiple on one line)
+  const lines = normalized
+    .split(/[\n;]/)
+    .flatMap((l) => {
+      // Also split on comma if line has multiple "price CURRENCY" patterns
+      if ((l.match(/\d+\.?\d*\s*(?:SOL|USDC|sol|usdc)/gi) || []).length > 1) {
+        return l.split(",");
+      }
+      return [l];
+    })
+    .filter((l) => l.trim());
+
   const products: Array<{
     name: string;
     description: string;
@@ -820,12 +857,12 @@ function parseProducts(
 
   for (const line of lines) {
     // Clean the line (remove bullet points, numbers, etc.)
-    const cleaned = line.replace(/^[\s•\-\*\d.)\]]+/, "").trim();
+    const cleaned = line.replace(/^[\s•\-\*\d.)\]>]+/, "").trim();
     if (!cleaned) continue;
 
-    // Match: "name - price currency" or "name: price currency" or "name price currency"
+    // Match: "name - price currency" (with any separator: -, :, =, ~, for)
     const match = cleaned.match(
-      /^(.+?)[\s]*[-:–—]\s*(\d+\.?\d*)\s*(SOL|USDC|sol|usdc)\s*$/i
+      /^(.+?)[\s]*[-:=~]\s*(\d+\.?\d*)\s*(SOL|USDC)\s*$/i
     );
 
     if (match) {
@@ -834,33 +871,55 @@ function parseProducts(
       const currency = match[3].toUpperCase() as "SOL" | "USDC";
 
       if (name && !isNaN(price) && price > 0) {
-        products.push({
-          name,
-          description: "",
-          price,
-          currency,
-        });
+        products.push({ name, description: "", price, currency });
+        continue;
       }
-      continue;
     }
 
-    // Looser match: "name 0.5 SOL"
+    // Match: "name for price currency"
+    const forMatch = cleaned.match(
+      /^(.+?)\s+(?:for|at|@)\s+(\d+\.?\d*)\s*(SOL|USDC)\s*$/i
+    );
+
+    if (forMatch) {
+      const name = forMatch[1].trim();
+      const price = parseFloat(forMatch[2]);
+      const currency = forMatch[3].toUpperCase() as "SOL" | "USDC";
+
+      if (name && !isNaN(price) && price > 0) {
+        products.push({ name, description: "", price, currency });
+        continue;
+      }
+    }
+
+    // Match: "price currency - name" (reversed format)
+    const reversedMatch = cleaned.match(
+      /^(\d+\.?\d*)\s*(SOL|USDC)\s*[-:=~]\s*(.+?)$/i
+    );
+
+    if (reversedMatch) {
+      const price = parseFloat(reversedMatch[1]);
+      const currency = reversedMatch[2].toUpperCase() as "SOL" | "USDC";
+      const name = reversedMatch[3].trim();
+
+      if (name && !isNaN(price) && price > 0) {
+        products.push({ name, description: "", price, currency });
+        continue;
+      }
+    }
+
+    // Loosest match: "name <number> SOL/USDC" anywhere in string
     const looseMatch = cleaned.match(
-      /^(.+?)\s+(\d+\.?\d*)\s*(SOL|USDC|sol|usdc)\s*$/i
+      /^(.+?)\s+(\d+\.?\d*)\s*(SOL|USDC)\s*$/i
     );
 
     if (looseMatch) {
-      const name = looseMatch[1].trim();
+      const name = looseMatch[1].trim().replace(/[-:=~]\s*$/, "").trim();
       const price = parseFloat(looseMatch[2]);
       const currency = looseMatch[3].toUpperCase() as "SOL" | "USDC";
 
       if (name && !isNaN(price) && price > 0) {
-        products.push({
-          name,
-          description: "",
-          price,
-          currency,
-        });
+        products.push({ name, description: "", price, currency });
       }
     }
   }

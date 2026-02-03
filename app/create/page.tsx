@@ -20,8 +20,8 @@ import {
   Loader2,
   Send,
   Check,
-  ExternalLink,
   Rocket,
+  BarChart3,
 } from "lucide-react";
 
 type Step = "describe" | "generating" | "preview";
@@ -537,16 +537,19 @@ export default function CreatePage() {
                       variant="outline"
                       size="lg"
                       className="gap-2"
-                      onClick={() => {
-                        navigator.clipboard.writeText(
-                          `${window.location.origin}/pay/${generatedStorefront.slug}`
-                        );
-                      }}
+                      onClick={() =>
+                        router.push(
+                          `/dashboard/${generatedStorefront.slug}`
+                        )
+                      }
                     >
-                      <ExternalLink className="h-4 w-4" />
-                      Copy Link
+                      <BarChart3 className="h-4 w-4" />
+                      Open Dashboard
                     </Button>
                   </div>
+                  <p className="text-xs text-muted-foreground mt-4">
+                    Share your storefront link to start accepting payments
+                  </p>
                 </div>
               </Card>
             </motion.div>

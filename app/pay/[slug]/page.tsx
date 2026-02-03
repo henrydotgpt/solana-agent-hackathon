@@ -24,6 +24,7 @@ import {
   ShieldCheck,
   ExternalLink,
   AlertCircle,
+  BarChart3,
 } from "lucide-react";
 
 export default function StorefrontPage() {
@@ -131,7 +132,15 @@ export default function StorefrontPage() {
               <span>Powered by <strong>Paygent</strong></span>
             </Link>
           </div>
-          <WalletButton />
+          <div className="flex items-center gap-2">
+            <Link href={`/dashboard/${slug}`}>
+              <Button variant="ghost" size="sm" className="gap-1.5 text-xs">
+                <BarChart3 className="h-3.5 w-3.5" />
+                Dashboard
+              </Button>
+            </Link>
+            <WalletButton />
+          </div>
         </div>
       </div>
 

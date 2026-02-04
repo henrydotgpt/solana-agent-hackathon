@@ -68,17 +68,15 @@ export function PaymentModal({
     fetchFees();
   }, [product.price]);
 
-  // Build Solana Pay URL (simple transfer — works with all wallets)
-  // The /api/pay endpoint handles the fee-split transaction for transaction requests
+  // Build Solana Pay URL — transaction request format
+  // Passes the client-side reference so we can verify the payment locally
   const paymentURL = useMemo(() => {
-    // Use transaction request URL so wallets fetch the fee-split transaction from our API
     const appUrl = typeof window !== "undefined" ? window.location.origin : "";
-    const txRequestUrl = `${appUrl}/api/pay?slug=${storefront.slug}&product=${product.id}&currency=${payToken}`;
+    const txRequestUrl = `${appUrl}/api/pay?slug=${storefront.slug}&product=${product.id}&currency=${payToken}&reference=${reference.toBase58()}`;
 
-    // Encode as Solana Pay transaction request
     // solana:<url> format for transaction requests
     return `solana:${encodeURIComponent(txRequestUrl)}`;
-  }, [storefront.slug, product.id, payToken]);
+  }, [storefront.slug, product.id, payToken, reference]);
 
   // Also build a simple transfer URL as fallback (for wallets that don't support tx requests)
   const fallbackURL = useMemo(() => {

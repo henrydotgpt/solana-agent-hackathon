@@ -99,7 +99,15 @@ export async function POST(request: NextRequest) {
 
     const payer = new PublicKey(payerAddress);
     const merchant = new PublicKey(storefront.walletAddress);
-    const reference = Keypair.generate().publicKey;
+
+    // Accept client-provided reference for payment verification,
+    // or generate a new one
+    const refParam = searchParams.get("reference");
+    const reference =
+      refParam && isValidSolanaAddress(refParam)
+        ? new PublicKey(refParam)
+        : Keypair.generate().publicKey;
+
     const memo = `paygent:${slug}:${productId || "custom"}`;
 
     let result;

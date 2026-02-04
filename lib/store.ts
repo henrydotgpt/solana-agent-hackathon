@@ -179,6 +179,28 @@ export function getPaymentStats(storefrontSlug: string) {
   const feesSOL = (totalSOL * feeBps) / 10000;
   const feesUSDC = (totalUSDC * feeBps) / 10000;
 
+  // Per-product revenue breakdown
+  const storefront = getStorefront(storefrontSlug);
+  const productStats: Record<string, { name: string; count: number; revenueSOL: number; revenueUSDC: number }> = {};
+  for (const p of confirmed) {
+    if (!productStats[p.productId]) {
+      const product = storefront?.products.find((pr) => pr.id === p.productId);
+      productStats[p.productId] = { name: product?.name || p.productId, count: 0, revenueSOL: 0, revenueUSDC: 0 };
+    }
+    productStats[p.productId].count += 1;
+    if (p.currency === "SOL") productStats[p.productId].revenueSOL += p.amount;
+    else productStats[p.productId].revenueUSDC += p.amount;
+  }
+
+  // Unique payers
+  const uniquePayers = new Set(confirmed.filter((p) => p.payer).map((p) => p.payer)).size;
+
+  // Average confirmation time (for confirmed payments that have confirmedAt)
+  const withConfirmTime = confirmed.filter((p) => p.confirmedAt && p.createdAt);
+  const avgConfirmMs = withConfirmTime.length > 0
+    ? withConfirmTime.reduce((sum, p) => sum + ((p.confirmedAt || 0) - p.createdAt), 0) / withConfirmTime.length
+    : 0;
+
   return {
     totalPayments: storePayments.length,
     confirmedPayments: confirmed.length,
@@ -190,7 +212,11 @@ export function getPaymentStats(storefrontSlug: string) {
     feeBps,
     merchantSOL: totalSOL - feesSOL,
     merchantUSDC: totalUSDC - feesUSDC,
-    recentPayments: confirmed.slice(0, 10),
+    recentPayments: storePayments.slice(0, 20),
+    productStats: Object.values(productStats).sort((a, b) => b.count - a.count),
+    uniquePayers,
+    avgConfirmMs,
+    conversionRate: storePayments.length > 0 ? confirmed.length / storePayments.length : 0,
   };
 }
 

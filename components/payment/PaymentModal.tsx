@@ -13,6 +13,8 @@ import type { Storefront, StorefrontProduct } from "@/lib/types";
 import { buildPaymentURL, verifyPayment } from "@/lib/solana/pay";
 import { USDC_MINT, SOLANA_RPC_URL } from "@/lib/constants";
 import { truncateAddress } from "@/lib/utils";
+import { TokenSelector } from "@/components/payment/TokenSelector";
+import { SUPPORTED_TOKENS } from "@/lib/constants";
 import {
   X,
   Check,
@@ -24,6 +26,7 @@ import {
   Wallet,
   Loader2,
   Smartphone,
+  Sparkles,
 } from "lucide-react";
 
 interface PaymentModalProps {
@@ -59,7 +62,7 @@ export function PaymentModal({
   const [status, setStatus] = useState<PaymentStatus>("pending");
   const [signature, setSignature] = useState<string | null>(null);
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
-  const [payToken, setPayToken] = useState<"SOL" | "USDC">(product.currency);
+  const [payToken, setPayToken] = useState<string>(product.currency);
   const [payMethod, setPayMethod] = useState<PayMethod>(connected ? "wallet" : "qr");
   const [copied, setCopied] = useState(false);
   const [feeInfo, setFeeInfo] = useState<FeeInfo | null>(null);
@@ -189,12 +192,14 @@ export function PaymentModal({
     setTimeout(() => setCopied(false), 2000);
   }, [fallbackURL]);
 
+  const tokenInfo = SUPPORTED_TOKENS.find((t) => t.symbol === payToken);
   const displayUSD =
     payToken === "SOL" && solPrice
       ? `≈ $${(product.price * solPrice).toFixed(2)}`
       : payToken === "USDC"
       ? `= $${product.price.toFixed(2)}`
       : null;
+  const isMultiCurrency = payToken !== product.currency && payToken !== "SOL" && payToken !== "USDC";
 
   const feeBreakdown = feeInfo?.breakdown;
 
@@ -290,42 +295,40 @@ export function PaymentModal({
             </div>
           ) : (
             <>
-              {/* Token selector */}
-              {storefront.acceptedTokens.length > 1 && (
-                <div className="flex items-center justify-center gap-2 mb-5">
-                  <span className="text-xs text-gray-600 mr-1">Pay with:</span>
-                  {storefront.acceptedTokens.map((token) => (
-                    <button
-                      key={token}
-                      onClick={() => setPayToken(token)}
-                      className={`px-3 py-1.5 rounded-lg text-xs font-display font-500 transition-all ${
-                        payToken === token
-                          ? "bg-emerald-500/10 text-emerald-400 border border-emerald-500/20"
-                          : "bg-white/[0.03] text-gray-500 border border-white/[0.06] hover:bg-white/[0.06]"
-                      }`}
-                    >
-                      {token === "SOL" ? "◎" : "$"} {token}
-                    </button>
-                  ))}
-                </div>
-              )}
+              {/* Multi-currency token selector */}
+              <div className="mb-5">
+                <TokenSelector
+                  selectedToken={payToken}
+                  onSelectToken={setPayToken}
+                  productPrice={product.price}
+                  productCurrency={product.currency}
+                  accentColor={storefront.theme?.accentColor}
+                />
+              </div>
 
               {/* Auto-convert notice */}
-              {storefront.autoConvertToUSDC && payToken === "SOL" && (
-                <div className="flex items-center justify-center gap-1.5 mb-4 text-xs text-gray-600">
-                  <ArrowRightLeft className="h-3 w-3" />
-                  Merchant receives USDC via Jupiter auto-convert
+              {payToken !== product.currency && (
+                <div className="flex items-center justify-center gap-1.5 mb-4 px-3 py-2 rounded-lg bg-white/[0.02] border border-white/[0.04]">
+                  <Sparkles className="h-3 w-3 text-solana-green flex-shrink-0" />
+                  <span className="text-xs text-gray-500">
+                    Jupiter auto-converts {payToken} → {product.currency} for the merchant
+                  </span>
                 </div>
               )}
 
               {/* Amount display */}
               <div className="text-center mb-5">
                 <p className="text-3xl font-display font-800 text-white">
-                  {payToken === "SOL" ? "◎" : "$"} {product.price}
-                  <span className="text-lg text-gray-500 ml-2">{payToken}</span>
+                  {tokenInfo?.icon || (payToken === "SOL" ? "◎" : "$")} {product.price}
+                  <span className="text-lg text-gray-500 ml-2">{product.currency}</span>
                 </p>
                 {displayUSD && (
                   <p className="text-sm text-gray-600 mt-1">{displayUSD}</p>
+                )}
+                {isMultiCurrency && (
+                  <p className="text-xs text-gray-600 mt-1">
+                    Pay equivalent in {payToken}
+                  </p>
                 )}
               </div>
 
@@ -400,7 +403,8 @@ export function PaymentModal({
                       className="w-full h-12 gap-2 bg-gradient-to-r from-emerald-500 to-emerald-400 text-black font-display font-600 text-sm hover:from-emerald-400 hover:to-emerald-300 shadow-lg shadow-emerald-500/20 rounded-xl"
                     >
                       <Wallet className="h-4 w-4" />
-                      Pay {product.price} {payToken}
+                      Pay {product.price} {product.currency}
+                      {isMultiCurrency && ` with ${payToken}`}
                     </Button>
                   ) : (
                     <Button

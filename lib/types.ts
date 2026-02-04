@@ -1,6 +1,16 @@
 import type { PublicKey } from "@solana/web3.js";
 
 /**
+ * Base payment currencies (what merchants price in)
+ */
+export type BaseCurrency = "SOL" | "USDC";
+
+/**
+ * All supported payment tokens (what payers can use)
+ */
+export type PaymentToken = "SOL" | "USDC" | "BONK" | "JUP" | "JTO" | "WIF" | "PYTH";
+
+/**
  * A product or service offered on a storefront
  */
 export interface StorefrontProduct {
@@ -8,7 +18,7 @@ export interface StorefrontProduct {
   name: string;
   description: string;
   price: number;
-  currency: "SOL" | "USDC";
+  currency: BaseCurrency;
   image?: string;
 }
 

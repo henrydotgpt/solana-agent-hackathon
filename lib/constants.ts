@@ -28,7 +28,14 @@ export const APP_DESCRIPTION =
   "The AI payment agent. Describe your business, get a complete Solana payment storefront. No code. No crypto knowledge needed.";
 export const APP_URL = process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000";
 
-// Supported tokens
+// Popular Solana token mints (mainnet)
+export const BONK_MINT = new PublicKey("DezXAZ8z7PnrnRJjz3wXBoRgixCa6xjnB7YaB1pPB263");
+export const JTO_MINT = new PublicKey("jtojtomepa8beP8AuQc6eXt5FriJwfFMwQx2v2f9mCL");
+export const JUP_MINT = new PublicKey("JUPyiwrYJFskUPiHa7hkeR8VUtAeFoSYbKedZNsDvCN");
+export const WIF_MINT = new PublicKey("EKpQGSJtjMFqKZ9KQanSqYXRcF8fBopzLHYxdM65zcjm");
+export const PYTH_MINT = new PublicKey("HZ1JovNiVvGrGNiiYvEozEVgZ58xaU3RKwX8eACQBCt3");
+
+// Supported tokens — extended for multi-currency checkout
 export const SUPPORTED_TOKENS = [
   {
     symbol: "SOL",
@@ -37,6 +44,7 @@ export const SUPPORTED_TOKENS = [
     decimals: 9,
     icon: "◎",
     color: "#9945FF",
+    coingeckoId: "solana",
   },
   {
     symbol: "USDC",
@@ -45,8 +53,56 @@ export const SUPPORTED_TOKENS = [
     decimals: 6,
     icon: "$",
     color: "#2775CA",
+    coingeckoId: "usd-coin",
+  },
+  {
+    symbol: "BONK",
+    name: "Bonk",
+    mint: BONK_MINT.toBase58(),
+    decimals: 5,
+    icon: "🐕",
+    color: "#F7A12C",
+    coingeckoId: "bonk",
+  },
+  {
+    symbol: "JUP",
+    name: "Jupiter",
+    mint: JUP_MINT.toBase58(),
+    decimals: 6,
+    icon: "♃",
+    color: "#4ADE80",
+    coingeckoId: "jupiter-exchange-solana",
+  },
+  {
+    symbol: "JTO",
+    name: "Jito",
+    mint: JTO_MINT.toBase58(),
+    decimals: 9,
+    icon: "⚡",
+    color: "#8B5CF6",
+    coingeckoId: "jito-governance-token",
+  },
+  {
+    symbol: "WIF",
+    name: "dogwifhat",
+    mint: WIF_MINT.toBase58(),
+    decimals: 6,
+    icon: "🐶",
+    color: "#C4A77D",
+    coingeckoId: "dogwifcoin",
+  },
+  {
+    symbol: "PYTH",
+    name: "Pyth Network",
+    mint: PYTH_MINT.toBase58(),
+    decimals: 6,
+    icon: "◈",
+    color: "#6366F1",
+    coingeckoId: "pyth-network",
   },
 ] as const;
+
+export type TokenSymbol = (typeof SUPPORTED_TOKENS)[number]["symbol"];
 
 // Fees (client-safe — reads from NEXT_PUBLIC_ env vars)
 export const PAYGENT_FEE_BPS = parseInt(

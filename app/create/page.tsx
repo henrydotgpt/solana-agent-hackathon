@@ -500,6 +500,20 @@ function PreviewStep({ storefront, router }: { storefront: Storefront; router: a
   const [copied, setCopied] = useState<string | null>(null);
   const [showEmbed, setShowEmbed] = useState(false);
 
+  // 🎉 Confetti on mount
+  useEffect(() => {
+    import("canvas-confetti").then((confetti) => {
+      const fire = confetti.default;
+      // First burst
+      fire({ particleCount: 80, spread: 70, origin: { y: 0.6 }, colors: ["#14F195", "#9945FF", "#3B82F6"] });
+      // Second burst
+      setTimeout(() => {
+        fire({ particleCount: 50, spread: 90, origin: { y: 0.5, x: 0.3 }, colors: ["#14F195", "#9945FF"] });
+        fire({ particleCount: 50, spread: 90, origin: { y: 0.5, x: 0.7 }, colors: ["#3B82F6", "#14F195"] });
+      }, 300);
+    }).catch(() => {});
+  }, []);
+
   const storeUrl = typeof window !== "undefined"
     ? `${window.location.origin}/pay/${storefront.slug}`
     : `https://paygent-solana.vercel.app/pay/${storefront.slug}`;

@@ -97,7 +97,7 @@ export function HowItWorks() {
             return (
               <RevealItem key={i}>
                 <motion.div
-                  className={`group relative rounded-2xl border border-white/[0.04] ${colors.hoverBorder} bg-[#0A0A10]/80 backdrop-blur-sm hover:bg-[#0C0C14]/90 transition-all duration-500 overflow-hidden`}
+                  className={`group relative rounded-2xl border border-white/[0.08] ${colors.hoverBorder} bg-[#0D0D18]/90 backdrop-blur-sm hover:bg-[#0F0F1A]/95 transition-all duration-500 overflow-hidden`}
                   whileHover={{ y: -2 }}
                   transition={{ duration: 0.3 }}
                 >
@@ -117,7 +117,7 @@ export function HowItWorks() {
                       <div className="flex items-center gap-4 mb-5">
                         {/* Step number dot (connects to vertical line) */}
                         <motion.div
-                          className={`relative w-12 h-12 rounded-xl ${colors.bg} flex items-center justify-center border border-white/[0.04] ${colors.iconGlow} group-hover:shadow-lg transition-shadow duration-500`}
+                          className={`relative w-12 h-12 rounded-xl ${colors.bg} flex items-center justify-center border border-white/[0.08] ${colors.iconGlow} group-hover:shadow-lg transition-shadow duration-500`}
                           whileHover={{ scale: 1.05, rotate: 3 }}
                         >
                           <step.icon className={`h-5 w-5 ${colors.text}`} />
@@ -158,7 +158,7 @@ export function HowItWorks() {
                     </div>
 
                     {/* Right — visual */}
-                    <div className="relative p-6 sm:p-8 flex items-center justify-center border-t md:border-t-0 md:border-l border-white/[0.04] bg-white/[0.01] group-hover:bg-white/[0.02] transition-colors duration-500">
+                    <div className="relative p-6 sm:p-8 flex items-center justify-center border-t md:border-t-0 md:border-l border-white/[0.08] bg-white/[0.06] group-hover:bg-white/[0.04] transition-colors duration-500">
                       {/* Subtle dot grid in visual area */}
                       <div className="absolute inset-0 dot-pattern opacity-[0.03] group-hover:opacity-[0.06] transition-opacity duration-500" />
                       <div className="relative z-10">{step.visual}</div>
@@ -332,7 +332,7 @@ function GetPaidVisual() {
           ].map((tx, i) => (
             <motion.div
               key={i}
-              className="flex items-center justify-between p-2.5 rounded-lg bg-white/[0.02] border border-white/[0.04] hover:bg-white/[0.04] transition-colors"
+              className="flex items-center justify-between p-2.5 rounded-lg bg-white/[0.04] border border-white/[0.08] hover:bg-white/[0.04] transition-colors"
               initial={{ opacity: 0, x: 10 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ delay: i * 0.15, repeat: Infinity, repeatDelay: 8, duration: 0.4 }}
@@ -356,7 +356,7 @@ function GetPaidVisual() {
           ))}
         </div>
 
-        <div className="mt-3 pt-3 border-t border-white/[0.04] flex items-center justify-between">
+        <div className="mt-3 pt-3 border-t border-white/[0.08] flex items-center justify-between">
           <motion.div
             className="text-[10px] text-emerald-400/50 font-mono flex items-center gap-1.5"
             animate={{ opacity: [0.3, 1, 0.3] }}

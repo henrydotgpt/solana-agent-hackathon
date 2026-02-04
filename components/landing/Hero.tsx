@@ -102,7 +102,7 @@ export function Hero() {
                 <Button
                   variant="outline"
                   size="lg"
-                  className="w-full sm:w-auto border-white/[0.08] text-gray-400 hover:text-white hover:border-white/[0.15] hover:bg-white/[0.02] font-display gap-2"
+                  className="w-full sm:w-auto border-white/[0.08] text-gray-400 hover:text-white hover:border-white/[0.15] hover:bg-white/[0.04] font-display gap-2"
                 >
                   <Play className="h-3.5 w-3.5" />
                   View live demo
@@ -157,7 +157,7 @@ function ProductDemo() {
       {/* Main card */}
       <div className="relative rounded-2xl overflow-hidden border border-white/[0.06] bg-[#0A0A10]/90 backdrop-blur-xl shadow-2xl shadow-black/50">
         {/* Browser chrome */}
-        <div className="flex items-center gap-2 px-4 py-3 border-b border-white/[0.04] bg-[#0A0A10]">
+        <div className="flex items-center gap-2 px-4 py-3 border-b border-white/[0.08] bg-[#0A0A10]">
           <div className="flex gap-1.5">
             <div className="w-3 h-3 rounded-full bg-[#FF5F57]/80" />
             <div className="w-3 h-3 rounded-full bg-[#FEBC2E]/80" />
@@ -175,7 +175,7 @@ function ProductDemo() {
         {/* Content */}
         <div className="p-6 space-y-5">
           {/* AI Input */}
-          <div className="rounded-xl border border-white/[0.06] bg-white/[0.02] p-4">
+          <div className="rounded-xl border border-white/[0.06] bg-white/[0.04] p-4">
             <div className="text-[11px] font-display font-600 text-gray-500 uppercase tracking-wider mb-2.5">
               Describe your business
             </div>
@@ -219,7 +219,7 @@ function ProductDemo() {
               <ProductRow name="Enterprise" price="499" />
             </div>
 
-            <div className="mt-4 pt-3 border-t border-white/[0.04] flex items-center justify-between">
+            <div className="mt-4 pt-3 border-t border-white/[0.08] flex items-center justify-between">
               <div className="text-[10px] text-gray-700 font-mono">
                 Powered by Paygent
               </div>
@@ -270,7 +270,7 @@ function ProductRow({ name, price, highlight }: { name: string; price: string; h
       className={`flex items-center justify-between p-2.5 rounded-lg transition-all ${
         highlight
           ? "bg-emerald-500/[0.06] border border-emerald-500/10"
-          : "bg-white/[0.02] border border-transparent"
+          : "bg-white/[0.04] border border-transparent"
       }`}
     >
       <div className="flex items-center gap-2.5">

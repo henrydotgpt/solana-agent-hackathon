@@ -86,8 +86,8 @@ export function Pricing() {
                 <div className="text-xs font-display font-600 uppercase tracking-wider text-gray-600 mb-4">
                   Paygent vs Stripe
                 </div>
-                <div className="rounded-xl border border-white/[0.04] overflow-hidden">
-                  <div className="grid grid-cols-3 gap-0 text-[11px] font-display font-600 uppercase tracking-wider text-gray-600 bg-white/[0.02] px-4 py-3 border-b border-white/[0.04]">
+                <div className="rounded-xl border border-white/[0.08] overflow-hidden">
+                  <div className="grid grid-cols-3 gap-0 text-[11px] font-display font-600 uppercase tracking-wider text-gray-600 bg-white/[0.04] px-4 py-3 border-b border-white/[0.08]">
                     <div>Feature</div>
                     <div className="text-emerald-400/70">Paygent</div>
                     <div>Stripe</div>
@@ -95,7 +95,7 @@ export function Pricing() {
                   {comparison.map((row, i) => (
                     <div
                       key={row.feature}
-                      className="grid grid-cols-3 gap-0 text-sm px-4 py-3 border-b border-white/[0.04] last:border-0"
+                      className="grid grid-cols-3 gap-0 text-sm px-4 py-3 border-b border-white/[0.08] last:border-0"
                     >
                       <div className="text-gray-500">{row.feature}</div>
                       <div className={row.paygentWins ? "text-emerald-400 font-500" : "text-gray-400"}>
@@ -112,7 +112,7 @@ export function Pricing() {
           {/* Right — Features included */}
           <Reveal delay={0.1}>
             <div className="lg:sticky lg:top-24">
-              <div className="rounded-2xl border border-white/[0.06] bg-[#0A0A10]/80 p-7 sm:p-8">
+              <div className="rounded-2xl border border-white/[0.06] bg-[#0D0D18]/90 p-7 sm:p-8">
                 <div className="flex items-center justify-between mb-6">
                   <div className="text-xs font-display font-600 uppercase tracking-[0.15em] text-gray-500">
                     Everything included
@@ -126,7 +126,7 @@ export function Pricing() {
                   {included.map((item, i) => (
                     <motion.div
                       key={item}
-                      className="flex items-center gap-3.5 py-3.5 border-b border-white/[0.04] last:border-0"
+                      className="flex items-center gap-3.5 py-3.5 border-b border-white/[0.08] last:border-0"
                       initial={{ opacity: 0, x: -10 }}
                       whileInView={{ opacity: 1, x: 0 }}
                       viewport={{ once: true }}

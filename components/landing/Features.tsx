@@ -138,7 +138,7 @@ function FeatureCard({
 
   return (
     <motion.div
-      className={`group h-full rounded-2xl border border-white/[0.04] ${accent.borderHover} bg-[#0A0A10]/80 backdrop-blur-sm hover:bg-[#0C0C14]/90 transition-all duration-500 overflow-hidden relative`}
+      className={`group h-full rounded-2xl border border-white/[0.08] ${accent.borderHover} bg-[#0D0D18]/90 backdrop-blur-sm hover:bg-[#0F0F1A]/95 transition-all duration-500 overflow-hidden relative`}
       whileHover={{ y: -2 }}
       transition={{ duration: 0.3 }}
     >
@@ -154,7 +154,7 @@ function FeatureCard({
       <div className={isLarge ? "grid sm:grid-cols-2 gap-0 h-full" : "h-full"}>
         <div className="p-6 sm:p-7 flex flex-col">
           <motion.div
-            className={`inline-flex items-center justify-center w-11 h-11 rounded-xl bg-white/[0.03] group-hover:bg-white/[0.06] border border-white/[0.04] group-hover:border-white/[0.08] transition-all duration-500 mb-5`}
+            className={`inline-flex items-center justify-center w-11 h-11 rounded-xl bg-white/[0.06] group-hover:bg-white/[0.06] border border-white/[0.08] group-hover:border-white/[0.08] transition-all duration-500 mb-5`}
             whileHover={{ scale: 1.05, rotate: 3 }}
           >
             <Icon className={`h-5 w-5 text-gray-500 ${accent.iconHover} transition-colors duration-300`} />
@@ -169,7 +169,7 @@ function FeatureCard({
         </div>
 
         {visual && isLarge && (
-          <div className="relative border-t sm:border-t-0 sm:border-l border-white/[0.04] bg-white/[0.01] group-hover:bg-white/[0.02] flex items-center justify-center p-6 overflow-hidden transition-colors duration-500">
+          <div className="relative border-t sm:border-t-0 sm:border-l border-white/[0.08] bg-white/[0.06] group-hover:bg-white/[0.04] flex items-center justify-center p-6 overflow-hidden transition-colors duration-500">
             <div className="absolute inset-0 dot-pattern opacity-[0.02] group-hover:opacity-[0.04] transition-opacity duration-500" />
             <div className="relative z-10">{visual}</div>
           </div>

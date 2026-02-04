@@ -54,7 +54,7 @@ export function Problem() {
         <div className="grid lg:grid-cols-2 gap-16 lg:gap-20 items-center">
           {/* Left — Visual comparison */}
           <div ref={barsRef} className="order-2 lg:order-1">
-            <div className="rounded-2xl border border-white/[0.04] bg-[#0A0A10]/80 backdrop-blur-sm p-6 sm:p-8">
+            <div className="rounded-2xl border border-white/[0.08] bg-[#0D0D18]/90 backdrop-blur-sm p-6 sm:p-8">
               <div className="text-[11px] font-mono text-gray-700 uppercase tracking-wider mb-6">
                 Annual cost at $10K/mo volume
               </div>
@@ -78,7 +78,7 @@ export function Problem() {
                         ${c.annual.toLocaleString()}<span className="text-gray-700">/yr</span>
                       </span>
                     </div>
-                    <div className="h-2.5 rounded-full bg-white/[0.03] overflow-hidden">
+                    <div className="h-2.5 rounded-full bg-white/[0.06] overflow-hidden">
                       <motion.div
                         className={`h-full rounded-full bg-gradient-to-r ${c.color}`}
                         initial={{ width: 0 }}
@@ -107,7 +107,7 @@ export function Problem() {
                       $900<span className="text-emerald-400/40">/yr</span>
                     </span>
                   </div>
-                  <div className="h-2.5 rounded-full bg-white/[0.03] overflow-hidden">
+                  <div className="h-2.5 rounded-full bg-white/[0.06] overflow-hidden">
                     <motion.div
                       className="h-full rounded-full bg-gradient-to-r from-emerald-500 to-emerald-400 shadow-[0_0_20px_rgba(20,241,149,0.3)]"
                       initial={{ width: 0 }}
@@ -120,7 +120,7 @@ export function Problem() {
 
               {/* Bottom summary */}
               <motion.div
-                className="mt-6 pt-4 border-t border-white/[0.04] flex items-center justify-between"
+                className="mt-6 pt-4 border-t border-white/[0.08] flex items-center justify-between"
                 initial={{ opacity: 0 }}
                 animate={barsInView ? { opacity: 1 } : {}}
                 transition={{ delay: 1.2, duration: 0.6 }}
@@ -153,7 +153,7 @@ export function Problem() {
 
             <Reveal delay={0.2}>
               <motion.div
-                className="group rounded-2xl border border-white/[0.04] bg-[#0A0A10]/80 backdrop-blur-sm p-6 hover:border-emerald-500/10 transition-all duration-500 relative overflow-hidden"
+                className="group rounded-2xl border border-white/[0.08] bg-[#0D0D18]/90 backdrop-blur-sm p-6 hover:border-emerald-500/10 transition-all duration-500 relative overflow-hidden"
                 whileHover={{ y: -2 }}
                 transition={{ duration: 0.3 }}
               >

@@ -103,7 +103,7 @@ export function BuiltByAgents() {
                 {buildStats.map((stat, i) => (
                   <motion.div
                     key={stat.label}
-                    className="rounded-xl border border-white/[0.04] bg-white/[0.02] p-3 text-center"
+                    className="rounded-xl border border-white/[0.08] bg-white/[0.04] p-3 text-center"
                     initial={{ opacity: 0, y: 10 }}
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true }}
@@ -129,7 +129,7 @@ export function BuiltByAgents() {
                 {techStack.map((tech, i) => (
                   <motion.div
                     key={tech.name}
-                    className="group px-3 py-2.5 rounded-xl border border-white/[0.04] bg-[#0A0A10]/60 hover:bg-white/[0.04] hover:border-white/[0.08] transition-all duration-300"
+                    className="group px-3 py-2.5 rounded-xl border border-white/[0.08] bg-[#0A0A10]/60 hover:bg-white/[0.04] hover:border-white/[0.08] transition-all duration-300"
                     whileHover={{ y: -1 }}
                     transition={{ duration: 0.2 }}
                   >

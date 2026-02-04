@@ -25,9 +25,9 @@ export function SectionGlow({
   className?: string;
 }) {
   const colorMap = {
-    green: "rgba(20, 241, 149, 0.06)",
-    purple: "rgba(153, 69, 255, 0.06)",
-    blue: "rgba(59, 130, 246, 0.06)",
+    green: "rgba(20, 241, 149, 0.12)",
+    purple: "rgba(153, 69, 255, 0.12)",
+    blue: "rgba(59, 130, 246, 0.12)",
   };
 
   const sizeMap = {

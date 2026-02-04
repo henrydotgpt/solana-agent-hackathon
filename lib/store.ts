@@ -450,167 +450,44 @@ const creatorStore: Storefront = {
 };
 storefronts.set("crypto-academy", creatorStore);
 
-// Seed demo payments for all demo stores
+// Seed demo payments spread across last 7 days for rich chart data
+const DAY = 86400000;
+const HOUR = 3600000;
 const demoPayments: PaymentRecord[] = [
-  // Sol Brew Coffee payments
-  {
-    id: "pay_demo_1",
-    storefrontSlug: "demo-store",
-    productId: "prod_demo_1",
-    amount: 0.08,
-    currency: "SOL",
-    reference: "DemoRef1111111111111111111111111111111111111",
-    status: "confirmed",
-    signature: "5eykt4UsFv8P8NJdTREpY1vzqKqZKvdpKuc147dw2N9d",
-    payer: "7EcDhSYGxXyscszYEp35KHN8vvw3svAuLKTzXwCFLtV",
-    createdAt: Date.now() - 3600000,
-    confirmedAt: Date.now() - 3590000,
-  },
-  {
-    id: "pay_demo_2",
-    storefrontSlug: "demo-store",
-    productId: "prod_demo_2",
-    amount: 0.5,
-    currency: "SOL",
-    reference: "DemoRef2222222222222222222222222222222222222",
-    status: "confirmed",
-    signature: "4sGjMW1sUnHzSxGspuhpqLDx6wiyjNtZAMdL1VZHirK",
-    payer: "Gh9ZwEmdLJ8DscKNTkTqPbNwLNNBjuSzaG9Vp2KGtKJr",
-    createdAt: Date.now() - 7200000,
-    confirmedAt: Date.now() - 7190000,
-  },
-  {
-    id: "pay_demo_3",
-    storefrontSlug: "demo-store",
-    productId: "prod_demo_3",
-    amount: 25,
-    currency: "USDC",
-    reference: "DemoRef3333333333333333333333333333333333333",
-    status: "pending",
-    createdAt: Date.now() - 300000,
-  },
-  // Nexus Web3 Studio payments
-  {
-    id: "pay_agency_1",
-    storefrontSlug: "web3-studio",
-    productId: "prod_agency_3",
-    amount: 50,
-    currency: "USDC",
-    reference: "DemoRef4444444444444444444444444444444444444",
-    status: "confirmed",
-    signature: "3xBbPiJxUnHzSxGspuhpqLDx6wiyjNtZAMdL1VZHirK",
-    payer: "9WzDXwBbz1nJqMTz7mEP26F4Ye5rSXG7TnvCjbfYNVUx",
-    createdAt: Date.now() - 172800000,
-    confirmedAt: Date.now() - 172790000,
-  },
-  {
-    id: "pay_agency_2",
-    storefrontSlug: "web3-studio",
-    productId: "prod_agency_1",
-    amount: 5,
-    currency: "SOL",
-    reference: "DemoRef5555555555555555555555555555555555555",
-    status: "confirmed",
-    signature: "2kFpLsYxGkJxyscszYEp35KHN8vvw3svAuLKTzXwCFL",
-    payer: "HN7cABqLq46Es1jh92dQQisAi5YqpXLqeM8UPFLwhE3k",
-    createdAt: Date.now() - 86400000,
-    confirmedAt: Date.now() - 86390000,
-  },
-  // Solana Academy payments
-  {
-    id: "pay_edu_1",
-    storefrontSlug: "crypto-academy",
-    productId: "prod_edu_1",
-    amount: 0.5,
-    currency: "SOL",
-    reference: "DemoRef6666666666666666666666666666666666666",
-    status: "confirmed",
-    signature: "7yKmRwZvG8P8NJdTREpY1vzqKqZKvdpKuc147dw2N9d",
-    payer: "DRpbCBMxVnDK7maPM5tGv6MvB3v1sRMC86PZ8okm21hy",
-    createdAt: Date.now() - 43200000,
-    confirmedAt: Date.now() - 43190000,
-  },
-  {
-    id: "pay_edu_2",
-    storefrontSlug: "crypto-academy",
-    productId: "prod_edu_2",
-    amount: 0.15,
-    currency: "SOL",
-    reference: "DemoRef7777777777777777777777777777777777777",
-    status: "confirmed",
-    signature: "9xFkLmYeHdPqNJdTREpY1vzqKqZKvdpKuc147dw2N9d",
-    payer: "3kzJxcPjWnMTvz7mEP26F4Ye5rSXG7TnvCjbfYNVUx",
-    createdAt: Date.now() - 14400000,
-    confirmedAt: Date.now() - 14390000,
-  },
+  // ─── Sol Brew Coffee — 12 payments across 7 days ───
+  { id: "pay_d_01", storefrontSlug: "demo-store", productId: "prod_demo_1", amount: 0.08, currency: "SOL", reference: "DRef01111111111111111111111111111111111111", status: "confirmed", signature: "5eykt4UsFv8P8NJdTREpY1vzqKqZKvdp1", payer: "7EcDhSYGxXyscszYEp35KHN8vvw3svAuLKTzXwCFLtV", createdAt: Date.now() - 6 * DAY - 2 * HOUR, confirmedAt: Date.now() - 6 * DAY - 2 * HOUR + 10000 },
+  { id: "pay_d_02", storefrontSlug: "demo-store", productId: "prod_demo_3", amount: 25, currency: "USDC", reference: "DRef02222222222222222222222222222222222222", status: "confirmed", signature: "5eykt4UsFv8P8NJdTREpY1vzqKqZKvdp2", payer: "Gh9ZwEmdLJ8DscKNTkTqPbNwLNNBjuSzaG9Vp2KGtKJr", createdAt: Date.now() - 5 * DAY - 14 * HOUR, confirmedAt: Date.now() - 5 * DAY - 14 * HOUR + 10000 },
+  { id: "pay_d_03", storefrontSlug: "demo-store", productId: "prod_demo_1", amount: 0.08, currency: "SOL", reference: "DRef03333333333333333333333333333333333333", status: "confirmed", signature: "5eykt4UsFv8P8NJdTREpY1vzqKqZKvdp3", payer: "DRpbCBMxVnDK7maPM5tGv6MvB3v1sRMC86PZ8okm21hy", createdAt: Date.now() - 5 * DAY - 3 * HOUR, confirmedAt: Date.now() - 5 * DAY - 3 * HOUR + 10000 },
+  { id: "pay_d_04", storefrontSlug: "demo-store", productId: "prod_demo_2", amount: 0.5, currency: "SOL", reference: "DRef04444444444444444444444444444444444444", status: "confirmed", signature: "5eykt4UsFv8P8NJdTREpY1vzqKqZKvdp4", payer: "9WzDXwBbz1nJqMTz7mEP26F4Ye5rSXG7TnvCjbfYNVUx", createdAt: Date.now() - 4 * DAY - 10 * HOUR, confirmedAt: Date.now() - 4 * DAY - 10 * HOUR + 10000 },
+  { id: "pay_d_05", storefrontSlug: "demo-store", productId: "prod_demo_1", amount: 0.08, currency: "SOL", reference: "DRef05555555555555555555555555555555555555", status: "confirmed", signature: "5eykt4UsFv8P8NJdTREpY1vzqKqZKvdp5", payer: "HN7cABqLq46Es1jh92dQQisAi5YqpXLqeM8UPFLwhE3k", createdAt: Date.now() - 3 * DAY - 16 * HOUR, confirmedAt: Date.now() - 3 * DAY - 16 * HOUR + 10000 },
+  { id: "pay_d_06", storefrontSlug: "demo-store", productId: "prod_demo_3", amount: 25, currency: "USDC", reference: "DRef06666666666666666666666666666666666666", status: "confirmed", signature: "5eykt4UsFv8P8NJdTREpY1vzqKqZKvdp6", payer: "3kzJxcPjWnMTvz7mEP26F4Ye5rSXG7TnvCjbfYNVUx1", createdAt: Date.now() - 3 * DAY - 5 * HOUR, confirmedAt: Date.now() - 3 * DAY - 5 * HOUR + 10000 },
+  { id: "pay_d_07", storefrontSlug: "demo-store", productId: "prod_demo_2", amount: 0.5, currency: "SOL", reference: "DRef07777777777777777777777777777777777777", status: "confirmed", signature: "5eykt4UsFv8P8NJdTREpY1vzqKqZKvdp7", payer: "7EcDhSYGxXyscszYEp35KHN8vvw3svAuLKTzXwCFLtV", createdAt: Date.now() - 2 * DAY - 8 * HOUR, confirmedAt: Date.now() - 2 * DAY - 8 * HOUR + 10000 },
+  { id: "pay_d_08", storefrontSlug: "demo-store", productId: "prod_demo_1", amount: 0.08, currency: "SOL", reference: "DRef08888888888888888888888888888888888888", status: "confirmed", signature: "5eykt4UsFv8P8NJdTREpY1vzqKqZKvdp8", payer: "Gh9ZwEmdLJ8DscKNTkTqPbNwLNNBjuSzaG9Vp2KGtKJr", createdAt: Date.now() - 2 * DAY - 1 * HOUR, confirmedAt: Date.now() - 2 * DAY - 1 * HOUR + 10000 },
+  { id: "pay_d_09", storefrontSlug: "demo-store", productId: "prod_demo_3", amount: 25, currency: "USDC", reference: "DRef09999999999999999999999999999999999999", status: "confirmed", signature: "5eykt4UsFv8P8NJdTREpY1vzqKqZKvdp9", payer: "DRpbCBMxVnDK7maPM5tGv6MvB3v1sRMC86PZ8okm21hy", createdAt: Date.now() - 1 * DAY - 20 * HOUR, confirmedAt: Date.now() - 1 * DAY - 20 * HOUR + 10000 },
+  { id: "pay_d_10", storefrontSlug: "demo-store", productId: "prod_demo_2", amount: 0.5, currency: "SOL", reference: "DRef10000000000000000000000000000000000000", status: "confirmed", signature: "5eykt4UsFv8P8NJdTREpY1vzqKqZKvdpA", payer: "9WzDXwBbz1nJqMTz7mEP26F4Ye5rSXG7TnvCjbfYNVUx", createdAt: Date.now() - 1 * DAY - 6 * HOUR, confirmedAt: Date.now() - 1 * DAY - 6 * HOUR + 10000 },
+  { id: "pay_d_11", storefrontSlug: "demo-store", productId: "prod_demo_1", amount: 0.08, currency: "SOL", reference: "DRef11000000000000000000000000000000000000", status: "confirmed", signature: "5eykt4UsFv8P8NJdTREpY1vzqKqZKvdpB", payer: "HN7cABqLq46Es1jh92dQQisAi5YqpXLqeM8UPFLwhE3k", createdAt: Date.now() - 2 * HOUR, confirmedAt: Date.now() - 2 * HOUR + 10000 },
+  { id: "pay_d_12", storefrontSlug: "demo-store", productId: "prod_demo_3", amount: 25, currency: "USDC", reference: "DRef12000000000000000000000000000000000000", status: "pending", createdAt: Date.now() - 5 * 60000 },
+  // ─── Nexus Web3 Studio ───
+  { id: "pay_a_01", storefrontSlug: "web3-studio", productId: "prod_agency_3", amount: 50, currency: "USDC", reference: "DRef13000000000000000000000000000000000000", status: "confirmed", signature: "3xBbPiJxUnHzSxGspuhpqLDx6wiyjNtZAMdL1VZHirK", payer: "9WzDXwBbz1nJqMTz7mEP26F4Ye5rSXG7TnvCjbfYNVUx", createdAt: Date.now() - 2 * DAY, confirmedAt: Date.now() - 2 * DAY + 10000 },
+  { id: "pay_a_02", storefrontSlug: "web3-studio", productId: "prod_agency_1", amount: 5, currency: "SOL", reference: "DRef14000000000000000000000000000000000000", status: "confirmed", signature: "2kFpLsYxGkJxyscszYEp35KHN8vvw3svAuLKTzXwCFL", payer: "HN7cABqLq46Es1jh92dQQisAi5YqpXLqeM8UPFLwhE3k", createdAt: Date.now() - 1 * DAY, confirmedAt: Date.now() - 1 * DAY + 10000 },
+  // ─── Solana Academy ───
+  { id: "pay_e_01", storefrontSlug: "crypto-academy", productId: "prod_edu_1", amount: 0.5, currency: "SOL", reference: "DRef15000000000000000000000000000000000000", status: "confirmed", signature: "7yKmRwZvG8P8NJdTREpY1vzqKqZKvdpKuc147dw2N9d", payer: "DRpbCBMxVnDK7maPM5tGv6MvB3v1sRMC86PZ8okm21hy", createdAt: Date.now() - 12 * HOUR, confirmedAt: Date.now() - 12 * HOUR + 10000 },
+  { id: "pay_e_02", storefrontSlug: "crypto-academy", productId: "prod_edu_2", amount: 0.15, currency: "SOL", reference: "DRef16000000000000000000000000000000000000", status: "confirmed", signature: "9xFkLmYeHdPqNJdTREpY1vzqKqZKvdpKuc147dw2N9d", payer: "3kzJxcPjWnMTvz7mEP26F4Ye5rSXG7TnvCjbfYNVUx1", createdAt: Date.now() - 4 * HOUR, confirmedAt: Date.now() - 4 * HOUR + 10000 },
 ];
 demoPayments.forEach((p) => payments.set(p.id, p));
 
-// Seed demo notifications
-// Notifications for Sol Brew Coffee
-addNotification("demo-store", {
-  id: "notif_demo_1",
-  type: "payment_received",
-  title: "Payment Received! 💰",
-  message: "0.08 SOL from 7EcD...FLtV for Ethiopian Single Origin",
-  signature: "5eykt4UsFv8P8NJdTREpY1vzqKqZKvdpKuc147dw2N9d",
-  timestamp: Date.now() - 3590000,
-  read: false,
-});
-addNotification("demo-store", {
-  id: "notif_demo_2",
-  type: "payment_received",
-  title: "Payment Received! 💰",
-  message: "0.5 SOL from Gh9Z...tKJr for Monthly Subscription Box",
-  signature: "4sGjMW1sUnHzSxGspuhpqLDx6wiyjNtZAMdL1VZHirK",
-  timestamp: Date.now() - 7190000,
-  read: true,
-});
-addNotification("demo-store", {
-  id: "notif_demo_created",
-  type: "storefront_created",
-  title: "Storefront Created! 🚀",
-  message: "Sol Brew Coffee is live with 3 products.",
-  timestamp: Date.now() - 86400000 * 3,
-  read: true,
-});
-
-// Notifications for Nexus Web3 Studio
-addNotification("web3-studio", {
-  id: "notif_agency_1",
-  type: "payment_received",
-  title: "Payment Received! 💰",
-  message: "50 USDC from 9WzD...VUx for Strategy Call",
-  signature: "3xBbPiJxUnHzSxGspuhpqLDx6wiyjNtZAMdL1VZHirK",
-  timestamp: Date.now() - 172790000,
-  read: true,
-});
-addNotification("web3-studio", {
-  id: "notif_agency_2",
-  type: "payment_received",
-  title: "Payment Received! 💰",
-  message: "5 SOL from HN7c...E3k for Smart Contract Audit",
-  signature: "2kFpLsYxGkJxyscszYEp35KHN8vvw3svAuLKTzXwCFL",
-  timestamp: Date.now() - 86390000,
-  read: false,
-});
-
-// Notifications for Solana Academy
-addNotification("crypto-academy", {
-  id: "notif_edu_1",
-  type: "payment_received",
-  title: "New Enrollment! 🎓",
-  message: "0.5 SOL from DRpb...21hy for Solana 101 Course",
-  signature: "7yKmRwZvG8P8NJdTREpY1vzqKqZKvdpKuc147dw2N9d",
-  timestamp: Date.now() - 43190000,
-  read: false,
-});
-addNotification("crypto-academy", {
-  id: "notif_edu_2",
-  type: "payment_received",
-  title: "Workshop Pass Sold! 🎟️",
-  message: "0.15 SOL from 3kzJ...VUx for Live Workshop Pass",
-  signature: "9xFkLmYeHdPqNJdTREpY1vzqKqZKvdpKuc147dw2N9d",
-  timestamp: Date.now() - 14390000,
-  read: false,
-});
+// Seed demo notifications (newest first)
+const demoNotifs: Array<{ slug: string; n: Notification }> = [
+  { slug: "demo-store", n: { id: "n_d01", type: "payment_received", title: "Payment Received! 💰", message: "0.08 SOL for Ethiopian Single Origin", timestamp: Date.now() - 2 * HOUR, read: false } },
+  { slug: "demo-store", n: { id: "n_d02", type: "payment_received", title: "Payment Received! 💰", message: "0.5 SOL for Monthly Subscription Box", timestamp: Date.now() - 1 * DAY - 6 * HOUR, read: false } },
+  { slug: "demo-store", n: { id: "n_d03", type: "payment_received", title: "Payment Received! 💰", message: "25 USDC for Gift Card", timestamp: Date.now() - 1 * DAY - 20 * HOUR, read: true } },
+  { slug: "demo-store", n: { id: "n_d04", type: "payment_received", title: "Payment Received! 💰", message: "0.08 SOL for Ethiopian Single Origin", timestamp: Date.now() - 2 * DAY - 1 * HOUR, read: true } },
+  { slug: "demo-store", n: { id: "n_d05", type: "payment_received", title: "Payment Received! 💰", message: "0.5 SOL for Monthly Subscription Box", timestamp: Date.now() - 2 * DAY - 8 * HOUR, read: true } },
+  { slug: "demo-store", n: { id: "n_d06", type: "payment_received", title: "Payment Received! 💰", message: "25 USDC for Gift Card", timestamp: Date.now() - 3 * DAY - 5 * HOUR, read: true } },
+  { slug: "demo-store", n: { id: "n_created", type: "storefront_created", title: "Storefront Created! 🚀", message: "Sol Brew Coffee is live with 3 products.", timestamp: Date.now() - 3 * DAY, read: true } },
+  { slug: "web3-studio", n: { id: "n_a01", type: "payment_received", title: "Payment Received! 💰", message: "5 SOL for Smart Contract Audit", timestamp: Date.now() - 1 * DAY, read: false } },
+  { slug: "web3-studio", n: { id: "n_a02", type: "payment_received", title: "Payment Received! 💰", message: "50 USDC for Strategy Call", timestamp: Date.now() - 2 * DAY, read: true } },
+  { slug: "crypto-academy", n: { id: "n_e01", type: "payment_received", title: "New Enrollment! 🎓", message: "0.5 SOL for Solana 101 Course", timestamp: Date.now() - 12 * HOUR, read: false } },
+  { slug: "crypto-academy", n: { id: "n_e02", type: "payment_received", title: "Workshop Pass Sold! 🎟️", message: "0.15 SOL for Live Workshop Pass", timestamp: Date.now() - 4 * HOUR, read: false } },
+];
+demoNotifs.forEach(({ slug, n }) => addNotification(slug, n));

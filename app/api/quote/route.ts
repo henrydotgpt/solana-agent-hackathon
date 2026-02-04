@@ -1,9 +1,25 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getSwapQuote } from "@/lib/solana/jupiter";
-import { SOL_MINT, USDC_MINT } from "@/lib/constants";
+import { SOL_MINT, USDC_MINT, SOLANA_NETWORK } from "@/lib/constants";
 import type { ApiResponse, TokenQuote } from "@/lib/types";
 
 export const dynamic = "force-dynamic";
+
+/**
+ * Fallback: fetch SOL price from CoinGecko (works on devnet where Jupiter doesn't)
+ */
+async function getFallbackSOLPrice(): Promise<number | null> {
+  try {
+    const res = await fetch(
+      "https://api.coingecko.com/api/v3/simple/price?ids=solana&vs_currencies=usd",
+      { next: { revalidate: 60 } }
+    );
+    const data = await res.json();
+    return data?.solana?.usd ?? null;
+  } catch {
+    return null;
+  }
+}
 
 /**
  * GET /api/quote — Get Jupiter swap quote
@@ -59,26 +75,51 @@ export async function GET(
 
     const quote = await getSwapQuote(inputMint, outputMint, baseAmount);
 
-    if (!quote) {
-      return NextResponse.json(
-        { success: false, error: "Failed to get quote from Jupiter" },
-        { status: 502 }
-      );
+    if (quote) {
+      const inputAmount = Number(quote.inAmount) / Math.pow(10, inputDecimals);
+      const outputAmount = Number(quote.outAmount) / Math.pow(10, outputDecimals);
+
+      const tokenQuote: TokenQuote = {
+        inputToken: direction === "sol-to-usdc" ? "SOL" : "USDC",
+        outputToken: direction === "sol-to-usdc" ? "USDC" : "SOL",
+        inputAmount,
+        outputAmount,
+        rate: outputAmount / inputAmount,
+        priceImpact: quote.priceImpactPct,
+      };
+
+      return NextResponse.json({ success: true, data: tokenQuote });
     }
 
-    const inputAmount = Number(quote.inAmount) / Math.pow(10, inputDecimals);
-    const outputAmount = Number(quote.outAmount) / Math.pow(10, outputDecimals);
+    // Fallback: Jupiter doesn't work on devnet — use CoinGecko price
+    const solPrice = await getFallbackSOLPrice();
+    if (solPrice) {
+      const tokenQuote: TokenQuote =
+        direction === "sol-to-usdc"
+          ? {
+              inputToken: "SOL",
+              outputToken: "USDC",
+              inputAmount: amount,
+              outputAmount: amount * solPrice,
+              rate: solPrice,
+              priceImpact: "0",
+            }
+          : {
+              inputToken: "USDC",
+              outputToken: "SOL",
+              inputAmount: amount,
+              outputAmount: amount / solPrice,
+              rate: 1 / solPrice,
+              priceImpact: "0",
+            };
 
-    const tokenQuote: TokenQuote = {
-      inputToken: direction === "sol-to-usdc" ? "SOL" : "USDC",
-      outputToken: direction === "sol-to-usdc" ? "USDC" : "SOL",
-      inputAmount,
-      outputAmount,
-      rate: outputAmount / inputAmount,
-      priceImpact: quote.priceImpactPct,
-    };
+      return NextResponse.json({ success: true, data: tokenQuote });
+    }
 
-    return NextResponse.json({ success: true, data: tokenQuote });
+    return NextResponse.json(
+      { success: false, error: "Failed to get quote" },
+      { status: 502 }
+    );
   } catch (error) {
     console.error("Quote error:", error);
     return NextResponse.json(

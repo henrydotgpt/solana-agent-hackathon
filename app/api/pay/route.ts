@@ -32,7 +32,7 @@ export async function GET(request: NextRequest) {
 
   return NextResponse.json({
     label: storefront.businessName,
-    icon: `${process.env.NEXT_PUBLIC_APP_URL || "https://paygent.app"}/solana-logo.svg`,
+    icon: `${(process.env.NEXT_PUBLIC_APP_URL || "https://paygent-solana.vercel.app").trim()}/solana-logo.svg`,
     ...(product && {
       message: `Payment for ${product.name} — ${product.price} ${product.currency}`,
     }),
